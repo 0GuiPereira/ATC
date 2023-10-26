@@ -23,18 +23,6 @@ void Init_Device(void)
 	 P1MDIN |= 0x7F;
 
 	
-	// init PCA
-    PCA0CN    = 0x40;
-    PCA0CPM0  = 0xC2;
-    PCA0CPH0  = 0x80;
-		
-		
-		
-	//  OUTPUT PINS ???
-		P0SKIP    = 0xFF;
-    P1SKIP    = 0x3F;
-
-
 	
 
 }

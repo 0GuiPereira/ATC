@@ -8,9 +8,6 @@
 
 sbit pb1 = P0^6;
 sbit pb2 = P0^7;
-sbit seg_dp = P2^7;
-
-
 
 //chave por defeito	            	8			0			5			1
 unsigned char default_key[4] = {0x80, 0xC0, 0x92, 0xF9};
@@ -70,63 +67,19 @@ void timer2_init_auto(int reload){
 }
 
 void delay_250us(){
-	while(!(TMR3CN = (1 < B_TF3H)));
-	TMR3CN &= ~(1 < B_TF3H);
+	while(!(TMR3CN & (1 << B_TF3H)));
+	TMR3CN &= ~(1 << B_TF3H);  
 }
-
-//void delay_10ms(){
-//	while(!TF2H);
-//	TF2H = 0;
-//}
 
 void delay_s(unsigned int s) {
     unsigned int i = 0;
-    unsigned int num_iterations = (s*100);
 
-    while(i != num_iterations) {
+    while(i != (s*100)) {
         i++;
         while(!TF2H);
         TF2H = 0;
     }
 }
-
-
-
-//void delay_1000ms(){
-//	unsigned int i = 0;
-//	while(i != 100){
-//		i++;
-//		delay_10ms();
-//	}
-//}
-//void delay_4000ms(){
-//	unsigned int i = 0;
-//	while(i != 400){
-//		i++;
-//		delay_10ms();
-//	}
-//}
-//void delay_9000ms(){
-//	unsigned int i = 0;
-//	while(i != 900){
-//		i++;
-//		delay_10ms();
-//	}
-//}
-//void delay_14000ms(){
-//	unsigned int i = 0;
-//	while(i != 1400){
-//		i++;
-//		delay_10ms();
-//	}
-//}
-//void delay_19000ms(){
-//	unsigned int i = 0;
-//	while(i != 1900){
-//		i++;
-//		delay_10ms();
-//	}
-//}
 
 
 void square_wave(){
@@ -207,7 +160,7 @@ void errorhandling(){
 			delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 4 segundos num total de 5 segundos
 			P2 = 0xC6; // C
 			delay_s(4);//wait 4 secs
-			nextstate = S1;
+			nextstate = S4;
 		}
 		if(wrongkeycount == 2){
 			P2 = 0x86; // E
@@ -333,6 +286,7 @@ void state_3(void){
 void state_4(void){
 		P2 = 0x88;
 	  square_wave();
+		HWFLAG();
 }
 void state_5(void){
 		set_key();
@@ -363,14 +317,14 @@ void main (void){
 	//Set by hardware when the Timer 2/3 high byte overflows from 0xFF to 0x00. In 16 bit 
 	//mode, this will occur when Timer 2/3 overflows from 0xFFFF to 0x0000. 	
 	TF2H = 0;	
-	TMR3CN &= ~(1 < B_TF3H);
+	TMR3CN &= ~(1 << B_TF3H);
 	
 	// Enable Flag Timer 2/3 Overflow
 	ET2 = 1;
-	EIE1 |= (1 < B_ET3);
+	EIE1 |= (1 << B_ET3);
 	
 	// Timer 2/3 Run Control. Timer 2/3 is enabled by setting this bit to 1. 
-	TMR3CN |= (1 < B_TR3);
+	TMR3CN |= (1 << B_TR3);
 	TR2 = 1;
 		
 		
