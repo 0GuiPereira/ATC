@@ -1,0 +1,17 @@
+Rebuild target 'Target 1'
+compiling state_machine.c...
+compiling init_device.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SQUARE_WAVE?STATE_MACHINE
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?DELAY_10US?STATE_MACHINE
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?ENCODE_FSM_SWITCH?STATE_MACHINE
+
+Program Size: data=115.1 xdata=0 code=2181
+creating hex file from ".\Objects\state_machine"...
+".\Objects\state_machine" - 0 Error(s), 3 Warning(s).
+Build Time Elapsed:  00:00:01

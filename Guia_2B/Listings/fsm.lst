@@ -1,0 +1,959 @@
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE FSM
+OBJECT MODULE PLACED IN .\Objects\fsm.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE fsm.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\fsm.l
+                    -st) TABS(2) OBJECT(.\Objects\fsm.obj)
+
+line level    source
+
+   1          #include <SI_EFM8BB3_Register_Enums.h>
+*** WARNING C318 IN LINE 38 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: can't open file 'si_toolchain.h'
+*** ERROR C141 IN LINE 43 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE0', expected '
+             -bit'
+*** ERROR C141 IN LINE 44 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB6', expected '
+             -bit'
+*** ERROR C141 IN LINE 45 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB5', expected '
+             -bit'
+*** ERROR C141 IN LINE 46 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA1', expected '
+             -bit'
+*** ERROR C141 IN LINE 47 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC7', expected '
+             -bit'
+*** ERROR C141 IN LINE 48 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xBC', expected '
+             -bit'
+*** ERROR C141 IN LINE 49 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB9', expected '
+             -bit'
+*** ERROR C141 IN LINE 50 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xDF', expected '
+             -bit'
+*** ERROR C141 IN LINE 51 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected '
+             -bit'
+*** ERROR C141 IN LINE 52 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB2', expected '
+             -bit'
+*** ERROR C141 IN LINE 53 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB3', expected '
+             -bit'
+*** ERROR C141 IN LINE 54 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC4', expected '
+             -bit'
+*** ERROR C141 IN LINE 55 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC3', expected '
+             -bit'
+*** ERROR C141 IN LINE 56 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xBE', expected '
+             -bit'
+*** ERROR C141 IN LINE 57 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xBD', expected '
+             -bit'
+*** ERROR C141 IN LINE 58 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC6', expected '
+             -bit'
+*** ERROR C141 IN LINE 59 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC5', expected '
+             -bit'
+*** ERROR C141 IN LINE 60 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xBB', expected '
+             -bit'
+*** ERROR C141 IN LINE 61 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF0', expected '
+             -bit'
+*** ERROR C141 IN LINE 62 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x8E', expected '
+             -bit'
+*** ERROR C141 IN LINE 63 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA6', expected '
+             -bit'
+*** ERROR C141 IN LINE 64 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC6', expected '
+             -bit'
+*** ERROR C141 IN LINE 65 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC7', expected '
+             -bit'
+*** ERROR C141 IN LINE 66 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected '
+             -bit'
+*** ERROR C141 IN LINE 67 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA9', expected '
+             -bit'
+*** ERROR C141 IN LINE 68 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD1', expected '
+             -bit'
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 2   
+
+*** ERROR C141 IN LINE 69 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB1', expected '
+             -bit'
+*** ERROR C141 IN LINE 70 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xAF', expected '
+             -bit'
+*** ERROR C141 IN LINE 71 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x84', expected '
+             -bit'
+*** ERROR C141 IN LINE 72 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB3', expected '
+             -bit'
+*** ERROR C141 IN LINE 73 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB2', expected '
+             -bit'
+*** ERROR C141 IN LINE 74 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x85', expected '
+             -bit'
+*** ERROR C141 IN LINE 75 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB6', expected '
+             -bit'
+*** ERROR C141 IN LINE 76 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB5', expected '
+             -bit'
+*** ERROR C141 IN LINE 77 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x91', expected '
+             -bit'
+*** ERROR C141 IN LINE 78 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xBF', expected '
+             -bit'
+*** ERROR C141 IN LINE 79 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xBE', expected '
+             -bit'
+*** ERROR C141 IN LINE 80 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xAE', expected '
+             -bit'
+*** ERROR C141 IN LINE 81 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x9B', expected '
+             -bit'
+*** ERROR C141 IN LINE 82 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x99', expected '
+             -bit'
+*** ERROR C141 IN LINE 83 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x9D', expected '
+             -bit'
+*** ERROR C141 IN LINE 84 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x9F', expected '
+             -bit'
+*** ERROR C141 IN LINE 85 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xBF', expected '
+             -bit'
+*** ERROR C141 IN LINE 86 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xAC', expected '
+             -bit'
+*** ERROR C141 IN LINE 87 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xAB', expected '
+             -bit'
+*** ERROR C141 IN LINE 88 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xAA', expected '
+             -bit'
+*** ERROR C141 IN LINE 89 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xCE', expected '
+             -bit'
+*** ERROR C141 IN LINE 90 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x86', expected '
+             -bit'
+*** ERROR C141 IN LINE 91 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD3', expected '
+             -bit'
+*** ERROR C141 IN LINE 92 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xCB', expected '
+             -bit'
+*** ERROR C141 IN LINE 93 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xCF', expected '
+             -bit'
+*** ERROR C141 IN LINE 94 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xCA', expected '
+             -bit'
+*** ERROR C141 IN LINE 95 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD2', expected '
+             -bit'
+*** ERROR C141 IN LINE 96 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x91', expected '
+             -bit'
+*** ERROR C141 IN LINE 97 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x92', expected '
+             -bit'
+*** ERROR C141 IN LINE 98 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x85', expected '
+             -bit'
+*** ERROR C141 IN LINE 99 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x84', expected '
+             -bit'
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 3   
+
+*** ERROR C141 IN LINE 100 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x93', expected 
+             -'bit'
+*** ERROR C141 IN LINE 101 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x94', expected 
+             -'bit'
+*** ERROR C141 IN LINE 102 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x8A', expected 
+             -'bit'
+*** ERROR C141 IN LINE 103 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x89', expected 
+             -'bit'
+*** ERROR C141 IN LINE 104 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x95', expected 
+             -'bit'
+*** ERROR C141 IN LINE 105 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x96', expected 
+             -'bit'
+*** ERROR C141 IN LINE 106 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x8C', expected 
+             -'bit'
+*** ERROR C141 IN LINE 107 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x8B', expected 
+             -'bit'
+*** ERROR C141 IN LINE 108 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x9A', expected 
+             -'bit'
+*** ERROR C141 IN LINE 109 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x9C', expected 
+             -'bit'
+*** ERROR C141 IN LINE 110 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x8E', expected 
+             -'bit'
+*** ERROR C141 IN LINE 111 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x8D', expected 
+             -'bit'
+*** ERROR C141 IN LINE 112 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 113 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 114 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA2', expected 
+             -'bit'
+*** ERROR C141 IN LINE 115 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xAD', expected 
+             -'bit'
+*** ERROR C141 IN LINE 116 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB5', expected 
+             -'bit'
+*** ERROR C141 IN LINE 117 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x83', expected 
+             -'bit'
+*** ERROR C141 IN LINE 118 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x82', expected 
+             -'bit'
+*** ERROR C141 IN LINE 119 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE6', expected 
+             -'bit'
+*** ERROR C141 IN LINE 120 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF3', expected 
+             -'bit'
+*** ERROR C141 IN LINE 121 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xBB', expected 
+             -'bit'
+*** ERROR C141 IN LINE 122 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xEE', expected 
+             -'bit'
+*** ERROR C141 IN LINE 123 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xED', expected 
+             -'bit'
+*** ERROR C141 IN LINE 124 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF6', expected 
+             -'bit'
+*** ERROR C141 IN LINE 125 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE7', expected 
+             -'bit'
+*** ERROR C141 IN LINE 126 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB7', expected 
+             -'bit'
+*** ERROR C141 IN LINE 127 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC7', expected 
+             -'bit'
+*** ERROR C141 IN LINE 128 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD6', expected 
+             -'bit'
+*** ERROR C141 IN LINE 129 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xEF', expected 
+             -'bit'
+*** ERROR C141 IN LINE 130 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xFF', expected 
+             -'bit'
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 4   
+
+*** ERROR C141 IN LINE 131 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xBA', expected 
+             -'bit'
+*** ERROR C141 IN LINE 132 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xBC', expected 
+             -'bit'
+*** ERROR C141 IN LINE 133 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xBB', expected 
+             -'bit'
+*** ERROR C141 IN LINE 134 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xAD', expected 
+             -'bit'
+*** ERROR C141 IN LINE 135 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xAB', expected 
+             -'bit'
+*** ERROR C141 IN LINE 136 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF5', expected 
+             -'bit'
+*** ERROR C141 IN LINE 137 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xBD', expected 
+             -'bit'
+*** ERROR C141 IN LINE 138 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB9', expected 
+             -'bit'
+*** ERROR C141 IN LINE 139 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 140 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 141 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF2', expected 
+             -'bit'
+*** ERROR C141 IN LINE 142 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE4', expected 
+             -'bit'
+*** ERROR C141 IN LINE 143 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB1', expected 
+             -'bit'
+*** ERROR C141 IN LINE 144 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x80', expected 
+             -'bit'
+*** ERROR C141 IN LINE 145 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xFE', expected 
+             -'bit'
+*** ERROR C141 IN LINE 146 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xFD', expected 
+             -'bit'
+*** ERROR C141 IN LINE 147 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF1', expected 
+             -'bit'
+*** ERROR C141 IN LINE 148 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA4', expected 
+             -'bit'
+*** ERROR C141 IN LINE 149 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD4', expected 
+             -'bit'
+*** ERROR C141 IN LINE 150 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x90', expected 
+             -'bit'
+*** ERROR C141 IN LINE 151 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xEE', expected 
+             -'bit'
+*** ERROR C141 IN LINE 152 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xED', expected 
+             -'bit'
+*** ERROR C141 IN LINE 153 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF2', expected 
+             -'bit'
+*** ERROR C141 IN LINE 154 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA5', expected 
+             -'bit'
+*** ERROR C141 IN LINE 155 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD5', expected 
+             -'bit'
+*** ERROR C141 IN LINE 156 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 157 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xFC', expected 
+             -'bit'
+*** ERROR C141 IN LINE 158 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xFB', expected 
+             -'bit'
+*** ERROR C141 IN LINE 159 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF3', expected 
+             -'bit'
+*** ERROR C141 IN LINE 160 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA6', expected 
+             -'bit'
+*** ERROR C141 IN LINE 161 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xCC', expected 
+             -'bit'
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 5   
+
+*** ERROR C141 IN LINE 162 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 163 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF4', expected 
+             -'bit'
+*** ERROR C141 IN LINE 164 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x9C', expected 
+             -'bit'
+*** ERROR C141 IN LINE 165 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x9E', expected 
+             -'bit'
+*** ERROR C141 IN LINE 166 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x9C', expected 
+             -'bit'
+*** ERROR C141 IN LINE 167 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 168 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xFC', expected 
+             -'bit'
+*** ERROR C141 IN LINE 169 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xEA', expected 
+             -'bit'
+*** ERROR C141 IN LINE 170 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xEC', expected 
+             -'bit'
+*** ERROR C141 IN LINE 171 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF5', expected 
+             -'bit'
+*** ERROR C141 IN LINE 172 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x85', expected 
+             -'bit'
+*** ERROR C141 IN LINE 173 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xDE', expected 
+             -'bit'
+*** ERROR C141 IN LINE 174 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xFB', expected 
+             -'bit'
+*** ERROR C141 IN LINE 175 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE9', expected 
+             -'bit'
+*** ERROR C141 IN LINE 176 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xEB', expected 
+             -'bit'
+*** ERROR C141 IN LINE 177 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF4', expected 
+             -'bit'
+*** ERROR C141 IN LINE 178 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x84', expected 
+             -'bit'
+*** ERROR C141 IN LINE 179 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xDD', expected 
+             -'bit'
+*** ERROR C141 IN LINE 180 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xDA', expected 
+             -'bit'
+*** ERROR C141 IN LINE 181 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xDB', expected 
+             -'bit'
+*** ERROR C141 IN LINE 182 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xDC', expected 
+             -'bit'
+*** ERROR C141 IN LINE 183 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xAE', expected 
+             -'bit'
+*** ERROR C141 IN LINE 184 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xAF', expected 
+             -'bit'
+*** ERROR C141 IN LINE 185 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xCC', expected 
+             -'bit'
+*** ERROR C141 IN LINE 186 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xFA', expected 
+             -'bit'
+*** ERROR C141 IN LINE 187 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF9', expected 
+             -'bit'
+*** ERROR C141 IN LINE 188 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD9', expected 
+             -'bit'
+*** ERROR C141 IN LINE 189 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x96', expected 
+             -'bit'
+*** ERROR C141 IN LINE 190 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF7', expected 
+             -'bit'
+*** ERROR C141 IN LINE 191 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x87', expected 
+             -'bit'
+*** ERROR C141 IN LINE 192 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xCD', expected 
+             -'bit'
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 6   
+
+*** ERROR C141 IN LINE 193 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC1', expected 
+             -'bit'
+*** ERROR C141 IN LINE 194 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF6', expected 
+             -'bit'
+*** ERROR C141 IN LINE 195 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x8F', expected 
+             -'bit'
+*** ERROR C141 IN LINE 196 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xAA', expected 
+             -'bit'
+*** ERROR C141 IN LINE 197 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 198 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD1', expected 
+             -'bit'
+*** ERROR C141 IN LINE 199 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC9', expected 
+             -'bit'
+*** ERROR C141 IN LINE 200 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB6', expected 
+             -'bit'
+*** ERROR C141 IN LINE 201 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xEF', expected 
+             -'bit'
+*** ERROR C141 IN LINE 202 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x94', expected 
+             -'bit'
+*** ERROR C141 IN LINE 203 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x96', expected 
+             -'bit'
+*** ERROR C141 IN LINE 204 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x95', expected 
+             -'bit'
+*** ERROR C141 IN LINE 205 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x99', expected 
+             -'bit'
+*** ERROR C141 IN LINE 206 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x92', expected 
+             -'bit'
+*** ERROR C141 IN LINE 207 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 208 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 209 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA7', expected 
+             -'bit'
+*** ERROR C141 IN LINE 210 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xBC', expected 
+             -'bit'
+*** ERROR C141 IN LINE 211 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD7', expected 
+             -'bit'
+*** ERROR C141 IN LINE 212 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD6', expected 
+             -'bit'
+*** ERROR C141 IN LINE 213 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD7', expected 
+             -'bit'
+*** ERROR C141 IN LINE 214 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC1', expected 
+             -'bit'
+*** ERROR C141 IN LINE 215 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 216 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC2', expected 
+             -'bit'
+*** ERROR C141 IN LINE 217 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC3', expected 
+             -'bit'
+*** ERROR C141 IN LINE 218 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC4', expected 
+             -'bit'
+*** ERROR C141 IN LINE 219 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xEF', expected 
+             -'bit'
+*** ERROR C141 IN LINE 220 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC5', expected 
+             -'bit'
+*** ERROR C141 IN LINE 221 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xAC', expected 
+             -'bit'
+*** ERROR C141 IN LINE 222 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x93', expected 
+             -'bit'
+*** ERROR C141 IN LINE 223 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x81', expected 
+             -'bit'
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 7   
+
+*** ERROR C141 IN LINE 224 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA1', expected 
+             -'bit'
+*** ERROR C141 IN LINE 225 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA2', expected 
+             -'bit'
+*** ERROR C141 IN LINE 226 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 227 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA3', expected 
+             -'bit'
+*** ERROR C141 IN LINE 228 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x9A', expected 
+             -'bit'
+*** ERROR C141 IN LINE 229 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x9B', expected 
+             -'bit'
+*** ERROR C141 IN LINE 230 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF7', expected 
+             -'bit'
+*** ERROR C141 IN LINE 231 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xDF', expected 
+             -'bit'
+*** ERROR C141 IN LINE 232 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 233 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x8C', expected 
+             -'bit'
+*** ERROR C141 IN LINE 234 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x8D', expected 
+             -'bit'
+*** ERROR C141 IN LINE 235 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x8A', expected 
+             -'bit'
+*** ERROR C141 IN LINE 236 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x8B', expected 
+             -'bit'
+*** ERROR C141 IN LINE 237 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x89', expected 
+             -'bit'
+*** ERROR C141 IN LINE 238 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 239 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xFD', expected 
+             -'bit'
+*** ERROR C141 IN LINE 240 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xCF', expected 
+             -'bit'
+*** ERROR C141 IN LINE 241 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xCE', expected 
+             -'bit'
+*** ERROR C141 IN LINE 242 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xCB', expected 
+             -'bit'
+*** ERROR C141 IN LINE 243 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xCA', expected 
+             -'bit'
+*** ERROR C141 IN LINE 244 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x91', expected 
+             -'bit'
+*** ERROR C141 IN LINE 245 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xFE', expected 
+             -'bit'
+*** ERROR C141 IN LINE 246 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x95', expected 
+             -'bit'
+*** ERROR C141 IN LINE 247 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x94', expected 
+             -'bit'
+*** ERROR C141 IN LINE 248 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x93', expected 
+             -'bit'
+*** ERROR C141 IN LINE 249 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x92', expected 
+             -'bit'
+*** ERROR C141 IN LINE 250 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 251 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xFF', expected 
+             -'bit'
+*** ERROR C141 IN LINE 252 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA5', expected 
+             -'bit'
+*** ERROR C141 IN LINE 253 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA4', expected 
+             -'bit'
+*** ERROR C141 IN LINE 254 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA3', expected 
+             -'bit'
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 8   
+
+*** ERROR C141 IN LINE 255 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA2', expected 
+             -'bit'
+*** ERROR C141 IN LINE 256 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 257 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF1', expected 
+             -'bit'
+*** ERROR C141 IN LINE 258 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD5', expected 
+             -'bit'
+*** ERROR C141 IN LINE 259 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD4', expected 
+             -'bit'
+*** ERROR C141 IN LINE 260 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD3', expected 
+             -'bit'
+*** ERROR C141 IN LINE 261 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD2', expected 
+             -'bit'
+*** ERROR C141 IN LINE 262 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD9', expected 
+             -'bit'
+*** ERROR C141 IN LINE 263 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x9D', expected 
+             -'bit'
+*** ERROR C141 IN LINE 264 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 265 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xFA', expected 
+             -'bit'
+*** ERROR C141 IN LINE 266 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x9E', expected 
+             -'bit'
+*** ERROR C141 IN LINE 267 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xDA', expected 
+             -'bit'
+*** ERROR C141 IN LINE 268 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xFF', expected 
+             -'bit'
+*** ERROR C141 IN LINE 269 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x97', expected 
+             -'bit'
+*** ERROR C141 IN LINE 270 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE1', expected 
+             -'bit'
+*** ERROR C141 IN LINE 271 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE2', expected 
+             -'bit'
+*** ERROR C141 IN LINE 272 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE3', expected 
+             -'bit'
+*** ERROR C141 IN LINE 273 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x86', expected 
+             -'bit'
+*** ERROR C141 IN LINE 278 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB5', expected 
+             -'bit'
+*** ERROR C141 IN LINE 279 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC3', expected 
+             -'bit'
+*** ERROR C141 IN LINE 280 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xBD', expected 
+             -'bit'
+*** ERROR C141 IN LINE 281 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC5', expected 
+             -'bit'
+*** ERROR C141 IN LINE 282 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x82', expected 
+             -'bit'
+*** ERROR C141 IN LINE 283 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xFB', expected 
+             -'bit'
+*** ERROR C141 IN LINE 284 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE9', expected 
+             -'bit'
+*** ERROR C141 IN LINE 285 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xEB', expected 
+             -'bit'
+*** ERROR C141 IN LINE 286 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF4', expected 
+             -'bit'
+*** ERROR C141 IN LINE 287 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x84', expected 
+             -'bit'
+*** ERROR C141 IN LINE 288 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xDD', expected 
+             -'bit'
+*** ERROR C141 IN LINE 289 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF9', expected 
+             -'bit'
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 9   
+
+*** ERROR C141 IN LINE 290 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xCE', expected 
+             -'bit'
+*** ERROR C141 IN LINE 291 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xCA', expected 
+             -'bit'
+*** ERROR C141 IN LINE 292 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x94', expected 
+             -'bit'
+*** ERROR C141 IN LINE 293 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x92', expected 
+             -'bit'
+*** ERROR C141 IN LINE 294 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA4', expected 
+             -'bit'
+*** ERROR C141 IN LINE 295 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA2', expected 
+             -'bit'
+*** ERROR C141 IN LINE 296 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD4', expected 
+             -'bit'
+*** ERROR C141 IN LINE 297 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD2', expected 
+             -'bit'
+*** ERROR C141 IN LINE 309 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 310 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 311 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 312 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 313 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 314 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 315 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 316 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 320 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 321 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 322 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 323 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 324 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 325 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 326 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 327 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 331 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 332 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 333 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 334 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 335 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 336 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 337 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF0', expected 
+             -'bit'
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 10  
+
+*** ERROR C141 IN LINE 338 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 342 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 343 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 344 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 345 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 346 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 347 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 348 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 349 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xE8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 353 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 354 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 355 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 356 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 357 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 358 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 359 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 360 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 364 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 365 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 366 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 367 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 371 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 372 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 373 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 374 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 375 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 376 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 377 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 378 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 382 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 383 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB8', expected 
+             -'bit'
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 11  
+
+*** ERROR C141 IN LINE 384 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 385 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 386 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 387 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 388 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 392 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x80', expected 
+             -'bit'
+*** ERROR C141 IN LINE 393 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x80', expected 
+             -'bit'
+*** ERROR C141 IN LINE 394 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x80', expected 
+             -'bit'
+*** ERROR C141 IN LINE 395 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x80', expected 
+             -'bit'
+*** ERROR C141 IN LINE 396 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x80', expected 
+             -'bit'
+*** ERROR C141 IN LINE 397 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x80', expected 
+             -'bit'
+*** ERROR C141 IN LINE 398 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x80', expected 
+             -'bit'
+*** ERROR C141 IN LINE 399 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x80', expected 
+             -'bit'
+*** ERROR C141 IN LINE 403 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x90', expected 
+             -'bit'
+*** ERROR C141 IN LINE 404 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x90', expected 
+             -'bit'
+*** ERROR C141 IN LINE 405 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x90', expected 
+             -'bit'
+*** ERROR C141 IN LINE 406 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x90', expected 
+             -'bit'
+*** ERROR C141 IN LINE 407 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x90', expected 
+             -'bit'
+*** ERROR C141 IN LINE 408 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x90', expected 
+             -'bit'
+*** ERROR C141 IN LINE 409 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x90', expected 
+             -'bit'
+*** ERROR C141 IN LINE 410 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x90', expected 
+             -'bit'
+*** ERROR C141 IN LINE 414 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 415 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 416 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 417 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 418 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 419 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 420 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xA0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 424 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 425 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 426 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB0', expected 
+             -'bit'
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 12  
+
+*** ERROR C141 IN LINE 427 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 428 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 429 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xB0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 433 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 434 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 435 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 436 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 437 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 438 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 439 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 440 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 444 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 445 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 446 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 447 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 448 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 449 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 450 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 451 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 455 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 456 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 457 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 458 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 459 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 460 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 461 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 465 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 466 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 467 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 468 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 469 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 13  
+
+*** ERROR C141 IN LINE 470 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 471 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 475 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 476 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 477 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 478 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 479 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 480 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 481 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 482 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 486 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 487 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 488 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 489 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 490 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 491 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 492 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 493 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xF8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 497 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 498 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 499 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 500 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 501 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 502 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 503 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 504 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x88', expected 
+             -'bit'
+*** ERROR C141 IN LINE 508 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 509 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 510 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 511 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 512 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 14  
+
+*** ERROR C141 IN LINE 513 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 514 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 515 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 519 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 520 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 521 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 522 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 523 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 524 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 525 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 526 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0x98', expected 
+             -'bit'
+*** ERROR C141 IN LINE 530 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 531 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 532 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 533 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 534 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 535 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 536 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 537 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xC0', expected 
+             -'bit'
+*** ERROR C141 IN LINE 541 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 542 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 543 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 544 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 545 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 546 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 547 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+*** ERROR C141 IN LINE 548 OF \Keil_v5\C51\Inc\SiLABS\EFM8BB3\inc\SI_EFM8BB3_Defs.h: syntax error near '0xD8', expected 
+             -'bit'
+   2          #include <stdio.h>
+   3          #include "fsm.h"
+   4          #include "pca0.h"
+   5          #include "serialIO.h"
+   6          #include "init.h"
+   7          
+   8          typedef enum my_states{S_Stopped = 0, S_Speed_Controller, S_Sinewave} state_t;
+   9            state_t state, n_state;
+C51 COMPILER V9.60.7.0   FSM                                                               10/20/2023 22:29:21 PAGE 15  
+
+  10          
+  11          
+  12          static void stopped(void){
+  13   1        pca0_stop();
+  14   1        if(uart0_getchar() == 'S'){
+  15   2          pca0_start();
+  16   2          n_state = S_Sinewave;
+  17   2        }
+  18   1      
+  19   1        if(uart0_getchar() == 'C'){
+  20   2          pca0_start();
+  21   2          n_state = S_Speed_Controller;
+  22   2        }
+  23   1      }
+  24          
+  25          static void sinewave(void){
+  26   1        if(uart0_getchar() == 'P'){
+  27   2          pca0_stop();
+  28   2          n_state = S_Stopped;
+  29   2        }
+  30   1      }
+  31          static void speed_controller(void){
+  32   1        if(uart0_getchar() == 'I')
+  33   1          inc_duty_cycle();
+  34   1          
+  35   1        if(uart0_getchar() == 'D')
+  36   1          dec_duty_cycle();
+  37   1          
+  38   1        if(uart0_getchar() == 'P'){
+  39   2          pca0_stop();
+  40   2          n_state = S_Stopped;
+  41   2        }
+  42   1      }
+  43          
+  44          void encode_fsm(void){
+  45   1        switch(state){
+  46   2          case S_Stopped:
+  47   2            stopped();
+  48   2          break;
+  49   2          case S_Speed_Controller:
+  50   2            speed_controller();
+  51   2          break;
+  52   2          case S_Sinewave:
+  53   2            sinewave();
+  54   2          break;
+  55   2          default:
+  56   2            state = S_Stopped;
+  57   2          break;
+  58   2        }
+  59   1      }
+  60          
+  61          void fsm_switch(void){
+  62   1        state = n_state;
+  63   1      }
+  64          
+  65          void init_fsm(void){
+  66   1        state = S_Stopped;
+  67   1        n_state = S_Stopped;
+  68   1      }
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  425 ERROR(S)

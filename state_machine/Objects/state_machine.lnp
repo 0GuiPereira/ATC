@@ -1,0 +1,4 @@
+".\Objects\state_machine.obj",
+".\Objects\init_device.obj" 
+TO ".\Objects\state_machine" 
+PRINT(".\Listings\state_machine.m51") RAMSIZE(256) 

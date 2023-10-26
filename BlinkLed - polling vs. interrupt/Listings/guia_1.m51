@@ -1,0 +1,121 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    10/20/2023  21:29:17  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\timer2_interrupt.obj TO .\Objects\guia_1 PRINT (.\Listings\guia_1.m51) RAMSIZE (25
+>> 6)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\timer2_interrupt.obj (TIMER2_INTERRUPT)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?SLCMP)
+
+
+LINK MAP OF MODULE:  .\Objects\guia_1 (TIMER2_INTERRUPT)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0004H     UNIT         ?DT?FORDELAY?TIMER2_INTERRUPT
+            IDATA   000CH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0051H     UNIT         ?PR?FORDELAY?TIMER2_INTERRUPT
+            CODE    0054H     0016H     UNIT         ?C?LIB_CODE
+            CODE    006AH     0015H     UNIT         ?PR?MAIN?TIMER2_INTERRUPT
+            CODE    007FH     0010H     UNIT         ?PR?SYSTEM_INIT?TIMER2_INTERRUPT
+            CODE    008FH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\guia_1 (TIMER2_INTERRUPT)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?TIMER2_INTERRUPT
+
+?PR?MAIN?TIMER2_INTERRUPT
+  +--> ?PR?SYSTEM_INIT?TIMER2_INTERRUPT
+  +--> ?PR?FORDELAY?TIMER2_INTERRUPT
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\guia_1 (TIMER2_INTERRUPT)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TIMER2_INTERRUPT
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:007FH         PUBLIC        System_Init
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  10/20/2023  21:29:17  PAGE 2
+
+
+  D:00A0H         PUBLIC        P2
+  D:00E8H         PUBLIC        ADC0CN
+  D:00A8H         PUBLIC        IE
+  D:00D9H         PUBLIC        PCA0MD
+  D:00D8H         PUBLIC        PCA0CN
+  D:00B8H         PUBLIC        IP
+  D:00E2H         PUBLIC        XBR1
+  D:00C0H         PUBLIC        SMB0CN
+  D:00C0H         PUBLIC        SMB1CN
+  C:006AH         PUBLIC        main
+  D:00F8H         PUBLIC        SPI0CN
+  D:0088H         PUBLIC        TCON
+  D:00C8H         PUBLIC        TMR2CN
+  D:00C8H         PUBLIC        TMR5CN
+  D:00A9H         PUBLIC        CLKSEL
+  C:0003H         PUBLIC        fordelay
+  D:0098H         PUBLIC        SCON0
+  D:00B6H         PUBLIC        FLSCL
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          SYSTEM_INIT
+  C:007FH         LINE#         6
+  C:007FH         LINE#         7
+  C:0082H         LINE#         8
+  C:0085H         LINE#         9
+  C:0088H         LINE#         10
+  C:008BH         LINE#         12
+  C:008EH         LINE#         13
+  -------         ENDPROC       SYSTEM_INIT
+  -------         PROC          FORDELAY
+  -------         DO            
+  D:0008H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         17
+  C:0003H         LINE#         19
+  C:000FH         LINE#         20
+  C:0031H         LINE#         21
+  C:0053H         LINE#         22
+  -------         ENDPROC       FORDELAY
+  -------         PROC          MAIN
+  C:006AH         LINE#         24
+  C:006AH         LINE#         26
+  C:006DH         LINE#         28
+  C:0070H         LINE#         30
+  C:0070H         LINE#         31
+  C:0073H         LINE#         32
+  C:0076H         LINE#         33
+  C:0079H         LINE#         34
+  C:007CH         LINE#         35
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        TIMER2_INTERRUPT
+
+  -------         MODULE        ?C?SLCMP
+  C:0054H         PUBLIC        ?C?SLCMP
+  -------         ENDMOD        ?C?SLCMP
+
+Program Size: data=13.0 xdata=0 code=155
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

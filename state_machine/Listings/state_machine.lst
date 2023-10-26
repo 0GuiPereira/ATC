@@ -1,0 +1,425 @@
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/26/2023 19:26:13 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE STATE_MACHINE
+OBJECT MODULE PLACED IN .\Objects\state_machine.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE state_machine.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
+                    -ings\state_machine.lst) TABS(2) OBJECT(.\Objects\state_machine.obj)
+
+line level    source
+
+   1          #include <REG51F380.H>
+   2          #include "init_device.h"
+   3          #include <string.h>
+   4          
+   5          #define B_TF3H 7
+   6          #define B_TR3 2
+   7          #define B_ET3 7
+   8          
+   9          sbit pb1 = P0^6;
+  10          sbit pb2 = P0^7;
+  11          sbit seg_dp = P2^7;
+  12          
+  13          
+  14          
+  15          //chave por defeito               8     0     5     1
+  16          unsigned char default_key[4] = {0x80, 0xC0, 0x92, 0xF9};
+  17           
+  18          //                                  L     0     1     2     3     4     5     6     7     8     9
+  19          unsigned char digits_array[11] = {0xC7, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
+  20          
+  21          
+  22          unsigned char button1pressed; //flags se os botoes sao clicados
+  23          unsigned char button2pressed;
+  24          unsigned int wrongkeycount;
+  25           
+  26          
+  27          /*********************************************************/
+  28          typedef enum ENUM_STATES {S1 = 0, S2, S3, S4, S5} e_states;
+  29          
+  30          e_states state, nextstate;
+  31          
+  32          /* function prototypes */
+  33          void state_1(void);
+  34          void state_2(void);
+  35          void state_3(void);
+  36          void state_4(void);
+  37          void state_5(void);
+  38          
+  39          void timer3_init_auto(int reload){
+  40   1      
+  41   1        TMR3CN = 0;
+  42   1      
+  43   1        #define B_T3MH 7  
+  44   1      
+  45   1        CKCON &= ~((1 << B_T3MH));
+  46   1        
+  47   1        TMR3H = (reload) >> 8;
+  48   1        TMR3L = (reload);
+  49   1      
+  50   1        TMR3RLH = (reload) >> 8;
+  51   1        TMR3RLL = (reload);
+  52   1        
+  53   1      }
+  54          
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/26/2023 19:26:13 PAGE 2   
+
+  55          
+  56          void timer2_init_auto(int reload){
+  57   1      
+  58   1        TMR2CN = 0;
+  59   1      
+  60   1        #define B_T2MH 5  
+  61   1      
+  62   1        CKCON &= ~((1 << B_T2MH));
+  63   1        
+  64   1        TMR2H = (reload) >> 8;
+  65   1        TMR2L = (reload);
+  66   1      
+  67   1        TMR2RLH = (reload) >> 8;
+  68   1        TMR2RLL = (reload);
+  69   1        
+  70   1      }
+  71          
+  72          void delay_250us(){
+  73   1        while(!(TMR3CN = (1 < B_TF3H)));
+  74   1        TMR3CN &= ~(1 < B_TF3H);
+  75   1      }
+  76          
+  77          //void delay_10ms(){
+  78          //  while(!TF2H);
+  79          //  TF2H = 0;
+  80          //}
+  81          
+  82          void delay_s(unsigned int s) {
+  83   1          unsigned int i = 0;
+  84   1          unsigned int num_iterations = (s*100);
+  85   1      
+  86   1          while(i != num_iterations) {
+  87   2              i++;
+  88   2              while(!TF2H);
+  89   2              TF2H = 0;
+  90   2          }
+  91   1      }
+  92          
+  93          
+  94          
+  95          //void delay_1000ms(){
+  96          //  unsigned int i = 0;
+  97          //  while(i != 100){
+  98          //    i++;
+  99          //    delay_10ms();
+ 100          //  }
+ 101          //}
+ 102          //void delay_4000ms(){
+ 103          //  unsigned int i = 0;
+ 104          //  while(i != 400){
+ 105          //    i++;
+ 106          //    delay_10ms();
+ 107          //  }
+ 108          //}
+ 109          //void delay_9000ms(){
+ 110          //  unsigned int i = 0;
+ 111          //  while(i != 900){
+ 112          //    i++;
+ 113          //    delay_10ms();
+ 114          //  }
+ 115          //}
+ 116          //void delay_14000ms(){
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/26/2023 19:26:13 PAGE 3   
+
+ 117          //  unsigned int i = 0;
+ 118          //  while(i != 1400){
+ 119          //    i++;
+ 120          //    delay_10ms();
+ 121          //  }
+ 122          //}
+ 123          //void delay_19000ms(){
+ 124          //  unsigned int i = 0;
+ 125          //  while(i != 1900){
+ 126          //    i++;
+ 127          //    delay_10ms();
+ 128          //  }
+ 129          //}
+ 130          
+ 131          
+ 132          void square_wave(){
+ 133   1        while (1){ // mudar para aceitar a HWFLAG
+ 134   2          //HIGH
+ 135   2          P1 |= 0x80;
+ 136   2          delay_250us();
+ 137   2          //LOW
+ 138   2          P1 &= ~(0x80);
+ 139   2          delay_250us();    
+ 140   2        }
+ 141   1      }
+ 142          
+ 143          bit validate_key(unsigned char v1[4], unsigned char v2[4]){
+ 144   1        return memcmp(v1, v2, 4) == 0;
+ 145   1      }
+ 146          
+ 147          //DEBOUNCE
+ 148          unsigned int debounce(bit PB){
+ 149   1              char window = 0;  
+ 150   1              unsigned int j;
+ 151   1          for(j = 0; j < 8; j++) {
+ 152   2              window = (window << 1) | PB;
+ 153   2          }
+ 154   1          return window;
+ 155   1      }
+ 156          
+ 157          void read_key(){
+ 158   1          unsigned char button1pressed; //flags se os botoes sao clicados
+ 159   1          unsigned char button2pressed;
+ 160   1          unsigned int digit_index;     //index dos digitos
+ 161   1          unsigned int index_input_key; //index da key a ser lida
+ 162   1          unsigned char input_key[4];
+ 163   1          
+ 164   1      
+ 165   1        if(!debounce(pb2) && !button2pressed){
+ 166   2            button2pressed = 1; 
+ 167   2            input_key[index_input_key] = digits_array[digit_index];
+ 168   2            index_input_key++;
+ 169   2            digit_index = 0;
+ 170   2          }
+ 171   1          if(index_input_key == 4){
+ 172   2            if(validate_key(input_key,default_key)){
+ 173   3              index_input_key = 0;
+ 174   3              wrongkeycount = 0;
+ 175   3              nextstate = S2;
+ 176   3            }
+ 177   2            else{
+ 178   3              index_input_key = 0;
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/26/2023 19:26:13 PAGE 4   
+
+ 179   3              nextstate = S3;
+ 180   3            }
+ 181   2          }
+ 182   1          if(debounce(pb2)){
+ 183   2            button2pressed = 0;
+ 184   2          }
+ 185   1        
+ 186   1          if(!debounce(pb1) && !button1pressed) {
+ 187   2            
+ 188   2            button1pressed = 1;            
+ 189   2            if (digit_index < 11) {
+ 190   3              digit_index++;
+ 191   3            }
+ 192   2            if (digit_index > 10){
+ 193   3              digit_index = 0;
+ 194   3            }
+ 195   2          }
+ 196   1          if(debounce(pb1)){
+ 197   2            button1pressed = 0;
+ 198   2          }
+ 199   1      
+ 200   1          P2 = digits_array[digit_index];
+ 201   1      }
+ 202          
+ 203          void errorhandling(){
+ 204   1          wrongkeycount++;
+ 205   1          if(wrongkeycount == 1){
+ 206   2            P2 = 0x86; // E
+ 207   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 4
+             - segundos num total de 5 segundos
+ 208   2            P2 = 0xC6; // C
+ 209   2            delay_s(4);//wait 4 secs
+ 210   2            nextstate = S1;
+ 211   2          }
+ 212   1          if(wrongkeycount == 2){
+ 213   2            P2 = 0x86; // E
+ 214   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 9
+             - segundos
+ 215   2            P2 = 0xC6; // C
+ 216   2            delay_s(9);//wait 9 secs
+ 217   2            nextstate = S1;
+ 218   2          }
+ 219   1          if(wrongkeycount == 3){
+ 220   2            P2 = 0x86; // E
+ 221   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 1
+             -4 segundos
+ 222   2            P2 = 0xC6; // C
+ 223   2            delay_s(14);//wait 14 secs
+ 224   2            nextstate = S1;
+ 225   2          }
+ 226   1          if(wrongkeycount == 4){
+ 227   2            P2 = 0x86; // E
+ 228   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 1
+             -9 segundos
+ 229   2            P2 = 0xC6; // C
+ 230   2            delay_s(19);//wait 19 secs
+ 231   2            nextstate = S1;
+ 232   2          }
+ 233   1          if(wrongkeycount == 5){
+ 234   2            nextstate = S4;
+ 235   2          }
+ 236   1      }
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/26/2023 19:26:13 PAGE 5   
+
+ 237          
+ 238          void change_key(){//                O       P     C
+ 239   1          unsigned int open_change[3] = {0xA3 , 0x8C, 0xC6};
+ 240   1          unsigned int index;
+ 241   1          
+ 242   1          if(!debounce(pb2) && !button2pressed){
+ 243   2            button2pressed = 1;
+ 244   2            if(open_change[index] == 0x8C){
+ 245   3              nextstate = S5;
+ 246   3              index = 0;
+ 247   3            }
+ 248   2            if(open_change[index] == 0xC6){
+ 249   3              nextstate = S1;
+ 250   3              index = 0;
+ 251   3            }
+ 252   2          }
+ 253   1          
+ 254   1          if(debounce(pb2)){
+ 255   2            button2pressed = 0;
+ 256   2          }
+ 257   1          
+ 258   1          if(!debounce(pb1) && !button1pressed){
+ 259   2            
+ 260   2            
+ 261   2            button1pressed = 1;            
+ 262   2            if (index < 3){
+ 263   3              index++;
+ 264   3            }
+ 265   2            if (index > 2){
+ 266   3              index = 0;
+ 267   3            }
+ 268   2          }
+ 269   1          
+ 270   1          if(debounce(pb1)){
+ 271   2            button1pressed = 0;
+ 272   2          }
+ 273   1      
+ 274   1          P2 = open_change[index];
+ 275   1        
+ 276   1      }
+ 277          void set_key(){//                 P     0     1     2     3     4     5     6     7     8     9
+ 278   1          unsigned int set_key[11] = {0x8C, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
+ 279   1          unsigned int index;
+ 280   1          unsigned int index_new_key;
+ 281   1          
+ 282   1          if(!debounce(pb2) && !button2pressed){
+ 283   2            button2pressed = 1;
+ 284   2            default_key[index_new_key] = set_key[index];
+ 285   2            index_new_key++;
+ 286   2            index = 0;
+ 287   2          }
+ 288   1          
+ 289   1          if(index_new_key == 4){
+ 290   2            index_new_key = 0;
+ 291   2            nextstate = S1;
+ 292   2          }
+ 293   1          
+ 294   1          if(debounce(pb2)){
+ 295   2            button2pressed = 0;
+ 296   2          }
+ 297   1          
+ 298   1          if(!debounce(pb1) && !button1pressed){
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/26/2023 19:26:13 PAGE 6   
+
+ 299   2            
+ 300   2            button1pressed = 1;            
+ 301   2            if (index < 11){
+ 302   3              index++;
+ 303   3            }
+ 304   2            if (index > 10){
+ 305   3              index = 0;
+ 306   3            }
+ 307   2          }
+ 308   1          
+ 309   1          if(debounce(pb1)){
+ 310   2            button1pressed = 0;
+ 311   2          }
+ 312   1      
+ 313   1          P2 = set_key[index];
+ 314   1      }
+ 315          
+ 316          
+ 317          /*********************************************************/ 
+ 318          //                          close/locked    open    error     alarm   set_key
+ 319          void (*state_process [])(void) = {state_1, state_2, state_3, state_4, state_5};
+ 320          
+ 321          
+ 322          void state_1(void){
+ 323   1          read_key();
+ 324   1          P1 = 0x10;
+ 325   1      }
+ 326          void state_2(void){
+ 327   1          change_key();
+ 328   1          P1 &= ~0x10;
+ 329   1      }
+ 330          void state_3(void){
+ 331   1          errorhandling();
+ 332   1      }
+ 333          void state_4(void){
+ 334   1          P2 = 0x88;
+ 335   1          square_wave();
+ 336   1      }
+ 337          void state_5(void){
+ 338   1          set_key();
+ 339   1      }
+ 340          
+ 341          /*********************************************************/
+ 342          void encode_FSM(){
+ 343   1          state_process[state] ();
+ 344   1      }
+ 345          
+ 346          /*********************************************************/
+ 347          
+ 348          
+ 349          /*********************************************************
+ 350           *    main function                                      *
+ 351           *********************************************************/
+ 352          void main (void){
+ 353   1        
+ 354   1        Init_Device(); 
+ 355   1        
+ 356   1        timer2_init_auto(-40000);
+ 357   1        timer3_init_auto(-1000);
+ 358   1        
+ 359   1        state = nextstate = S1;
+ 360   1        
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/26/2023 19:26:13 PAGE 7   
+
+ 361   1      
+ 362   1        
+ 363   1        //Set by hardware when the Timer 2/3 high byte overflows from 0xFF to 0x00. In 16 bit 
+ 364   1        //mode, this will occur when Timer 2/3 overflows from 0xFFFF to 0x0000.   
+ 365   1        TF2H = 0; 
+ 366   1        TMR3CN &= ~(1 < B_TF3H);
+ 367   1        
+ 368   1        // Enable Flag Timer 2/3 Overflow
+ 369   1        ET2 = 1;
+ 370   1        EIE1 |= (1 < B_ET3);
+ 371   1        
+ 372   1        // Timer 2/3 Run Control. Timer 2/3 is enabled by setting this bit to 1. 
+ 373   1        TMR3CN |= (1 < B_TR3);
+ 374   1        TR2 = 1;
+ 375   1          
+ 376   1          
+ 377   1        while (1) {
+ 378   2                
+ 379   2          // using an array of functions...
+ 380   2          encode_FSM();
+ 381   2          // using a switch case statement...
+ 382   2          //encode_FSM_switch();
+ 383   2          state = nextstate;
+ 384   2        }
+ 385   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1094    ----
+   CONSTANT SIZE    =     28    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     99    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
