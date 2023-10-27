@@ -160,7 +160,7 @@ void errorhandling(){
 			delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 4 segundos num total de 5 segundos
 			P2 = 0xC6; // C
 			delay_s(4);//wait 4 secs
-			nextstate = S4;
+			nextstate = S1;
 		}
 		if(wrongkeycount == 2){
 			P2 = 0x86; // E
@@ -286,7 +286,6 @@ void state_3(void){
 void state_4(void){
 		P2 = 0x88;
 	  square_wave();
-		HWFLAG();
 }
 void state_5(void){
 		set_key();
@@ -312,8 +311,6 @@ void main (void){
 	
 	state = nextstate = S1;
 	
-
-	
 	//Set by hardware when the Timer 2/3 high byte overflows from 0xFF to 0x00. In 16 bit 
 	//mode, this will occur when Timer 2/3 overflows from 0xFFFF to 0x0000. 	
 	TF2H = 0;	
@@ -326,13 +323,9 @@ void main (void){
 	// Timer 2/3 Run Control. Timer 2/3 is enabled by setting this bit to 1. 
 	TMR3CN |= (1 << B_TR3);
 	TR2 = 1;
-		
-		
+			
 	while (1) {
-					
-		// using an array of functions...
 		encode_FSM();
-		// using a switch case statement...
 		state = nextstate;
 	}
 }
