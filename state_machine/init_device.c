@@ -20,7 +20,7 @@ void Init_Device(void)
 	P1MDOUT |= 0x40;
 	
 	//P1.7 input HWFLAG
-	 P1MDIN |= 0x7F;
+	 P1MDIN |= 0x80;
 
 	
 	
