@@ -89,10 +89,11 @@ void square_wave(){
 		delay_250us();
 		//LOW
 		P1 &= ~(0x80);
-		delay_250us();		
+		delay_250us();
 	}
 }
 
+// validar a key introduzida pelo utilizador
 bit validate_key(unsigned char v1[4], unsigned char v2[4]){
 	return memcmp(v1, v2, 4) == 0;
 }
@@ -107,6 +108,7 @@ unsigned int debounce(bit PB){
     return window;
 }
 
+// ler a key a ser posta pelo utilizador
 void read_key(){
 		unsigned char button1pressed; //flags se os botoes sao clicados
 		unsigned char button2pressed;
@@ -188,17 +190,17 @@ void errorhandling(){
 		}
 }
 
-void change_key(){//								O				P			C
-		unsigned int open_change[3] = {0xA3 , 0x8C, 0xC6};
+void open_menu(){//							  	O		  	P		  C
+		unsigned int open_menu[3] = {0xA3 , 0x8C, 0xC6};
 		unsigned int index;
 		
 		if(!debounce(pb2) && !button2pressed){
 			button2pressed = 1;
-			if(open_change[index] == 0x8C){
+			if(open_menu[index] == 0x8C){
 				nextstate = S5;
 				index = 0;
 			}
-			if(open_change[index] == 0xC6){
+			if(open_menu[index] == 0xC6){
 				nextstate = S1;
 				index = 0;
 			}
@@ -224,7 +226,7 @@ void change_key(){//								O				P			C
 			button1pressed = 0;
 		}
 
-		P2 = open_change[index];
+		P2 = open_menu[index];
 	
 }
 void set_key(){//									P			0			1			2			3			4			5			6			7			8			9
@@ -277,8 +279,8 @@ void state_1(void){
 		P1 = 0x10;
 }
 void state_2(void){
-		change_key();
-		P1 &= ~0x10;
+		open_menu();
+		P1 &= ~(0x10);
 }
 void state_3(void){
 		errorhandling();

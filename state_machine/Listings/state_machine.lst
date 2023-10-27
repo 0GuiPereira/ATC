@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/27/2023 12:36:55 PAGE 1   
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/27/2023 17:42:56 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE STATE_MACHINE
@@ -62,7 +62,7 @@ line level    source
   52          
   53          void timer2_init_auto(int reload){
   54   1      
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/27/2023 12:36:55 PAGE 2   
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/27/2023 17:42:56 PAGE 2   
 
   55   1        TMR2CN = 0;
   56   1      
@@ -101,258 +101,260 @@ line level    source
   89   2          delay_250us();
   90   2          //LOW
   91   2          P1 &= ~(0x80);
-  92   2          delay_250us();    
+  92   2          delay_250us();
   93   2        }
   94   1      }
   95          
-  96          bit validate_key(unsigned char v1[4], unsigned char v2[4]){
-  97   1        return memcmp(v1, v2, 4) == 0;
-  98   1      }
-  99          
- 100          //DEBOUNCE
- 101          unsigned int debounce(bit PB){
- 102   1              char window = 0;  
- 103   1              unsigned int j;
- 104   1          for(j = 0; j < 8; j++) {
- 105   2              window = (window << 1) | PB;
- 106   2          }
- 107   1          return window;
- 108   1      }
- 109          
- 110          void read_key(){
- 111   1          unsigned char button1pressed; //flags se os botoes sao clicados
- 112   1          unsigned char button2pressed;
- 113   1          unsigned int digit_index;     //index dos digitos
- 114   1          unsigned int index_input_key; //index da key a ser lida
- 115   1          unsigned char input_key[4];
- 116   1          
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/27/2023 12:36:55 PAGE 3   
+  96          // validar a key introduzida pelo utilizador
+  97          bit validate_key(unsigned char v1[4], unsigned char v2[4]){
+  98   1        return memcmp(v1, v2, 4) == 0;
+  99   1      }
+ 100          
+ 101          //DEBOUNCE
+ 102          unsigned int debounce(bit PB){
+ 103   1              char window = 0;  
+ 104   1              unsigned int j;
+ 105   1          for(j = 0; j < 8; j++) {
+ 106   2              window = (window << 1) | PB;
+ 107   2          }
+ 108   1          return window;
+ 109   1      }
+ 110          
+ 111          // ler a key a ser posta pelo utilizador
+ 112          void read_key(){
+ 113   1          unsigned char button1pressed; //flags se os botoes sao clicados
+ 114   1          unsigned char button2pressed;
+ 115   1          unsigned int digit_index;     //index dos digitos
+ 116   1          unsigned int index_input_key; //index da key a ser lida
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/27/2023 17:42:56 PAGE 3   
 
- 117   1      
- 118   1        if(!debounce(pb2) && !button2pressed){
- 119   2            button2pressed = 1; 
- 120   2            input_key[index_input_key] = digits_array[digit_index];
- 121   2            index_input_key++;
- 122   2            digit_index = 0;
- 123   2          }
- 124   1          if(index_input_key == 4){
- 125   2            if(validate_key(input_key,default_key)){
- 126   3              index_input_key = 0;
- 127   3              wrongkeycount = 0;
- 128   3              nextstate = S2;
- 129   3            }
- 130   2            else{
- 131   3              index_input_key = 0;
- 132   3              nextstate = S3;
- 133   3            }
- 134   2          }
- 135   1          if(debounce(pb2)){
- 136   2            button2pressed = 0;
- 137   2          }
- 138   1        
- 139   1          if(!debounce(pb1) && !button1pressed) {
- 140   2            
- 141   2            button1pressed = 1;            
- 142   2            if (digit_index < 11) {
- 143   3              digit_index++;
- 144   3            }
- 145   2            if (digit_index > 10){
- 146   3              digit_index = 0;
- 147   3            }
- 148   2          }
- 149   1          if(debounce(pb1)){
- 150   2            button1pressed = 0;
- 151   2          }
- 152   1      
- 153   1          P2 = digits_array[digit_index];
- 154   1      }
- 155          
- 156          void errorhandling(){
- 157   1          wrongkeycount++;
- 158   1          if(wrongkeycount == 1){
- 159   2            P2 = 0x86; // E
- 160   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 4
+ 117   1          unsigned char input_key[4];
+ 118   1          
+ 119   1      
+ 120   1        if(!debounce(pb2) && !button2pressed){
+ 121   2            button2pressed = 1; 
+ 122   2            input_key[index_input_key] = digits_array[digit_index];
+ 123   2            index_input_key++;
+ 124   2            digit_index = 0;
+ 125   2          }
+ 126   1          if(index_input_key == 4){
+ 127   2            if(validate_key(input_key,default_key)){
+ 128   3              index_input_key = 0;
+ 129   3              wrongkeycount = 0;
+ 130   3              nextstate = S2;
+ 131   3            }
+ 132   2            else{
+ 133   3              index_input_key = 0;
+ 134   3              nextstate = S3;
+ 135   3            }
+ 136   2          }
+ 137   1          if(debounce(pb2)){
+ 138   2            button2pressed = 0;
+ 139   2          }
+ 140   1        
+ 141   1          if(!debounce(pb1) && !button1pressed) {
+ 142   2            
+ 143   2            button1pressed = 1;            
+ 144   2            if (digit_index < 11) {
+ 145   3              digit_index++;
+ 146   3            }
+ 147   2            if (digit_index > 10){
+ 148   3              digit_index = 0;
+ 149   3            }
+ 150   2          }
+ 151   1          if(debounce(pb1)){
+ 152   2            button1pressed = 0;
+ 153   2          }
+ 154   1      
+ 155   1          P2 = digits_array[digit_index];
+ 156   1      }
+ 157          
+ 158          void errorhandling(){
+ 159   1          wrongkeycount++;
+ 160   1          if(wrongkeycount == 1){
+ 161   2            P2 = 0x86; // E
+ 162   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 4
              - segundos num total de 5 segundos
- 161   2            P2 = 0xC6; // C
- 162   2            delay_s(4);//wait 4 secs
- 163   2            nextstate = S1;
- 164   2          }
- 165   1          if(wrongkeycount == 2){
- 166   2            P2 = 0x86; // E
- 167   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 9
+ 163   2            P2 = 0xC6; // C
+ 164   2            delay_s(4);//wait 4 secs
+ 165   2            nextstate = S1;
+ 166   2          }
+ 167   1          if(wrongkeycount == 2){
+ 168   2            P2 = 0x86; // E
+ 169   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 9
              - segundos
- 168   2            P2 = 0xC6; // C
- 169   2            delay_s(9);//wait 9 secs
- 170   2            nextstate = S1;
- 171   2          }
- 172   1          if(wrongkeycount == 3){
- 173   2            P2 = 0x86; // E
- 174   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 1
+ 170   2            P2 = 0xC6; // C
+ 171   2            delay_s(9);//wait 9 secs
+ 172   2            nextstate = S1;
+ 173   2          }
+ 174   1          if(wrongkeycount == 3){
+ 175   2            P2 = 0x86; // E
+ 176   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 1
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/27/2023 17:42:56 PAGE 4   
+
              -4 segundos
- 175   2            P2 = 0xC6; // C
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/27/2023 12:36:55 PAGE 4   
-
- 176   2            delay_s(14);//wait 14 secs
- 177   2            nextstate = S1;
- 178   2          }
- 179   1          if(wrongkeycount == 4){
- 180   2            P2 = 0x86; // E
- 181   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 1
+ 177   2            P2 = 0xC6; // C
+ 178   2            delay_s(14);//wait 14 secs
+ 179   2            nextstate = S1;
+ 180   2          }
+ 181   1          if(wrongkeycount == 4){
+ 182   2            P2 = 0x86; // E
+ 183   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 1
              -9 segundos
- 182   2            P2 = 0xC6; // C
- 183   2            delay_s(19);//wait 19 secs
- 184   2            nextstate = S1;
- 185   2          }
- 186   1          if(wrongkeycount == 5){
- 187   2            nextstate = S4;
- 188   2          }
- 189   1      }
- 190          
- 191          void change_key(){//                O       P     C
- 192   1          unsigned int open_change[3] = {0xA3 , 0x8C, 0xC6};
- 193   1          unsigned int index;
- 194   1          
- 195   1          if(!debounce(pb2) && !button2pressed){
- 196   2            button2pressed = 1;
- 197   2            if(open_change[index] == 0x8C){
- 198   3              nextstate = S5;
- 199   3              index = 0;
- 200   3            }
- 201   2            if(open_change[index] == 0xC6){
- 202   3              nextstate = S1;
- 203   3              index = 0;
- 204   3            }
- 205   2          }
- 206   1          
- 207   1          if(debounce(pb2)){
- 208   2            button2pressed = 0;
- 209   2          }
- 210   1          
- 211   1          if(!debounce(pb1) && !button1pressed){
- 212   2            
- 213   2            
- 214   2            button1pressed = 1;            
- 215   2            if (index < 3){
- 216   3              index++;
- 217   3            }
- 218   2            if (index > 2){
- 219   3              index = 0;
- 220   3            }
- 221   2          }
- 222   1          
- 223   1          if(debounce(pb1)){
- 224   2            button1pressed = 0;
- 225   2          }
- 226   1      
- 227   1          P2 = open_change[index];
- 228   1        
- 229   1      }
- 230          void set_key(){//                 P     0     1     2     3     4     5     6     7     8     9
- 231   1          unsigned int set_key[11] = {0x8C, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
- 232   1          unsigned int index;
- 233   1          unsigned int index_new_key;
- 234   1          
- 235   1          if(!debounce(pb2) && !button2pressed){
- 236   2            button2pressed = 1;
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/27/2023 12:36:55 PAGE 5   
+ 184   2            P2 = 0xC6; // C
+ 185   2            delay_s(19);//wait 19 secs
+ 186   2            nextstate = S1;
+ 187   2          }
+ 188   1          if(wrongkeycount == 5){
+ 189   2            nextstate = S4;
+ 190   2          }
+ 191   1      }
+ 192          
+ 193          void open_menu(){//                 O       P     C
+ 194   1          unsigned int open_menu[3] = {0xA3 , 0x8C, 0xC6};
+ 195   1          unsigned int index;
+ 196   1          
+ 197   1          if(!debounce(pb2) && !button2pressed){
+ 198   2            button2pressed = 1;
+ 199   2            if(open_menu[index] == 0x8C){
+ 200   3              nextstate = S5;
+ 201   3              index = 0;
+ 202   3            }
+ 203   2            if(open_menu[index] == 0xC6){
+ 204   3              nextstate = S1;
+ 205   3              index = 0;
+ 206   3            }
+ 207   2          }
+ 208   1          
+ 209   1          if(debounce(pb2)){
+ 210   2            button2pressed = 0;
+ 211   2          }
+ 212   1          
+ 213   1          if(!debounce(pb1) && !button1pressed){
+ 214   2            
+ 215   2            
+ 216   2            button1pressed = 1;            
+ 217   2            if (index < 3){
+ 218   3              index++;
+ 219   3            }
+ 220   2            if (index > 2){
+ 221   3              index = 0;
+ 222   3            }
+ 223   2          }
+ 224   1          
+ 225   1          if(debounce(pb1)){
+ 226   2            button1pressed = 0;
+ 227   2          }
+ 228   1      
+ 229   1          P2 = open_menu[index];
+ 230   1        
+ 231   1      }
+ 232          void set_key(){//                 P     0     1     2     3     4     5     6     7     8     9
+ 233   1          unsigned int set_key[11] = {0x8C, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
+ 234   1          unsigned int index;
+ 235   1          unsigned int index_new_key;
+ 236   1          
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/27/2023 17:42:56 PAGE 5   
 
- 237   2            default_key[index_new_key] = set_key[index];
- 238   2            index_new_key++;
- 239   2            index = 0;
- 240   2          }
- 241   1          
- 242   1          if(index_new_key == 4){
- 243   2            index_new_key = 0;
- 244   2            nextstate = S1;
- 245   2          }
- 246   1          
- 247   1          if(debounce(pb2)){
- 248   2            button2pressed = 0;
- 249   2          }
- 250   1          
- 251   1          if(!debounce(pb1) && !button1pressed){
- 252   2            
- 253   2            button1pressed = 1;            
- 254   2            if (index < 11){
- 255   3              index++;
- 256   3            }
- 257   2            if (index > 10){
- 258   3              index = 0;
- 259   3            }
- 260   2          }
- 261   1          
- 262   1          if(debounce(pb1)){
- 263   2            button1pressed = 0;
- 264   2          }
- 265   1      
- 266   1          P2 = set_key[index];
- 267   1      }
- 268          
- 269          
- 270          /*********************************************************/ 
- 271          //                          close/locked    open    error     alarm   set_key
- 272          void (*state_process [])(void) = {state_1, state_2, state_3, state_4, state_5};
- 273          
- 274          
- 275          void state_1(void){
- 276   1          read_key();
- 277   1          P1 = 0x10;
- 278   1      }
- 279          void state_2(void){
- 280   1          change_key();
- 281   1          P1 &= ~0x10;
- 282   1      }
- 283          void state_3(void){
- 284   1          errorhandling();
- 285   1      }
- 286          void state_4(void){
- 287   1          P2 = 0x88;
- 288   1          square_wave();
- 289   1      }
- 290          void state_5(void){
- 291   1          set_key();
- 292   1      }
- 293          
- 294          /*********************************************************/
- 295          void encode_FSM(){
- 296   1          state_process[state] ();
- 297   1      }
- 298          
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/27/2023 12:36:55 PAGE 6   
+ 237   1          if(!debounce(pb2) && !button2pressed){
+ 238   2            button2pressed = 1;
+ 239   2            default_key[index_new_key] = set_key[index];
+ 240   2            index_new_key++;
+ 241   2            index = 0;
+ 242   2          }
+ 243   1          
+ 244   1          if(index_new_key == 4){
+ 245   2            index_new_key = 0;
+ 246   2            nextstate = S1;
+ 247   2          }
+ 248   1          
+ 249   1          if(debounce(pb2)){
+ 250   2            button2pressed = 0;
+ 251   2          }
+ 252   1          
+ 253   1          if(!debounce(pb1) && !button1pressed){
+ 254   2            
+ 255   2            button1pressed = 1;            
+ 256   2            if (index < 11){
+ 257   3              index++;
+ 258   3            }
+ 259   2            if (index > 10){
+ 260   3              index = 0;
+ 261   3            }
+ 262   2          }
+ 263   1          
+ 264   1          if(debounce(pb1)){
+ 265   2            button1pressed = 0;
+ 266   2          }
+ 267   1      
+ 268   1          P2 = set_key[index];
+ 269   1      }
+ 270          
+ 271          
+ 272          /*********************************************************/ 
+ 273          //                          close/locked    open    error     alarm   set_key
+ 274          void (*state_process [])(void) = {state_1, state_2, state_3, state_4, state_5};
+ 275          
+ 276          
+ 277          void state_1(void){
+ 278   1          read_key();
+ 279   1          P1 = 0x10;
+ 280   1      }
+ 281          void state_2(void){
+ 282   1          open_menu();
+ 283   1          P1 &= ~(0x10);
+ 284   1      }
+ 285          void state_3(void){
+ 286   1          errorhandling();
+ 287   1      }
+ 288          void state_4(void){
+ 289   1          P2 = 0x88;
+ 290   1          square_wave();
+ 291   1      }
+ 292          void state_5(void){
+ 293   1          set_key();
+ 294   1      }
+ 295          
+ 296          /*********************************************************/
+ 297          void encode_FSM(){
+ 298   1          state_process[state] ();
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     10/27/2023 17:42:56 PAGE 6   
 
- 299          /*********************************************************/
+ 299   1      }
  300          
- 301          
- 302          /*********************************************************
- 303           *    main function                                      *
- 304           *********************************************************/
- 305          void main (void){
- 306   1        
- 307   1        Init_Device(); 
+ 301          /*********************************************************/
+ 302          
+ 303          
+ 304          /*********************************************************
+ 305           *    main function                                      *
+ 306           *********************************************************/
+ 307          void main (void){
  308   1        
- 309   1        timer2_init_auto(-40000);
- 310   1        timer3_init_auto(-1000);
- 311   1        
- 312   1        state = nextstate = S1;
+ 309   1        Init_Device(); 
+ 310   1        
+ 311   1        timer2_init_auto(-40000);
+ 312   1        timer3_init_auto(-1000);
  313   1        
- 314   1        //Set by hardware when the Timer 2/3 high byte overflows from 0xFF to 0x00. In 16 bit 
- 315   1        //mode, this will occur when Timer 2/3 overflows from 0xFFFF to 0x0000.   
- 316   1        TF2H = 0; 
- 317   1        TMR3CN &= ~(1 << B_TF3H);
- 318   1        
- 319   1        // Enable Flag Timer 2/3 Overflow
- 320   1        ET2 = 1;
- 321   1        EIE1 |= (1 << B_ET3);
- 322   1        
- 323   1        // Timer 2/3 Run Control. Timer 2/3 is enabled by setting this bit to 1. 
- 324   1        TMR3CN |= (1 << B_TR3);
- 325   1        TR2 = 1;
- 326   1            
- 327   1        while (1) {
- 328   2          encode_FSM();
- 329   2          state = nextstate;
- 330   2        }
- 331   1      }
+ 314   1        state = nextstate = S1;
+ 315   1        
+ 316   1        //Set by hardware when the Timer 2/3 high byte overflows from 0xFF to 0x00. In 16 bit 
+ 317   1        //mode, this will occur when Timer 2/3 overflows from 0xFFFF to 0x0000.   
+ 318   1        TF2H = 0; 
+ 319   1        TMR3CN &= ~(1 << B_TF3H);
+ 320   1        
+ 321   1        // Enable Flag Timer 2/3 Overflow
+ 322   1        ET2 = 1;
+ 323   1        EIE1 |= (1 << B_ET3);
+ 324   1        
+ 325   1        // Timer 2/3 Run Control. Timer 2/3 is enabled by setting this bit to 1. 
+ 326   1        TMR3CN |= (1 << B_TR3);
+ 327   1        TR2 = 1;
+ 328   1            
+ 329   1        while (1) {
+ 330   2          encode_FSM();
+ 331   2          state = nextstate;
+ 332   2        }
+ 333   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
