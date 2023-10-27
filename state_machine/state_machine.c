@@ -333,7 +333,6 @@ void main (void){
 		// using an array of functions...
 		encode_FSM();
 		// using a switch case statement...
-		//encode_FSM_switch();
 		state = nextstate;
 	}
 }
