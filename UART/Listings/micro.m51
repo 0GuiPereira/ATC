@@ -1,0 +1,127 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    10/15/2023  16:21:03  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\projeto.obj TO .\Objects\micro PRINT (.\Listings\micro.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\projeto.obj (PROJETO)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\Objects\micro (PROJETO)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0008H     UNIT         ?PR?MAIN?PROJETO
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0010H     UNIT         ?PR?CONFIGURETIMER?PROJETO
+            CODE    001EH     000CH     UNIT         ?C_C51STARTUP
+            CODE    002AH     0009H     UNIT         ?PR?TIMER0_ISR?PROJETO
+            CODE    0033H     0007H     UNIT         ?PR?INIT_DEVICE?PROJETO
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\micro (PROJETO)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?PROJETO
+
+?PR?MAIN?PROJETO
+  +--> ?PR?INIT_DEVICE?PROJETO
+  +--> ?PR?CONFIGURETIMER?PROJETO
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\micro (PROJETO)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        PROJETO
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A0H         PUBLIC        P2
+  C:002AH         PUBLIC        timer0_isr
+  B:00A8H.7       PUBLIC        EA
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  10/15/2023  16:21:03  PAGE 2
+
+
+  C:0033H         PUBLIC        init_device
+  D:00E8H         PUBLIC        ADC0CN
+  D:00A8H         PUBLIC        IE
+  D:00D9H         PUBLIC        PCA0MD
+  D:00D8H         PUBLIC        PCA0CN
+  D:00B8H         PUBLIC        IP
+  D:00E2H         PUBLIC        XBR1
+  D:00C0H         PUBLIC        SMB0CN
+  D:00C0H         PUBLIC        SMB1CN
+  C:0003H         PUBLIC        main
+  D:00F8H         PUBLIC        SPI0CN
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:00C8H         PUBLIC        TMR2CN
+  D:00C8H         PUBLIC        TMR5CN
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  C:000EH         PUBLIC        configureTimer
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  B:00A0H.7       PUBLIC        seg_A
+  D:0098H         PUBLIC        SCON0
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          INIT_DEVICE
+  C:0033H         LINE#         5
+  C:0033H         LINE#         6
+  C:0033H         LINE#         7
+  C:0036H         LINE#         9
+  C:0039H         LINE#         10
+  -------         ENDPROC       INIT_DEVICE
+  -------         PROC          CONFIGURETIMER
+  C:000EH         LINE#         12
+  C:000EH         LINE#         13
+  C:0011H         LINE#         14
+  C:0014H         LINE#         15
+  C:0017H         LINE#         18
+  C:0019H         LINE#         19
+  C:001BH         LINE#         22
+  C:001DH         LINE#         23
+  -------         ENDPROC       CONFIGURETIMER
+  -------         PROC          TIMER0_ISR
+  C:002AH         LINE#         25
+  C:002AH         LINE#         27
+  C:002DH         LINE#         28
+  C:0030H         LINE#         31
+  C:0032H         LINE#         32
+  -------         ENDPROC       TIMER0_ISR
+  -------         PROC          MAIN
+  C:0003H         LINE#         34
+  C:0003H         LINE#         35
+  C:0003H         LINE#         36
+  C:0006H         LINE#         38
+  C:0009H         LINE#         40
+  C:0009H         LINE#         41
+  C:0009H         LINE#         43
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        PROJETO
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  10/15/2023  16:21:03  PAGE 3
+
+
+
+Program Size: data=9.0 xdata=0 code=58
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
