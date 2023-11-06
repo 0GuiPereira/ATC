@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   TIMER2_INTERRUPT                                                  10/20/2023 21:29:17 PAGE 1   
+C51 COMPILER V9.60.7.0   TIMER2_INTERRUPT                                                  10/18/2023 13:48:21 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE TIMER2_INTERRUPT
@@ -12,45 +12,108 @@ line level    source
    2          #include "types.h"
    3          
    4          
-   5          /*********************************************************/ 
-   6          void System_Init(void){
-   7   1         PCA0MD    &= ~0x40;
-   8   1         PCA0MD    = 0x00;
-   9   1         FLSCL     = 0x90;
-  10   1         CLKSEL    = 0x03;
-  11   1        
-  12   1         XBR1      = 0x40;
-  13   1      }
-  14          
-  15          
-  16          
-  17          void fordelay(){
-  18   1        
-  19   1        long i = 0;
-  20   1        for (i=0; i<=100000;i++){
-  21   2        }
+   5          /* P2 = 0xA0 */
+   6          sbit seg_dp = P2^7;
+   7          
+   8          
+   9          /* Timer2 and debounce */
+  10          // put vars here  
+  11          static int blink = 100;
+  12          
+  13          
+  14          /*********************************************************/ 
+  15          void System_Init(void){
+  16   1         PCA0MD    &= ~0x40;
+  17   1         PCA0MD    = 0x00;
+  18   1         FLSCL     = 0x90;
+  19   1         CLKSEL    = 0x03;
+  20   1        
+  21   1         XBR1      = 0x40;
   22   1      }
-  23          
-  24          void main (void){
-  25   1        
-  26   1        System_Init();
-  27   1        
-  28   1        P2 = 0x00;
-  29   1        
-  30   1        while(1) {
-  31   2          P2 = 0xFF;
-  32   2          fordelay();
-  33   2          P2 = 0x00;
-  34   2          fordelay();
-  35   2        }
+  23          /*********************************************************/
+  24          /* timer2 init code here */
+  25          
+  26          void timer2_init_auto(int reload){
+  27   1      
+  28   1      //SFR Definition 25.9. TMR2CN: Timer 2 Control
+  29   1      //---------------------------------------------------------------
+  30   1      //Bit |  7   |   6  |   5    |  4    |  3     | 2   |   1  |  0
+  31   1      //---------------------------------------------------------------
+  32   1      //Name| TF2H | TF2L | TF2LEN |TF2CEN |T2SPLIT | TR2 |T2CSS |T2XCLK
+  33   1      //---------------------------------------------------------------
+  34   1        // sysclock /12
+  35   1        TMR2CN = 0;
   36   1      
-  37   1      }
-  38          
-  39          
+  37   1      #define B_T2MH 5  
+  38   1      //SFR Definition 25.1. CKCON: Clock Control
+  39   1      //-------------------------------------------------------------
+  40   1      //Bit |  7   |   6  |   5  |  4  |  3 | 2   |   1  |  0
+  41   1      //-------------------------------------------------------------
+  42   1      //Name| T3MH | T3ML | T2MH |T2ML |T1M | T0M |   SCA[1:0]
+  43   1      //------------------------------------------------------------- 
+  44   1        
+  45   1        //Timer 2 high byte T2MH and low byte T2ML use the system clock
+  46   1        CKCON &= ~((1 << B_T2MH));
+  47   1        
+  48   1        TMR2H = (reload) >> 8;
+  49   1        TMR2L = (reload);
+  50   1      
+  51   1        TMR2RLH = (reload) >> 8;
+  52   1        TMR2RLL = (reload);
+  53   1      
+  54   1      }
+C51 COMPILER V9.60.7.0   TIMER2_INTERRUPT                                                  10/18/2023 13:48:21 PAGE 2   
+
+  55          
+  56          /*********************************************************/
+  57          /* timer 2 isr code here */
+  58          void timer2_isr(void) interrupt 5 using 2
+  59          {
+  60   1        // sysclock /12 = 4MHz
+  61   1        // 1s 4,000,000 ticks!
+  62   1        // 10ms => 40000 ticks!
+  63   1        
+  64   1        if(--blink == 0){
+  65   2          seg_dp ^= 1;
+  66   2          blink = 100;
+  67   2        }
+  68   1          
+  69   1        TF2H = 0; 
+  70   1      }
+  71          /*********************************************************
+  72           * my main loop                                          *
+  73           *********************************************************/
+  74          void main (void){
+  75   1        
+  76   1        System_Init(); 
+  77   1        
+  78   1        timer2_init_auto(-40000);
+  79   1      
+  80   1        //Set by hardware when the Timer 2 high byte overflows from 0xFF to 0x00. In 16 bit 
+  81   1        //mode, this will occur when Timer 2 overflows from 0xFFFF to 0x0000.   
+  82   1        TF2H = 0; 
+  83   1        // Enable Flag Timer 2 Overflow
+  84   1        ET2 = 1;
+  85   1        // Timer 2 Run Control. 
+  86   1        // Timer 2 is enabled by setting this bit to 1. 
+  87   1        TR2 = 1;
+  88   1        // Enable All Interrupts.
+  89   1        EA = 1; 
+  90   1        
+  91   1        while(1);
+  92   1        
+  93   1        
+  94   1        // do whatever you want!!!!!!!!!!!!
+  95   1        
+  96   1      }
+  97          
+  98          
+  99          //*********************************************************
+ 100          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    118    ----
+   CODE SIZE        =    111    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

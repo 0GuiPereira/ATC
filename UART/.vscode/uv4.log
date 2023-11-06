@@ -1,0 +1,18 @@
+Build target 'Target 1'
+compiling projeto.c...
+projeto.c(58): warning C280: 'BUFFEREMPTY': unreferenced label
+projeto.c(77): error C202: 'sbuf': undefined identifier
+projeto.c(89): error C141: syntax error near '4', expected 'hdata'
+projeto.c(89): error C132: '__interrupt': not in formal parameter list
+projeto.c(89): error C141: syntax error near '{', expected ';'
+projeto.c(91): error C244: 'RI0': can't initialize, bad type or class
+projeto.c(91): error C132: 'RI0': not in formal parameter list
+projeto.c(92): error C141: syntax error near 'if', expected 'hdata'
+projeto.c(92): error C141: syntax error near '<', expected ')'
+projeto.c(93): error C221: non-constant case/dim expression
+projeto.c(93): error C231: 'RxBuffer': redefinition
+projeto.c(93): error C202: 'SBUF': undefined identifier
+projeto.c(94): error C247: non-address/-constant initializer
+projeto.c(95): error C129: missing ';' before '++'
+Target not created.
+Build Time Elapsed:  00:00:00
