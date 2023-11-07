@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    11/06/2023  21:48:18  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    11/07/2023  21:56:05  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
@@ -26,8 +26,8 @@ LINK MAP OF MODULE:  .\Objects\micro (PROJETO)
             * * * * * * *   D A T A   M E M O R Y   * * * * * * *
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
             DATA    0008H     0026H     UNIT         ?DT?PROJETO
-            DATA    002EH     000DH     UNIT         _DATA_GROUP_
-            IDATA   003BH     0001H     UNIT         ?STACK
+            DATA    002EH     000EH     UNIT         _DATA_GROUP_
+            IDATA   003CH     0001H     UNIT         ?STACK
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
@@ -41,7 +41,7 @@ LINK MAP OF MODULE:  .\Objects\micro (PROJETO)
             CODE    026EH     0028H     UNIT         ?PR?_WRITEUART?PROJETO
             CODE    0296H     0022H     UNIT         ?PR?_READUART?PROJETO
             CODE    02B8H     0013H     UNIT         ?C_INITSEG
-            CODE    02CBH     000CH     UNIT         ?CO?PROJETO
+            CODE    02CBH     000DH     UNIT         ?CO?PROJETO
 
 
 
@@ -55,11 +55,11 @@ SEGMENT                             DATA_GROUP
   +--> ?PR?MAIN?PROJETO
   +--> ?C_INITSEG
 
-?PR?MAIN?PROJETO                  002EH    000DH
+?PR?MAIN?PROJETO                  002EH    000EH
   +--> ?CO?PROJETO
   +--> ?PR?CONFIGUART0?PROJETO
   +--> ?PR?_WRITEUART?PROJETO
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  11/06/2023  21:48:18  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  11/07/2023  21:56:05  PAGE 2
 
 
   +--> ?PR?_READUART?PROJETO
@@ -119,7 +119,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\micro (PROJETO)
   C:0003H         LINE#         30
   C:0006H         LINE#         36
   C:0009H         LINE#         39
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  11/06/2023  21:48:18  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  11/07/2023  21:56:05  PAGE 3
 
 
   C:000CH         LINE#         43
@@ -179,7 +179,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\micro (PROJETO)
   C:024AH         LINE#         98
   C:024AH         LINE#         99
   C:024DH         LINE#         100
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  11/06/2023  21:48:18  PAGE 4
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  11/07/2023  21:56:05  PAGE 4
 
 
   C:024FH         LINE#         101
@@ -194,7 +194,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\micro (PROJETO)
   -------         DO            
   D:002EH         SYMBOL        hello
   D:0001H         SYMBOL        chr
-  D:003AH         SYMBOL        chr_r
+  D:003BH         SYMBOL        chr_r
   -------         ENDDO         
   C:01D3H         LINE#         111
   C:01D3H         LINE#         112
@@ -226,5 +226,5 @@ SYMBOL TABLE OF MODULE:  .\Objects\micro (PROJETO)
   C:0135H         PUBLIC        ?C?CSTPTR
   -------         ENDMOD        ?C?CSTPTR
 
-Program Size: data=60.0 xdata=0 code=719
+Program Size: data=61.0 xdata=0 code=720
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
