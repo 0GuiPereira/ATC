@@ -13,14 +13,14 @@
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
-          <Device>EFM8BB31F64G-QFN32</Device>
+          <Device>C8051F388</Device>
           <Vendor>Silicon Labs</Vendor>
-          <Cpu>IRAM(0-0xFF) XRAM(0-0xFFF) IROM(0-0xF9FF) CLOCK(49000000)</Cpu>
+          <Cpu>IRAM(0-0xFF) XRAM(0x0000-0x0FFF) IROM(0-0xFFFF) CLOCK(48000000)</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
-          <StartupFile>"ASM\shared\si8051Base\SILABS_STARTUP.A51"("Silabs specific 8051 Startup Code")</StartupFile>
+          <StartupFile>"LIB\STARTUP.A51" ("Standard 8051 Startup Code")</StartupFile>
           <FlashDriverDll></FlashDriverDll>
-          <DeviceId>8017</DeviceId>
-          <RegisterFile>SI_EFM8BB3_Register_Enums.h</RegisterFile>
+          <DeviceId>7465</DeviceId>
+          <RegisterFile>REG51F380.H</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -36,8 +36,8 @@
           <BinPath></BinPath>
           <IncludePath></IncludePath>
           <LibPath></LibPath>
-          <RegisterFilePath>SiLABS\EFM8BB3\inc\</RegisterFilePath>
-          <DBRegisterFilePath>SiLABS\EFM8BB3\inc\</DBRegisterFilePath>
+          <RegisterFilePath>SiLABS\</RegisterFilePath>
+          <DBRegisterFilePath>SiLABS\</DBRegisterFilePath>
           <TargetStatus>
             <Error>0</Error>
             <ExitCodeStop>0</ExitCodeStop>
@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>guia2b</OutputName>
+          <OutputName>first_project</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -110,7 +110,7 @@
           <SimDllName>S8051.DLL</SimDllName>
           <SimDllArguments></SimDllArguments>
           <SimDlgDll>DCYG.DLL</SimDlgDll>
-          <SimDlgDllArguments>-pCYGF320</SimDlgDllArguments>
+          <SimDlgDllArguments>-pCYGF340</SimDlgDllArguments>
           <TargetDllName>S8051.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
           <TargetDlgDll>TCYG.DLL</TargetDlgDll>
@@ -125,7 +125,7 @@
             <Oh166RecLen>16</Oh166RecLen>
           </OPTHX>
           <Simulator>
-            <UseSimulator>1</UseSimulator>
+            <UseSimulator>0</UseSimulator>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
             <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
@@ -137,7 +137,7 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Simulator>
           <Target>
-            <UseTarget>0</UseTarget>
+            <UseTarget>1</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
             <RunToMain>0</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
@@ -273,7 +273,7 @@
               <IRO>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0xfa00</Size>
+                <Size>0x10000</Size>
               </IRO>
               <IRA>
                 <Type>0</Type>
@@ -331,7 +331,7 @@
             <UseMpl>0</UseMpl>
             <UseStandard>1</UseStandard>
             <UseCase>0</UseCase>
-            <UseMod51>0</UseMod51>
+            <UseMod51>1</UseMod51>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -377,49 +377,9 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
+              <FileName>first_proj.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>init.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\init.c</FilePath>
-            </File>
-            <File>
-              <FileName>init.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\init.h</FilePath>
-            </File>
-            <File>
-              <FileName>serialIO.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\serialIO.c</FilePath>
-            </File>
-            <File>
-              <FileName>serialIO.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\serialIO.h</FilePath>
-            </File>
-            <File>
-              <FileName>pca0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\pca0.c</FilePath>
-            </File>
-            <File>
-              <FileName>pca0.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\pca0.h</FilePath>
-            </File>
-            <File>
-              <FileName>fsm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\fsm.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsm.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\fsm.h</FilePath>
+              <FilePath>.\first_proj.c</FilePath>
             </File>
           </Files>
         </Group>

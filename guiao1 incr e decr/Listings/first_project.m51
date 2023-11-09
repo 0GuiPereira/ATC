@@ -1,0 +1,157 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    10/06/2023  20:46:32  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\first_proj.obj TO .\Objects\first_project PRINT (.\Listings\first_project.m51) RAM
+>> SIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\first_proj.obj (FIRST_PROJ)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\first_project (FIRST_PROJ)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0014H     UNIT         ?DT?FIRST_PROJ
+            DATA    001CH     0003H     UNIT         ?DT?DEBOUNCE?FIRST_PROJ
+                    001FH     0001H                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         ?BI?DEBOUNCE?FIRST_PROJ
+                    0020H.1   0000H.7                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0095H     UNIT         ?PR?MAIN?FIRST_PROJ
+            CODE    0098H     008CH     UNIT         ?C_C51STARTUP
+            CODE    0124H     0031H     UNIT         ?PR?DEBOUNCE?FIRST_PROJ
+            CODE    0155H     0013H     UNIT         ?C_INITSEG
+            CODE    0168H     000DH     UNIT         ?PR?INIT_DEVICE?FIRST_PROJ
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\first_project (FIRST_PROJ)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?FIRST_PROJ
+  +--> ?C_INITSEG
+
+?PR?MAIN?FIRST_PROJ
+  +--> ?PR?INIT_DEVICE?FIRST_PROJ
+  +--> ?PR?DEBOUNCE?FIRST_PROJ
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\first_project (FIRST_PROJ)
+
+  VALUE           TYPE          NAME
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  10/06/2023  20:46:32  PAGE 2
+
+
+  ----------------------------------
+
+  -------         MODULE        FIRST_PROJ
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  C:0168H         PUBLIC        init_device
+  D:00E8H         PUBLIC        ADC0CN
+  D:00A8H         PUBLIC        IE
+  D:00D9H         PUBLIC        PCA0MD
+  D:00D8H         PUBLIC        PCA0CN
+  D:00B8H         PUBLIC        IP
+  D:00E2H         PUBLIC        XBR1
+  D:00C0H         PUBLIC        SMB0CN
+  D:00C0H         PUBLIC        SMB1CN
+  C:0003H         PUBLIC        main
+  D:00F8H         PUBLIC        SPI0CN
+  D:0008H         PUBLIC        vetor
+  D:0088H         PUBLIC        TCON
+  D:00C8H         PUBLIC        TMR2CN
+  D:00C8H         PUBLIC        TMR5CN
+  D:00A9H         PUBLIC        CLKSEL
+  B:0080H.6       PUBLIC        PB1
+  B:0080H.7       PUBLIC        PB2
+  C:0124H         PUBLIC        debounce
+  D:0018H         PUBLIC        button1pressed
+  D:0019H         PUBLIC        button2pressed
+  D:0098H         PUBLIC        SCON0
+  D:001AH         PUBLIC        i
+  D:00B6H         PUBLIC        FLSCL
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          INIT_DEVICE
+  C:0168H         LINE#         16
+  C:0168H         LINE#         17
+  C:0168H         LINE#         19
+  C:016BH         LINE#         21
+  C:016EH         LINE#         22
+  C:0171H         LINE#         23
+  C:0174H         LINE#         24
+  -------         ENDPROC       INIT_DEVICE
+  -------         PROC          DEBOUNCE
+  B:0020H.0       SYMBOL        PB
+  -------         DO            
+  D:001CH         SYMBOL        window
+  D:001DH         SYMBOL        j
+  -------         ENDDO         
+  C:0124H         LINE#         28
+  C:0124H         LINE#         31
+  C:0135H         LINE#         32
+  C:0143H         LINE#         33
+  C:014DH         LINE#         34
+  C:0154H         LINE#         35
+  -------         ENDPROC       DEBOUNCE
+  -------         PROC          MAIN
+  C:0003H         LINE#         38
+  C:0003H         LINE#         39
+  C:0003H         LINE#         40
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  10/06/2023  20:46:32  PAGE 3
+
+
+  C:0006H         LINE#         42
+  C:000CH         LINE#         43
+  C:000FH         LINE#         44
+  C:0012H         LINE#         47
+  C:0012H         LINE#         50
+  C:0022H         LINE#         52
+  C:002DH         LINE#         53
+  C:0035H         LINE#         54
+  C:0037H         LINE#         55
+  C:003DH         LINE#         56
+  C:003DH         LINE#         57
+  C:0040H         LINE#         58
+  C:0040H         LINE#         59
+  C:004CH         LINE#         60
+  C:004EH         LINE#         61
+  C:004EH         LINE#         63
+  C:005EH         LINE#         65
+  C:0069H         LINE#         66
+  C:0071H         LINE#         67
+  C:0073H         LINE#         68
+  C:0079H         LINE#         69
+  C:0079H         LINE#         70
+  C:007CH         LINE#         71
+  C:007CH         LINE#         72
+  C:0088H         LINE#         73
+  C:008AH         LINE#         74
+  C:008AH         LINE#         77
+  C:0094H         LINE#         78
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        FIRST_PROJ
+
+Program Size: data=32.1 xdata=0 code=373
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
