@@ -46,10 +46,10 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>micro</OutputName>
+          <OutputName>uart</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>0</CreateHexFile>
+          <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath>.\Listings\</ListingPath>
@@ -139,7 +139,7 @@
           <Target>
             <UseTarget>1</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
-            <RunToMain>0</RunToMain>
+            <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
             <RestoreWatchpoints>1</RestoreWatchpoints>
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
@@ -314,7 +314,7 @@
             <uAregs>0</uAregs>
             <UseInterruptVector>1</UseInterruptVector>
             <Fuzzy>3</Fuzzy>
-            <Optimize>8</Optimize>
+            <Optimize>0</Optimize>
             <WarningLevel>2</WarningLevel>
             <SizeSpeed>1</SizeSpeed>
             <ObjectExtend>1</ObjectExtend>
@@ -331,7 +331,7 @@
             <UseMpl>0</UseMpl>
             <UseStandard>1</UseStandard>
             <UseCase>0</UseCase>
-            <UseMod51>0</UseMod51>
+            <UseMod51>1</UseMod51>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -377,9 +377,9 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>projeto.c</FileName>
+              <FileName>uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\projeto.c</FilePath>
+              <FilePath>.\uart.c</FilePath>
             </File>
           </Files>
         </Group>
