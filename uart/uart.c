@@ -231,8 +231,7 @@ void open_menu(){//							  	O		  	P		  C
 		unsigned char open_menu[3] = {0xA3 , 0x8C, 0xC6};
 		unsigned char index;
 		
-		if(!debounce(pb2) && !button2pressed){
-			button2pressed = 1;
+		if(uart0_getc(&c) == 0x45){
 			if(open_menu[index] == 0x8C){
 				nextstate = S5;
 				index = 0;
@@ -243,11 +242,8 @@ void open_menu(){//							  	O		  	P		  C
 			}
 		}
 		
-		if(debounce(pb2)){
-			button2pressed = 0;
-		}
 		
-		if(!debounce(pb1) && !button1pressed){
+		if(uart0_getc(&c) == 0x2b){
 			
 			
 			button1pressed = 1;            
@@ -259,9 +255,7 @@ void open_menu(){//							  	O		  	P		  C
 			}
     }
 		
-		if(debounce(pb1)){
-			button1pressed = 0;
-		}
+
 
 		P2 = open_menu[index];
 	
@@ -271,8 +265,7 @@ void set_key(){//									P			0			1			2			3			4			5			6			7			8			9
 		unsigned char index;
 		unsigned char index_new_key;
 		
-		if(!debounce(pb2) && !button2pressed){
-			button2pressed = 1;
+		if(uart0_getc(&c) == 0x45){
 			default_key[index_new_key] = set_key[index];
 			index_new_key++;
 			index = 0;
@@ -283,13 +276,9 @@ void set_key(){//									P			0			1			2			3			4			5			6			7			8			9
 			nextstate = S1;
 		}
 		
-		if(debounce(pb2)){
-			button2pressed = 0;
-		}
 		
-		if(!debounce(pb1) && !button1pressed){
-			
-			button1pressed = 1;            
+		if(uart0_getc(&c) == 0x2b){
+			           
       if (index < 11){
 				index++;
 			}
@@ -298,9 +287,6 @@ void set_key(){//									P			0			1			2			3			4			5			6			7			8			9
 			}
     }
 		
-		if(debounce(pb1)){
-			button1pressed = 0;
-		}
 
 		P2 = set_key[index];
 }
