@@ -54,7 +54,9 @@ void main()
 
     
     while (1) {
-
+		
+		if(uart0_getchar	
+		
     // incrementar
     if(debounce(!PB1) && !button1pressed) {
             
