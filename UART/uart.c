@@ -20,7 +20,7 @@ unsigned char digits_array[11] = {0xC7, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82
 unsigned char button1pressed; //flags se os botoes sao clicados
 unsigned char button2pressed;
 unsigned char wrongkeycount;
-char c = 0;
+
  
 
 /*********************************************************/
@@ -157,14 +157,28 @@ void read_key(){
 		unsigned char digit_index;			//index dos digitos
 		unsigned char index_input_key;	//index da key a ser lida
 		unsigned char input_key[4];
+		unsigned char teste_key[4] = {0x38, 0x30, 0x35, 0x31};
+		unsigned char c = 0;
+		while(!uart0_getc(&c)){
+		}
+	
+		printf("%c",c);
+		
+		if(c == teste_key[4]){
+			printf("boaaaa");
+		}			
+		
+		
 		
 
-	if(uart0_getc(&c)== 0x45){ // palavra enter 
-			printf("enter");
+
+	if(c == 0x45){ // caracter E 
+			printf("enter\n");
 			input_key[index_input_key] = digits_array[digit_index];
 			index_input_key++;
 			digit_index = 0;
 		}
+	
 		if(index_input_key == 4){
 			if(validate_key(input_key,default_key)){
 				index_input_key = 0;
@@ -178,8 +192,8 @@ void read_key(){
 		}
 
 		
-    if(uart0_getc(&c) == 0x2b) { // caracter +
-			printf("incremento");
+    if(c == 0x2b) { // caracter +
+			printf("incremento\n");
 			
       if (digit_index < 11) {
 				digit_index++;
@@ -230,6 +244,8 @@ void errorhandling(){
 void open_menu(){//							  	O		  	P		  C
 		unsigned char open_menu[3] = {0xA3 , 0x8C, 0xC6};
 		unsigned char index;
+		char c = 0;
+		
 		
 		if(uart0_getc(&c) == 0x45){
 			if(open_menu[index] == 0x8C){
@@ -264,6 +280,7 @@ void set_key(){//									P			0			1			2			3			4			5			6			7			8			9
 		unsigned char set_key[11] = {0x8C, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
 		unsigned char index;
 		unsigned char index_new_key;
+		char c = 0;
 		
 		if(uart0_getc(&c) == 0x45){
 			default_key[index_new_key] = set_key[index];
