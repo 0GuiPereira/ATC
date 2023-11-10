@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>state_machine</OutputName>
+          <OutputName>tu_usart0</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -110,11 +110,11 @@
           <SimDllName>S8051.DLL</SimDllName>
           <SimDllArguments></SimDllArguments>
           <SimDlgDll>DCYG.DLL</SimDlgDll>
-          <SimDlgDllArguments>-pCYGF340</SimDlgDllArguments>
+          <SimDlgDllArguments>-pCYGF320</SimDlgDllArguments>
           <TargetDllName>S8051.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
           <TargetDlgDll>TCYG.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-pCYGF340</TargetDlgDllArguments>
+          <TargetDlgDllArguments>-pCYGF320</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -171,7 +171,7 @@
             <UseTargetDll>1</UseTargetDll>
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
-            <UpdateFlashBeforeDebugging>0</UpdateFlashBeforeDebugging>
+            <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
             <DriverSelection>-1</DriverSelection>
           </Flash1>
@@ -331,7 +331,7 @@
             <UseMpl>0</UseMpl>
             <UseStandard>1</UseStandard>
             <UseCase>0</UseCase>
-            <UseMod51>1</UseMod51>
+            <UseMod51>0</UseMod51>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -377,19 +377,9 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>init_device.c</FileName>
+              <FileName>tu_usart0.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\init_device.c</FilePath>
-            </File>
-            <File>
-              <FileName>init_device.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\init_device.h</FilePath>
-            </File>
-            <File>
-              <FileName>uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\uart.c</FilePath>
+              <FilePath>.\tu_usart0.c</FilePath>
             </File>
             <File>
               <FileName>config_platform.c</FileName>
@@ -400,11 +390,6 @@
               <FileName>serialIO.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\serialIO.c</FilePath>
-            </File>
-            <File>
-              <FileName>tu_usart0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\tu_usart0.c</FilePath>
             </File>
           </Files>
         </Group>

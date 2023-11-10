@@ -1,0 +1,4 @@
+".\Objects\first_proj.obj",
+".\Objects\serialIO.obj" 
+TO ".\Objects\first_project" 
+PRINT(".\Listings\first_project.m51") RAMSIZE(256) 

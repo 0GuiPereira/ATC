@@ -1,0 +1,120 @@
+C51 COMPILER V9.60.7.0   FIRST_PROJ                                                        11/10/2023 21:37:12 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE FIRST_PROJ
+OBJECT MODULE PLACED IN .\Objects\first_proj.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE first_proj.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listing
+                    -s\first_proj.lst) TABS(2) OBJECT(.\Objects\first_proj.obj)
+
+line level    source
+
+   1          #include <REG51F380.H>
+   2          #include <stdio.h>
+   3          #include "serialIO.h"
+   4          
+   5          
+   6          //atribui��o dos botoes a variaveis
+   7          // ativos a 0
+   8          sbit PB1 = P0^6;
+   9          sbit PB2 = P0^7;
+  10          
+  11          
+  12          unsigned int i;
+  13          unsigned char button1pressed; //flags se os botoes sao clicados
+  14          unsigned char button2pressed;
+  15          
+  16          // vetor dos dos numeros 16 eletemnos
+  17          unsigned char vetor[16] = { 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90, 0x88, 0x83, 0xC6, 
+             -0xA1, 0x86, 0x8E };
+  18          
+  19          void init_device(void)
+  20          {
+  21   1              //WD
+  22   1          PCA0MD         = 0x00;
+  23   1          // enable cross-bar for I/Os
+  24   1          XBR1        = 0x40;
+  25   1          FLSCL     = 0x90;
+  26   1          CLKSEL    = 0x03;
+  27   1      }
+  28          
+  29          //DEBOUNCE
+  30          unsigned int debounce(bit PB){
+  31   1              char window;  
+  32   1              unsigned int j;
+  33   1          for(j = 0; j < 8; j++) {
+  34   2              window = (window << 1) | PB;
+  35   2          }
+  36   1          return window;
+  37   1      }
+  38          
+  39          
+  40          void main()
+  41          {
+  42   1          char c;
+  43   1          char code *ptr;
+  44   1          Init_Device();
+*** WARNING C206 IN LINE 44 OF first_proj.c: 'Init_Device': missing function-prototype
+  45   1          uart0_initialize();
+  46   1        
+  47   1          init_device();
+  48   1          
+  49   1          i = 0;
+  50   1          button1pressed = 0; //flag se o botao � clicado
+  51   1          button2pressed = 0; //flag se o botao � clicado
+  52   1        
+C51 COMPILER V9.60.7.0   FIRST_PROJ                                                        11/10/2023 21:37:12 PAGE 2   
+
+  53   1          EA=1;
+  54   1      
+  55   1          
+  56   1          while (1) {
+  57   2      
+  58   2          // incrementar
+  59   2          if(debounce(!PB1) && !button1pressed) {
+  60   3                  
+  61   3                   if (i < 15) {
+  62   4                      i++;
+  63   4                  } else {
+  64   4                      i = 15;
+  65   4                  }
+  66   3                  button1pressed = 1;               
+  67   3          }   
+  68   2            if(!debounce(!PB1)){ // reset a flag se o botao � clicado
+  69   3              button1pressed = 0;
+  70   3            }
+  71   2          // decrementar 
+  72   2          if(debounce(!PB2) && !button2pressed) {
+  73   3            
+  74   3                    if (i > 0) {
+  75   4                      i--;
+  76   4                  } else {
+  77   4                      i = 0;
+  78   4                  }
+  79   3                  button2pressed = 1;       
+  80   3          }
+  81   2            if(!debounce(!PB2)){
+  82   3              button2pressed = 0;
+  83   3            }
+  84   2         
+  85   2          
+  86   2              P2 = vetor[i];
+  87   2        }
+  88   1              
+  89   1          
+  90   1      }
+*** WARNING C280 IN LINE 42 OF first_proj.c: 'c': unreferenced local variable
+*** WARNING C280 IN LINE 43 OF first_proj.c: 'ptr': unreferenced local variable
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    219    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     26    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  3 WARNING(S),  0 ERROR(S)

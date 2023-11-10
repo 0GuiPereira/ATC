@@ -1,0 +1,58 @@
+C51 COMPILER V9.60.7.0   CONFIG_PLATFORM                                                   11/10/2023 21:14:19 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE CONFIG_PLATFORM
+OBJECT MODULE PLACED IN .\Objects\config_platform.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE config_platform.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Li
+                    -stings\config_platform.lst) TABS(2) OBJECT(.\Objects\config_platform.obj)
+
+line level    source
+
+   1          #include <REG51F380.H>
+   2          
+   3          
+   4          // Peripheral specific initialization functions,
+   5          // Called from the Init_Device() function
+   6          void PCA_Init()
+   7          {
+   8   1          PCA0MD    &= ~0x40;
+   9   1          PCA0MD    = 0x00;
+  10   1      }
+  11          
+  12          
+  13          
+  14          void Port_IO_Init()
+  15          {
+  16   1          XBR1      = 0x40;
+  17   1      }
+  18          
+  19          
+  20          void Oscillator_Init()
+  21          {
+  22   1          FLSCL     = 0x90;
+  23   1          CLKSEL    = 0x03;
+  24   1      }
+  25          
+  26          // Initialization function for device,
+  27          // Call Init_Device() from your main program
+  28          void Init_Device(void)
+  29          {
+  30   1          PCA_Init();
+  31   1          Oscillator_Init();
+  32   1          Port_IO_Init();
+  33   1          
+  34   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     28    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

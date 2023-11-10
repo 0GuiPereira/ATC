@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>state_machine</OutputName>
+          <OutputName>first_project</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -114,7 +114,7 @@
           <TargetDllName>S8051.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
           <TargetDlgDll>TCYG.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-pCYGF340</TargetDlgDllArguments>
+          <TargetDlgDllArguments>-pCYGF320</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -139,7 +139,7 @@
           <Target>
             <UseTarget>1</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
-            <RunToMain>1</RunToMain>
+            <RunToMain>0</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
             <RestoreWatchpoints>1</RestoreWatchpoints>
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
@@ -171,7 +171,7 @@
             <UseTargetDll>1</UseTargetDll>
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
-            <UpdateFlashBeforeDebugging>0</UpdateFlashBeforeDebugging>
+            <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
             <DriverSelection>-1</DriverSelection>
           </Flash1>
@@ -377,34 +377,14 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>init_device.c</FileName>
+              <FileName>first_proj.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\init_device.c</FilePath>
-            </File>
-            <File>
-              <FileName>init_device.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\init_device.h</FilePath>
-            </File>
-            <File>
-              <FileName>uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>config_platform.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\config_platform.c</FilePath>
+              <FilePath>.\first_proj.c</FilePath>
             </File>
             <File>
               <FileName>serialIO.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\serialIO.c</FilePath>
-            </File>
-            <File>
-              <FileName>tu_usart0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\tu_usart0.c</FilePath>
+              <FilePath>..\tusart\serialIO.c</FilePath>
             </File>
           </Files>
         </Group>

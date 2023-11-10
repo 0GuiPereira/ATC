@@ -1,7 +1,0 @@
-".\Objects\main.obj",
-".\Objects\init.obj",
-".\Objects\serialIO.obj",
-".\Objects\pca0.obj",
-".\Objects\fsm.obj" 
-TO ".\Objects\guia2b" 
-PRINT(".\Listings\guia2b.m51") RAMSIZE(256) 

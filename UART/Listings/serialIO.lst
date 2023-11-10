@@ -1,0 +1,277 @@
+C51 COMPILER V9.60.7.0   SERIALIO                                                          11/10/2023 20:58:24 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE SERIALIO
+OBJECT MODULE PLACED IN .\Objects\serialIO.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE serialIO.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\
+                    -serialIO.lst) TABS(2) OBJECT(.\Objects\serialIO.obj)
+
+line level    source
+
+   1          #include <REG51F380.H>
+   2          #include "serialIO.h"
+   3          #include <string.h>
+   4          
+   5          /*------------------------------------------------------------------------------
+   6          Notes:
+   7          
+   8          The length of the receive and transmit buffers must be a power of 2.
+   9          
+  10          Each buffer has a WriteIndex and a ReadIndex.
+  11          
+  12          If WriteIndex = ReadIndex, the buffer is empty.
+  13          
+  14          (ReadIndex -WriteIndex)% buffer_size = the number of characters in the buffer.
+  15          ------------------------------------------------------------------------------*/
+  16          
+  17          #define TBUF_SIZE   16           // Must be a power of 2 AND 2 <= SIZE <= 128
+  18          #define RBUF_SIZE   16           // Must be a power of 2 AND 2 <= SIZE <= 128
+  19          
+  20          
+  21          static unsigned char pdata TxBuff [TBUF_SIZE];
+  22          static unsigned char pdata RxBuff [RBUF_SIZE];
+  23          
+  24          static volatile unsigned char TxWriteIndex = 0;
+  25          static volatile unsigned char TxReadIndex = 0;
+  26          
+  27          static volatile unsigned char RxWriteIndex = 0;
+  28          static volatile unsigned char RxReadIndex = 0;
+  29          
+  30          static bit ti_restart = 1;  /* Not Zero if TI = 1 is required */
+  31          
+  32          /*------------------------------------------------------------------------------
+  33          ------------------------------------------------------------------------------*/
+  34          void uart0_isr (void) interrupt 4
+  35          {
+  36   1        /*------------------------------------------------
+  37   1        Received data interrupt.
+  38   1        ------------------------------------------------*/
+  39   1        if (RI0 != 0)
+  40   1        {
+  41   2          RI0 = 0;
+  42   2            //is there space left?
+  43   2          if (((RxWriteIndex - RxReadIndex) & ~(RBUF_SIZE-1)) == 0)
+  44   2          {
+  45   3            RxBuff [RxWriteIndex & (RBUF_SIZE-1)] = SBUF0;
+  46   3            RxWriteIndex++;
+  47   3          }
+  48   2        }
+  49   1      
+  50   1        /*------------------------------------------------
+  51   1        Transmitted data interrupt.
+  52   1        ------------------------------------------------*/
+  53   1        if (TI0 != 0)
+  54   1        {
+C51 COMPILER V9.60.7.0   SERIALIO                                                          11/10/2023 20:58:24 PAGE 2   
+
+  55   2          
+  56   2          //is there any byte to send?
+  57   2          if (TxWriteIndex != TxReadIndex)
+  58   2          {
+  59   3            SBUF0 = TxBuff [TxReadIndex & (TBUF_SIZE-1)];
+  60   3            TxReadIndex++;
+  61   3            ti_restart = 0;
+  62   3          }
+  63   2          else //subsequent insertion in buffer tbuf will require
+  64   2             // TI to be set to 1 so that machine starts to pump bytes again
+  65   2            ti_restart = 1;
+  66   2          TI0 = 0;
+  67   2        }
+  68   1      
+  69   1      }
+  70          
+  71          /*------------------------------------------------------------------------------
+  72          ------------------------------------------------------------------------------*/
+  73          #pragma disable
+  74          void uart0_initialize (void)
+  75          {
+  76   1        
+  77   1      //---------------------------------------------------------
+  78   1      //  XBR0: Port I/O Crossbar Register 0
+  79   1      //---------------------------------------------------------
+  80   1      //  7   |   6   |   5   |   4  |  3   |   2  |  1   | 0   |
+  81   1      //---------------------------------------------------------
+  82   1      // CP1AE| CP1E  | CP0AE | CP0E |SYSCKE| SMB0E| SPI0E|URT0E|
+  83   1      //---------------------------------------------------------
+  84   1      #define B_URT0E 0
+  85   1        XBR0      = (1<<B_URT0E) ;  
+  86   1        
+  87   1        //---------------------------------------------------------
+  88   1      //   SCON0: Serial Port 0 Control
+  89   1      //---------------------------------------------------------
+  90   1      //  7   |   6   |   5   |   4  |  3   |   2  |  1   | 0   |
+  91   1      //---------------------------------------------------------
+  92   1      //S0MODE|   -   | MCE0  | REN0 | TB80 | RB80 | TI0  | RI0 |
+  93   1      //---------------------------------------------------------
+  94   1      #define B_REN0 4
+  95   1        
+  96   1        SCON0= 0;
+  97   1        SCON0 |=(1<<B_REN0);
+  98   1            
+  99   1      //---------------------------------------------------------
+ 100   1      //   CKCON: Clock Control
+ 101   1      //---------------------------------------------------------
+ 102   1      //  7   |   6   |   5   |   4  |  3   |   2  |  1   | 0   |
+ 103   1      //---------------------------------------------------------
+ 104   1      // T3MH | T3ML  | T2MH  | T2ML | T1M  | T0M  |   SCA[1:0]
+ 105   1      //---------------------------------------------------------
+ 106   1      #define B_T1M 3
+ 107   1      #define B_SCA1 1
+ 108   1      #define B_SCA0 0
+ 109   1        
+ 110   1        //CKCON     = 0x08;//  clock is prescaled by sca[1:0] = 0 => sysclk/12
+ 111   1        CKCON &=~((1<<B_SCA1)|(1<<B_SCA0));
+ 112   1        CKCON |= (1<<B_T1M);
+ 113   1        
+ 114   1        //---------------------------------------------------------
+ 115   1      //   TMOD:
+ 116   1      //---------------------------------------------------------
+C51 COMPILER V9.60.7.0   SERIALIO                                                          11/10/2023 20:58:24 PAGE 3   
+
+ 117   1      //  7   |   6   |   5   |   4  |  3   |   2  |  1   | 0   |
+ 118   1      //---------------------------------------------------------
+ 119   1      // GATE1| C/T1  |    T1M[1:0]  | GATE0| C/T0 |  T0M[1:0]  |
+ 120   1      //---------------------------------------------------------
+ 121   1      #define B_T1M1 5
+ 122   1      #define B_T1M0 4
+ 123   1      
+ 124   1          //TMOD      = 0x20; // mode 2 8 bit auto-reload
+ 125   1          TMOD &= ~(1<<B_T1M0);
+ 126   1          TMOD |=  (1<<B_T1M1);
+ 127   1          
+ 128   1          TH1       = 0x30;
+ 129   1          TR1=1;
+ 130   1        
+ 131   1      //---------------------------------------------------------
+ 132   1      //   IE: Interrupt Enable
+ 133   1      //---------------------------------------------------------
+ 134   1      //  7   |   6   |   5   |   4  |  3   |   2  |  1   | 0   |
+ 135   1      //---------------------------------------------------------
+ 136   1      //  EA  | ESPI0 |  ET2  |  ES0 |  ET1 |  EX1 |  ET0 | EX0 |
+ 137   1      //--------------------------------------------------------- 
+ 138   1      #define B_EA 7
+ 139   1      #define B_ES0 4
+ 140   1          IE |= (1<<B_ES0);
+ 141   1      
+ 142   1      }
+ 143          
+ 144          /*------------------------------------------------------------------------------
+ 145          ------------------------------------------------------------------------------*/
+ 146          #pragma disable
+ 147          char uart0_putchar ( unsigned char c )
+ 148          {
+ 149   1        /*------------------------------------------------
+ 150   1        If the buffer is full, return an error value.
+ 151   1        ------------------------------------------------*/
+ 152   1        if (uart0_get_txbufsize () >= TBUF_SIZE)
+ 153   1          return (-ENOBUFS);
+ 154   1      
+ 155   1        /*------------------------------------------------
+ 156   1        Add the data to the transmit buffer.  If the
+ 157   1        transmit interrupt is disabled, then enable it.
+ 158   1        ------------------------------------------------*/
+ 159   1        TxBuff [TxWriteIndex & (TBUF_SIZE - 1)] = c;
+ 160   1        TxWriteIndex++;
+ 161   1      
+ 162   1        if (ti_restart)
+ 163   1        {
+ 164   2          ti_restart = 0;
+ 165   2          TI0 = 1;               /* generate transmit interrupt */
+ 166   2        }
+ 167   1      
+ 168   1        return (0);
+ 169   1      }
+ 170          
+ 171          /*------------------------------------------------------------------------------
+ 172          ------------------------------------------------------------------------------*/
+ 173          #pragma disable
+ 174          char uart0_getchar (void)
+ 175          {
+ 176   1        if (uart0_get_rxbufsize () == 0)
+ 177   1          return (-ENODATA);
+ 178   1      
+C51 COMPILER V9.60.7.0   SERIALIO                                                          11/10/2023 20:58:24 PAGE 4   
+
+ 179   1        return (RxBuff [(RxReadIndex++) & (RBUF_SIZE - 1)]);
+ 180   1      }
+ 181          /*------------------------------------------------------------------------------
+ 182          ------------------------------------------------------------------------------*/
+ 183          #pragma disable
+ 184          unsigned char uart0_get_rxbufsize (void)
+ 185          {
+ 186   1        return (RxWriteIndex - RxReadIndex);
+ 187   1      }
+ 188          /*------------------------------------------------------------------------------
+ 189          ------------------------------------------------------------------------------*/
+ 190          #pragma disable
+ 191          unsigned char uart0_get_txbufsize (void)
+ 192          {
+ 193   1        return (TxWriteIndex - TxReadIndex);
+ 194   1      }
+ 195          
+ 196          /*------------------------------------------------------------------------------
+ 197          ------------------------------------------------------------------------------*/
+ 198          
+ 199          /*------------------------------------------------------------------------------
+ 200          _getkey waits until a character is received from the serial port. i.e. if the buffer is empty, this
+ 201          function hangs waiting for a character to be received.
+ 202          ------------------------------------------------------------------------------*/
+ 203          char _getkey (void)
+ 204          {
+ 205   1        int k;
+ 206   1      
+ 207   1        do
+ 208   1        {
+ 209   2          k = uart0_getchar ();
+ 210   2        }
+ 211   1        while (k == -ENODATA);
+ 212   1      
+ 213   1        return ((unsigned char) k);
+ 214   1      }
+ 215          /*------------------------------------------------------------------------------
+ 216          _getkey2 does not waits until a character is received from the serial port.  
+ 217          if the buffer is empty, this function will return -1.
+ 218          ------------------------------------------------------------------------------*/
+ 219          char _getkey2 (void)
+ 220          {
+ 221   1        return uart0_getchar ();
+ 222   1      }
+ 223          
+ 224          /*------------------------------------------------------------------------------
+ 225          ------------------------------------------------------------------------------*/
+ 226          char putchar (char c)
+ 227          {
+ 228   1        volatile unsigned int i;
+ 229   1        
+ 230   1        if(c == '\n') //on '\n', translate into '\r\n'
+ 231   1        {
+ 232   2          //try to enqueue the char, wait until it is accepted
+ 233   2          while (uart0_putchar ('\r') != 0)
+ 234   2            for (i=0; i<10; i++) //dummy sleep
+ 235   2              ;
+ 236   2        }
+ 237   1        //try to enqueue the char, wait until it is accepted
+ 238   1        while (uart0_putchar (c) != 0)
+ 239   1          for (i=0; i<10; i++)  //dummy sleep
+ 240   1            ;
+C51 COMPILER V9.60.7.0   SERIALIO                                                          11/10/2023 20:58:24 PAGE 5   
+
+ 241   1      
+ 242   1        return (c);
+ 243   1      }
+ 244          
+ 245          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    382    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =     32    ----
+   DATA SIZE        =     10    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
