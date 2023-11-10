@@ -1,0 +1,399 @@
+C51 COMPILER V9.60.7.0   UART                                                              11/10/2023 18:29:52 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN .\Objects\uart.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE uart.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\uart
+                    -.lst) TABS(2) OBJECT(.\Objects\uart.obj)
+
+line level    source
+
+   1          #include <REG51F380.H>
+   2          #include "init_device.h"
+   3          #include <string.h>
+   4          #include <stdio.h>
+   5          
+   6          #define B_TF3H 7
+   7          #define B_TR3 2
+   8          #define B_ET3 7
+   9          
+  10          sbit pb1 = P0^6;
+  11          sbit pb2 = P0^7;
+  12          
+  13          //chave por defeito               8     0     5     1
+  14          unsigned char default_key[4] = {0x80, 0xC0, 0x92, 0xF9};
+  15           
+  16          //                                  L     0     1     2     3     4     5     6     7     8     9
+  17          unsigned char digits_array[11] = {0xC7, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
+  18          
+  19          
+  20          unsigned char button1pressed; //flags se os botoes sao clicados
+  21          unsigned char button2pressed;
+  22          unsigned char wrongkeycount;
+  23          char c = 0;
+  24           
+  25          
+  26          /*********************************************************/
+  27          typedef enum ENUM_STATES {S1 = 0, S2, S3, S4, S5} e_states;
+  28          
+  29          e_states state, nextstate;
+  30          
+  31          /* function prototypes */
+  32          void state_1(void);
+  33          void state_2(void);
+  34          void state_3(void);
+  35          void state_4(void);
+  36          void state_5(void);
+  37          
+  38          
+  39          /*********************************************************
+  40           * uart0 init                                            *
+  41           *********************************************************/
+  42          void uart0_init(void){  
+  43   1          /* UART0 Control                            */
+  44   1          /* set REN0, enable reception               */
+  45   1          SCON0     = 0x10;
+  46   1        
+  47   1          /* Timer/Counter Mode                       */  
+  48   1          TMOD      = 0x20;
+  49   1        
+  50   1          /* Clock Control                            */
+  51   1          CKCON     = 0x08;
+  52   1        
+  53   1          /* Timer/Counter 1 High                     
+  54   1           * 0x30 generates a baudrate of 115200 bps  */
+C51 COMPILER V9.60.7.0   UART                                                              11/10/2023 18:29:52 PAGE 2   
+
+  55   1          TH1       = 0x30;
+  56   1        
+  57   1          /* Timer 1 On/Off Control                   */
+  58   1          TR1       = 1;
+  59   1        
+  60   1          /* UART0 TX Interrupt Flag                  */
+  61   1          TI0       = 1;
+  62   1          RI0 = 1;
+  63   1      }
+  64          
+  65          
+  66          /*********************************************************
+  67           * getc using uart0                                      *
+  68           *********************************************************/
+  69          char uart0_getc(char* c){
+  70   1      
+  71   1        if(RI0 == 1){
+  72   2          RI0 = 0;
+  73   2          *c = SBUF0; 
+  74   2          return 1;
+  75   2        }
+  76   1        return 0;
+  77   1      }
+  78          
+  79          
+  80          void timer3_init_auto(char reload){
+  81   1      
+  82   1        TMR3CN = 0;
+  83   1      
+  84   1        #define B_T3MH 7  
+  85   1      
+  86   1        CKCON &= ~((1 << B_T3MH));
+  87   1        
+  88   1        TMR3H = (reload) >> 8;
+  89   1        TMR3L = (reload);
+  90   1      
+  91   1        TMR3RLH = (reload) >> 8;
+  92   1        TMR3RLL = (reload);
+  93   1        
+  94   1      }
+  95          
+  96          
+  97          void timer2_init_auto(char reload){
+  98   1      
+  99   1        TMR2CN = 0;
+ 100   1      
+ 101   1        #define B_T2MH 5  
+ 102   1      
+ 103   1        CKCON &= ~((1 << B_T2MH));
+ 104   1        
+ 105   1        TMR2H = (reload) >> 8;
+ 106   1        TMR2L = (reload);
+ 107   1      
+ 108   1        TMR2RLH = (reload) >> 8;
+ 109   1        TMR2RLL = (reload);
+ 110   1        
+ 111   1      }
+ 112          
+ 113          void delay_250us(){
+ 114   1        while(!(TMR3CN & (1 << B_TF3H)));
+ 115   1        TMR3CN &= ~(1 << B_TF3H);  
+ 116   1      }
+C51 COMPILER V9.60.7.0   UART                                                              11/10/2023 18:29:52 PAGE 3   
+
+ 117          
+ 118          void delay_s(unsigned char s) {
+ 119   1          unsigned char i = 0;
+ 120   1      
+ 121   1          while(i != (s*100)) {
+ 122   2              i++;
+ 123   2              while(!TF2H);
+ 124   2              TF2H = 0;
+ 125   2          }
+ 126   1      }
+ 127          
+ 128          
+ 129          void square_wave(){
+ 130   1        while (1){ // mudar para aceitar a HWFLAG
+ 131   2          //HIGH
+ 132   2          P1 |= 0x80;
+ 133   2          delay_250us();
+ 134   2          //LOW
+ 135   2          P1 &= ~(0x80);
+ 136   2          delay_250us();
+ 137   2        }
+ 138   1      }
+ 139          
+ 140          // validar a key introduzida pelo utilizador
+ 141          bit validate_key(unsigned char v1[4], unsigned char v2[4]){
+ 142   1        return memcmp(v1, v2, 4) == 0;
+ 143   1      }
+ 144          
+ 145          //DEBOUNCE
+ 146          unsigned char debounce(bit PB){
+ 147   1              char window = 0;  
+ 148   1              unsigned char j;
+ 149   1          for(j = 0; j < 8; j++) {
+ 150   2              window = (window << 1) | PB;
+ 151   2          }
+ 152   1          return window;
+ 153   1      }
+ 154          
+ 155          // ler a key a ser posta pelo utilizador
+ 156          void read_key(){
+ 157   1          unsigned char digit_index;      //index dos digitos
+ 158   1          unsigned char index_input_key;  //index da key a ser lida
+ 159   1          unsigned char input_key[4];
+ 160   1          
+ 161   1      
+ 162   1        if(uart0_getc(&c)== 0x45){ // palavra enter 
+ 163   2            printf("enter");
+ 164   2            input_key[index_input_key] = digits_array[digit_index];
+ 165   2            index_input_key++;
+ 166   2            digit_index = 0;
+ 167   2          }
+ 168   1          if(index_input_key == 4){
+ 169   2            if(validate_key(input_key,default_key)){
+ 170   3              index_input_key = 0;
+ 171   3              wrongkeycount = 0;
+ 172   3              nextstate = S2;
+ 173   3            }
+ 174   2            else{
+ 175   3              index_input_key = 0;
+ 176   3              nextstate = S3;
+ 177   3            }
+ 178   2          }
+C51 COMPILER V9.60.7.0   UART                                                              11/10/2023 18:29:52 PAGE 4   
+
+ 179   1      
+ 180   1          
+ 181   1          if(uart0_getc(&c) == 0x2b) { // caracter +
+ 182   2            printf("incremento");
+ 183   2            
+ 184   2            if (digit_index < 11) {
+ 185   3              digit_index++;
+ 186   3            }
+ 187   2            if (digit_index > 10){
+ 188   3              digit_index = 0;
+ 189   3            }
+ 190   2          }
+ 191   1      
+ 192   1          P2 = digits_array[digit_index];
+ 193   1      }
+ 194          
+ 195          void errorhandling(){
+ 196   1          wrongkeycount++;
+ 197   1          if(wrongkeycount == 1){
+ 198   2            P2 = 0x86; // E
+ 199   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 4
+             - segundos num total de 5 segundos
+ 200   2            P2 = 0xC6; // C
+ 201   2            delay_s(4);//wait 4 secs
+ 202   2            nextstate = S1;
+ 203   2          }
+ 204   1          if(wrongkeycount == 2){
+ 205   2            P2 = 0x86; // E
+ 206   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 9
+             - segundos
+ 207   2            P2 = 0xC6; // C
+ 208   2            delay_s(9);//wait 9 secs
+ 209   2            nextstate = S1;
+ 210   2          }
+ 211   1          if(wrongkeycount == 3){
+ 212   2            P2 = 0x86; // E
+ 213   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 1
+             -4 segundos
+ 214   2            P2 = 0xC6; // C
+ 215   2            delay_s(14);//wait 14 secs
+ 216   2            nextstate = S1;
+ 217   2          }
+ 218   1          if(wrongkeycount == 4){
+ 219   2            P2 = 0x86; // E
+ 220   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 1
+             -9 segundos
+ 221   2            P2 = 0xC6; // C
+ 222   2            delay_s(19);//wait 19 secs
+ 223   2            nextstate = S1;
+ 224   2          }
+ 225   1          if(wrongkeycount == 5){
+ 226   2            nextstate = S4;
+ 227   2          }
+ 228   1      }
+ 229          
+ 230          void open_menu(){//                 O       P     C
+ 231   1          unsigned char open_menu[3] = {0xA3 , 0x8C, 0xC6};
+ 232   1          unsigned char index;
+ 233   1          
+ 234   1          if(uart0_getc(&c) == 0x45){
+ 235   2            if(open_menu[index] == 0x8C){
+ 236   3              nextstate = S5;
+C51 COMPILER V9.60.7.0   UART                                                              11/10/2023 18:29:52 PAGE 5   
+
+ 237   3              index = 0;
+ 238   3            }
+ 239   2            if(open_menu[index] == 0xC6){
+ 240   3              nextstate = S1;
+ 241   3              index = 0;
+ 242   3            }
+ 243   2          }
+ 244   1          
+ 245   1          
+ 246   1          if(uart0_getc(&c) == 0x2b){
+ 247   2            
+ 248   2            
+ 249   2            button1pressed = 1;            
+ 250   2            if (index < 3){
+ 251   3              index++;
+ 252   3            }
+ 253   2            if (index > 2){
+ 254   3              index = 0;
+ 255   3            }
+ 256   2          }
+ 257   1          
+ 258   1      
+ 259   1      
+ 260   1          P2 = open_menu[index];
+ 261   1        
+ 262   1      }
+ 263          void set_key(){//                 P     0     1     2     3     4     5     6     7     8     9
+ 264   1          unsigned char set_key[11] = {0x8C, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
+ 265   1          unsigned char index;
+ 266   1          unsigned char index_new_key;
+ 267   1          
+ 268   1          if(uart0_getc(&c) == 0x45){
+ 269   2            default_key[index_new_key] = set_key[index];
+ 270   2            index_new_key++;
+ 271   2            index = 0;
+ 272   2          }
+ 273   1          
+ 274   1          if(index_new_key == 4){
+ 275   2            index_new_key = 0;
+ 276   2            nextstate = S1;
+ 277   2          }
+ 278   1          
+ 279   1          
+ 280   1          if(uart0_getc(&c) == 0x2b){
+ 281   2                       
+ 282   2            if (index < 11){
+ 283   3              index++;
+ 284   3            }
+ 285   2            if (index > 10){
+ 286   3              index = 0;
+ 287   3            }
+ 288   2          }
+ 289   1          
+ 290   1      
+ 291   1          P2 = set_key[index];
+ 292   1      }
+ 293          
+ 294          
+ 295          /*********************************************************/ 
+ 296          //                          close/locked    open    error     alarm   set_key
+ 297          void (*state_process [])(void) = {state_1, state_2, state_3, state_4, state_5};
+ 298          
+C51 COMPILER V9.60.7.0   UART                                                              11/10/2023 18:29:52 PAGE 6   
+
+ 299          
+ 300          void state_1(void){
+ 301   1          read_key();
+ 302   1          P1 = 0x10;
+ 303   1      }
+ 304          void state_2(void){
+ 305   1          open_menu();
+ 306   1          P1 &= ~(0x10);
+ 307   1      }
+ 308          void state_3(void){
+ 309   1          errorhandling();
+ 310   1      }
+ 311          void state_4(void){
+ 312   1          P2 = 0x88;
+ 313   1          square_wave();
+ 314   1      }
+ 315          void state_5(void){
+ 316   1          set_key();
+ 317   1      }
+ 318          
+ 319          /*********************************************************/
+ 320          void encode_FSM(){
+ 321   1          state_process[state] ();
+ 322   1      }
+ 323          
+ 324          /*********************************************************/
+ 325          
+ 326          
+ 327          /*********************************************************
+ 328           *    main function                                      *
+ 329           *********************************************************/
+ 330          void main (void){
+ 331   1        
+ 332   1        Init_Device();
+ 333   1        uart0_init(); 
+ 334   1        
+ 335   1        timer2_init_auto(-40000);
+ 336   1        timer3_init_auto(-1000);
+ 337   1        
+ 338   1        state = nextstate = S1;
+ 339   1        
+ 340   1        printf("uart a funcionar");
+ 341   1        
+ 342   1        //Set by hardware when the Timer 2/3 high byte overflows from 0xFF to 0x00. In 16 bit 
+ 343   1        //mode, this will occur when Timer 2/3 overflows from 0xFFFF to 0x0000.   
+ 344   1        TF2H = 0; 
+ 345   1        TMR3CN &= ~(1 << B_TF3H);
+ 346   1        
+ 347   1        // Enable Flag Timer 2/3 Overflow
+ 348   1        ET2 = 1;
+ 349   1        EIE1 |= (1 << B_ET3);
+ 350   1        
+ 351   1        // Timer 2/3 Run Control. Timer 2/3 is enabled by setting this bit to 1. 
+ 352   1        TMR3CN |= (1 << B_TR3);
+ 353   1        TR2 = 1;
+ 354   1            
+ 355   1        while (1) {
+ 356   2          encode_FSM();
+ 357   2          state = nextstate;
+ 358   2        }
+ 359   1      }
+
+C51 COMPILER V9.60.7.0   UART                                                              11/10/2023 18:29:52 PAGE 7   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    880    ----
+   CONSTANT SIZE    =     48    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     74    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
