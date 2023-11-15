@@ -1,0 +1,173 @@
+C51 COMPILER V9.60.7.0   TU_USART0                                                         11/15/2023 21:04:35 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE TU_USART0
+OBJECT MODULE PLACED IN .\Objects\tu_usart0.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE tu_usart0.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings
+                    -\tu_usart0.lst) TABS(2) OBJECT(.\Objects\tu_usart0.obj)
+
+line level    source
+
+   1          #include <REG51F380.H>
+   2          #include <stdio.h>
+   3          #include "config_platform.h"
+   4          #include "serialIO.h"
+   5          
+   6          sbit PB1 = P0 ^ 6;
+   7          sbit PB2 = P0 ^ 7;
+   8          sbit seg_dp = P2^7;
+   9          
+  10          unsigned char i;
+  11          unsigned char button1pressed; // flags se os botoes sao clicados
+  12          unsigned char button2pressed;
+  13          unsigned char blink = 50;
+  14          
+  15          
+  16          // vetor dos dos numeros 16 eletemnos
+  17          unsigned char vetor[16] = {0x40, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90, 0x88, 0x83, 0xC6, 0
+             -xA1, 0x86, 0x8E};
+  18          
+  19          // DEBOUNCE
+  20          unsigned int debounce(bit PB) {
+  21   1        char window;
+  22   1        unsigned int j;
+  23   1        for (j = 0; j < 8; j++)
+  24   1        {
+  25   2          window = (window << 1) | PB;
+  26   2        }
+  27   1        return window;
+  28   1      }
+  29          
+  30          void timer2_init_auto(int reload){
+  31   1      
+  32   1        TMR2CN = 0;
+  33   1      
+  34   1        #define B_T2MH 5  
+  35   1      
+  36   1        CKCON &= ~((1 << B_T2MH));
+  37   1        
+  38   1        TMR2H = (reload) >> 8;
+  39   1        TMR2L = (reload);
+  40   1      
+  41   1        TMR2RLH = (reload) >> 8;
+  42   1        TMR2RLL = (reload);
+  43   1        
+  44   1      }
+  45          
+  46          void timer2_isr(void) interrupt 5 using 2 {
+  47   1        
+  48   1        // sysclock /12 = 4MHz
+  49   1        // 1s 4,000,000 ticks!
+  50   1        // 10ms => 40000 ticks!
+  51   1        // 50 ciclos = 500ms
+  52   1      
+  53   1        
+C51 COMPILER V9.60.7.0   TU_USART0                                                         11/15/2023 21:04:35 PAGE 2   
+
+  54   1        if(--blink == 0){
+  55   2          seg_dp ^= 1;
+  56   2          blink = 50;
+  57   2        }
+  58   1        
+  59   1          
+  60   1        TF2H = 0; 
+  61   1      }
+  62          
+  63          
+  64          void main(void) {
+  65   1        char c = 0;
+  66   1        i = 0;
+  67   1        button1pressed = 0; // flag se o botao ? clicado
+  68   1        button2pressed = 0; // flag se o botao ? clicado
+  69   1        
+  70   1        Init_Device();
+  71   1        uart0_initialize();
+  72   1        timer2_init_auto(-40000);
+  73   1        TF2H = 0; 
+  74   1        ET2 = 1;
+  75   1        TR2 = 1;
+  76   1        EA = 1;
+  77   1      
+  78   1        
+  79   1        while (1) {
+  80   2          c = _getkey2();
+  81   2      
+  82   2          // incrementar
+  83   2          if (debounce(!PB1) && !button1pressed) {
+  84   3      
+  85   3            if (i < 15) {
+  86   4              i++;
+  87   4            }
+  88   3            else {
+  89   4              i = 15;
+  90   4            }
+  91   3            putchar(i);
+  92   3            putchar('\n');
+  93   3            button1pressed = 1;
+  94   3          }
+  95   2          if (!debounce(!PB1)) { // reset a flag se o botao ? clicado
+  96   3            button1pressed = 0;
+  97   3          }
+  98   2      
+  99   2          if (c == 0x2b || c == 0x49 || c == 0x69) {
+ 100   3            if (i < 15) {
+ 101   4              i++;
+ 102   4            }
+ 103   3            else {
+ 104   4              i = 15;
+ 105   4            }
+ 106   3            putchar(i);
+ 107   3            putchar('\n');
+ 108   3          }
+ 109   2      
+ 110   2          // decrementar
+ 111   2          if (debounce(!PB2) && !button2pressed) {
+ 112   3      
+ 113   3            if (i > 0) {
+ 114   4              i--;
+ 115   4            }
+C51 COMPILER V9.60.7.0   TU_USART0                                                         11/15/2023 21:04:35 PAGE 3   
+
+ 116   3            else {
+ 117   4              i = 0;
+ 118   4            }
+ 119   3            putchar(i);
+ 120   3            putchar('\n');
+ 121   3            button2pressed = 1;
+ 122   3          }
+ 123   2          if (!debounce(!PB2)) {
+ 124   3            button2pressed = 0;
+ 125   3          }
+ 126   2      
+ 127   2          if (c == 0x2d || c == 0x44 || c == 0x64) {
+ 128   3            if (i > 0) {
+ 129   4              i--;
+ 130   4            }
+ 131   3            else {
+ 132   4              i = 0;
+ 133   4            }
+ 134   3            putchar(i);
+ 135   3            putchar('\n');
+ 136   3          }
+ 137   2          
+ 138   2          P2 = vetor[i];
+ 139   2          
+ 140   2        }
+ 141   1      }
+ 142          
+ 143          
+ 144          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    361    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     26    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

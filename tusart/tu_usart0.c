@@ -19,9 +19,12 @@ void main(void){
 //	
 	
 	while(1) {
-		//scanf("%c",&c);
-		c = _getkey();
-		putchar(c);
+		c = 'O';
+		while(_getkey2() == -1){
+			putchar(c);
+		}
+		
+		//putchar(c);
 		//putchar('\n');
 	}
 	

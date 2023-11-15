@@ -1,0 +1,75 @@
+C51 COMPILER V9.60.7.0   TIMER0                                                            09/27/2023 21:44:09 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE TIMER0
+OBJECT MODULE PLACED IN .\Objects\timer0.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE timer0.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\ti
+                    -mer0.lst) TABS(2) OBJECT(.\Objects\timer0.obj)
+
+line level    source
+
+   1          #include <SI_EFM8BB3_Register_Enums.h>
+*** WARNING C318 IN LINE 1 OF timer0.c: can't open file 'SI_EFM8BB3_Register_Enums.h'
+   2          #include <stdio.h>
+   3          #include "timer0.h"
+   4          
+   5          #define CKCON0_SCA_SYSCLK_DIV_48 0x02
+   6          
+   7          static void(*internal_callback_pointer)(void);
+   8          bit call_back_ready;
+   9          unsigned long int vcounter;
+  10          unsigned long int reload_count;
+  11          
+  12          void isr_timer0(void) interrupt 1{
+  13   1        TL0 = 0;
+*** ERROR C202 IN LINE 13 OF timer0.c: 'TL0': undefined identifier
+  14   1        if(vcounter-- == 0){
+  15   2          vcounter = reload_count;
+  16   2          if(call_back_ready)
+  17   2            internal_callback_pointer();
+  18   2        }
+  19   1      }
+  20          
+  21          void stop_timer0(void){
+  22   1        TCON_TR0 = 0;
+*** ERROR C202 IN LINE 22 OF timer0.c: 'TCON_TR0': undefined identifier
+  23   1        call_back_ready = 0;
+  24   1      }
+  25          
+  26          void start_timer0(void){
+  27   1        TCON_TR0 = 0;
+*** ERROR C202 IN LINE 27 OF timer0.c: 'TCON_TR0': undefined identifier
+  28   1        IE_ET0 = 0;
+*** ERROR C202 IN LINE 28 OF timer0.c: 'IE_ET0': undefined identifier
+  29   1        vcounter = reload_count;
+  30   1        IE_ET0 = 1;
+*** ERROR C202 IN LINE 30 OF timer0.c: 'IE_ET0': undefined identifier
+  31   1        TCON_TR0 = 1;
+*** ERROR C202 IN LINE 31 OF timer0.c: 'TCON_TR0': undefined identifier
+  32   1      }
+  33          
+  34          void init_timer0_interrupt(void (*function_pointer) (void), long int period){
+  35   1        char back_IE = IE;
+*** ERROR C202 IN LINE 35 OF timer0.c: 'IE': undefined identifier
+  36   1        IE_EA = 0;
+*** ERROR C202 IN LINE 36 OF timer0.c: 'IE_EA': undefined identifier
+  37   1        CKCON0 |= CKCON0_SCA__SYSCLK_DIV_48;
+*** ERROR C202 IN LINE 37 OF timer0.c: 'CKCON0': undefined identifier
+  38   1        TMOD |= 0x02;
+*** ERROR C202 IN LINE 38 OF timer0.c: 'TMOD': undefined identifier
+  39   1        TL0 = 00;
+*** ERROR C202 IN LINE 39 OF timer0.c: 'TL0': undefined identifier
+  40   1        TH0 = 00;
+*** ERROR C202 IN LINE 40 OF timer0.c: 'TH0': undefined identifier
+  41   1        reload_count = period>>8;
+C51 COMPILER V9.60.7.0   TIMER0                                                            09/27/2023 21:44:09 PAGE 2   
+
+  42   1        internal_callback_pointer = function_pointer;
+  43   1        call_back_ready = 1;
+  44   1        IE_ET0 = 1;
+*** ERROR C202 IN LINE 44 OF timer0.c: 'IE_ET0': undefined identifier
+  45   1        IE = back_IE;
+*** ERROR C202 IN LINE 45 OF timer0.c: 'IE': undefined identifier
+  46   1      }
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  14 ERROR(S)

@@ -1,0 +1,160 @@
+C51 COMPILER V9.60.7.0   PROJETO                                                           11/10/2023 21:19:07 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE PROJETO
+OBJECT MODULE PLACED IN .\Objects\projeto.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE projeto.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\p
+                    -rojeto.lst) TABS(2) OBJECT(.\Objects\projeto.obj)
+
+line level    source
+
+   1          #include <REG51F380.H>
+   2          #define BUFFEREMPTY 0
+   3          #define BUFFERFULL 16
+   4          #define BUFFERSIZE 16 //FALTAVA
+   5          #define ENABLE_UART0 (ES0 = 1)
+   6          #define DISABLE_UART0 (ES0 = 0)
+   7          
+   8          // Dados existentes em cada um dos buffers
+   9          extern volatile unsigned char TxNumberOfData;
+  10          extern volatile unsigned char RxNumberOfData;
+  11          
+  12          // Apontadores para o buffers circular
+  13          unsigned char TxBufWritePtr=0, RxBufReadPtr=0;
+  14          
+  15          // Buffers de tranmissao e rececao
+  16          volatile unsigned char TxBuffer[BUFFERSIZE];
+  17          volatile unsigned char RxBuffer[BUFFERSIZE];
+  18          
+  19          // Apontadores de leitura no buffer TxBuffer
+  20          volatile unsigned char TxBufReadPtr=0;
+  21          
+  22          // Apontadores de escrita no buffer RxBuffer
+  23          volatile unsigned char RxBufWritePtr=0;
+  24          
+  25          // Dados existentes em cada um dos buffers
+  26          volatile unsigned char TxNumberOfData=0;
+  27          volatile unsigned char RxNumberOfData=0;
+  28          
+  29          void configUART0(void) {
+  30   1          P0MDOUT |= 0x10; //Ativa Push-pull
+  31   1          //no pino TX (recomendado)
+  32   1          //Configurar timer1
+  33   1          //Segundo a tabela 23.1 do manual do micro
+  34   1        
+  35   1          //(SYSCLK=24MHz)
+  36   1          CKCON |= 0x08; 
+  37   1          //T1M = 1; //=> 155200bps.
+  38   1          //Comentar p/ 9600bps
+  39   1          TH1 = 0x98; //Valor de autoreload
+  40   1          // p/ 115200 e 9600
+  41   1        
+  42   1          //Selecao e ativacao do timer
+  43   1          TMOD |= 0x20; //Timer1, modo2 (autorelaod)
+  44   1          TR1 = 1; 
+  45   1          TCON |=0x40; //>> Ativa timer
+  46   1        
+  47   1          //Configurar porta serie (SCON)
+  48   1          REN0 = 1;
+  49   1          //SCON0 |=0x10; //>> Ativa rececao timer0
+  50   1        
+  51   1          //Interrupcoes
+  52   1          ES0 = 1; //Ativa a interr dporta serie (Reg IE.4)
+  53   1          EA = 1; //Ativa globalmente as interr. (Reg IE.7)
+  54   1      }
+C51 COMPILER V9.60.7.0   PROJETO                                                           11/10/2023 21:19:07 PAGE 2   
+
+  55          
+  56          unsigned char readUART(unsigned char *value) {
+  57   1          DISABLE_UART0;
+  58   1          switch (RxNumberOfData) {
+  59   2              case BUFFEREMPTY:
+  60   2                ENABLE_UART0;
+  61   2                return 0;
+  62   2              default:
+  63   2              RxNumberOfData--;
+  64   2              *value=RxBuffer[RxBufReadPtr];
+  65   2              RxBufReadPtr = (RxBufReadPtr+1) % BUFFERSIZE;
+  66   2          }
+  67   1          ENABLE_UART0;
+  68   1          return 1;
+  69   1      }
+  70          
+  71          unsigned char writeUART(unsigned char value) {
+  72   1          DISABLE_UART0;
+  73   1          switch (TxNumberOfData) {
+  74   2              case BUFFERFULL:
+  75   2                  ENABLE_UART0;
+  76   2                  return 0;
+  77   2              case BUFFEREMPTY :
+  78   2                  SBUF0 = value;
+  79   2                  break;
+  80   2              default:
+  81   2                  //TxNumberOfData++;
+  82   2                  TxBuffer[TxBufWritePtr]=value;
+  83   2                  TxBufWritePtr = (TxBufWritePtr+1) % BUFFERSIZE;
+  84   2          }
+  85   1          TxNumberOfData++;
+  86   1          ENABLE_UART0;
+  87   1          return 1;
+  88   1      }
+  89          
+  90          void UARTInterrupt(void) interrupt 4 {
+  91   1          if (RI0) {
+  92   2              RI0=0;
+  93   2              if (RxNumberOfData < BUFFERSIZE) {
+  94   3                  RxBuffer[RxBufWritePtr]=SBUF0 ;
+  95   3                  RxBufWritePtr = (RxBufWritePtr +1) % BUFFERSIZE;
+  96   3                  RxNumberOfData++;
+  97   3              }
+  98   2          }
+  99   1          if (TI0) {
+ 100   2              TI0=0;
+ 101   2              TxNumberOfData--;
+ 102   2              if (TxNumberOfData) {
+ 103   3                  SBUF0=TxBuffer[TxBufReadPtr];
+ 104   3                  TxBufReadPtr = (TxBufReadPtr +1) % BUFFERSIZE;
+ 105   3                  //TxNumberOfData--;
+ 106   3              }
+ 107   2          }
+ 108   1      }
+ 109          
+ 110          //48 65 6c 6c 6f 20 57 6f 72 6c 64                 Hello World
+ 111          void main (void) {
+ 112   1          char hello[] = "Hello World";
+ 113   1          char *chr = hello;
+ 114   1          char chr_r;
+ 115   1      
+ 116   1          PCA0MD = 0x00; //Desliga watchdog
+C51 COMPILER V9.60.7.0   PROJETO                                                           11/10/2023 21:19:07 PAGE 3   
+
+ 117   1          XBR0 |= 0x01; //Ativa UART0 no crossbar
+ 118   1          XBR1 |= 0x40; //Ativa crossbar
+ 119   1          CLKSEL = 0x02; //SYSCLK derivado do
+ 120   1        
+ 121   1          // Oscil/2=24MHz
+ 122   1          configUART0();
+ 123   1          while (*chr) {
+ 124   2              writeUART(*chr);
+ 125   2              chr++;
+ 126   2          }
+ 127   1          
+ 128   1          while (1) {
+ 129   2            while (readUART(&chr_r))
+ 130   2            writeUART(chr_r+1);
+ 131   2          }
+ 132   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    253    ----
+   CONSTANT SIZE    =     12    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     38      13
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
