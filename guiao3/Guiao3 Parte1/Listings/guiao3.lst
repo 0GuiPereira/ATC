@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   GUIAO3                                                            11/21/2023 15:58:58 PAGE 1   
+C51 COMPILER V9.60.7.0   GUIAO3                                                            11/21/2023 21:21:13 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE GUIAO3
@@ -62,7 +62,7 @@ line level    source
   50   1        TMR2CN = 0;
   51   1      
   52   1        #define B_T2MH 5  
-C51 COMPILER V9.60.7.0   GUIAO3                                                            11/21/2023 15:58:58 PAGE 2   
+C51 COMPILER V9.60.7.0   GUIAO3                                                            11/21/2023 21:21:13 PAGE 2   
 
   53   1      
   54   1        CKCON &= ~((1 << B_T2MH));
@@ -126,7 +126,7 @@ line level    source
  112   3            }
  113   2            else {
  114   3              index = 15;
-C51 COMPILER V9.60.7.0   GUIAO3                                                            11/21/2023 15:58:58 PAGE 3   
+C51 COMPILER V9.60.7.0   GUIAO3                                                            11/21/2023 21:21:13 PAGE 3   
 
  115   3            }
  116   2            sendIndex();
@@ -190,7 +190,7 @@ line level    source
  174   1        TF2H = 0; 
  175   1        ET2 = 1;
  176   1        TR2 = 1;
-C51 COMPILER V9.60.7.0   GUIAO3                                                            11/21/2023 15:58:58 PAGE 4   
+C51 COMPILER V9.60.7.0   GUIAO3                                                            11/21/2023 21:21:13 PAGE 4   
 
  177   1        EA = 1;
  178   1      

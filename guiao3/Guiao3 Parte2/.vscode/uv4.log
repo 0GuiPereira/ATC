@@ -1,17 +1,14 @@
-Rebuild target 'Target 1'
-compiling state_machine.c...
-compiling init_device.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?SQUARE_WAVE?STATE_MACHINE
-
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?DELAY_10US?STATE_MACHINE
-
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?ENCODE_FSM_SWITCH?STATE_MACHINE
-
-Program Size: data=115.1 xdata=0 code=2181
-creating hex file from ".\Objects\state_machine"...
-".\Objects\state_machine" - 0 Error(s), 3 Warning(s).
-Build Time Elapsed:  00:00:01
+Load "c:\\Users\\Guilh\\Documents\\KEIL\\guiao3\\Guiao3 Parte2\\Objects\\state_machine" 
+*** AGDI-Msg: Attempting Connection.
+*** AGDI-Msg: Connection successful.
+Flash Erase Done.
+*** AGDI-Msg: AG_Init code 788
+*** AGDI-Msg: AG_Init Status: AG_STARTFLASHLOAD.
+*** AGDI-Msg: Attempting Connection.
+*** AGDI-Msg: Connection successful.
+Flash Image Update Complete. 
+Beginning programming...
+Flash Program Done: 2150 bytes programmed.
+Checksum:0xd7c
+Flash Verify Done: 2150 bytes verified.
+Flash Load finished at 17:15:09

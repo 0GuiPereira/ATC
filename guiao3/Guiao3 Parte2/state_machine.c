@@ -14,11 +14,25 @@ unsigned char default_key[4] = {0x80, 0xC0, 0x92, 0xF9};
  
 //																	L			0			1			2			3			4			5			6			7			8			9
 unsigned char digits_array[11] = {0xC7, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
-
-
 unsigned char button1pressed; //flags se os botoes sao clicados
 unsigned char button2pressed;
-unsigned int wrongkeycount;
+unsigned char wrongkeycount;
+
+//uart utils
+//para o locked state:
+unsigned char inputKeyBuffer[4]; // 4 pq 8051 4 digitos
+unsigned char bufferKeyIndex = -1; // come�a a -1 pq dando debug vi que na primeira passagem o codigo da flag ao RI0
+
+//para o alarm state:
+unsigned char inputAlarmBuffer[5]; // 5 pq reset 5 digitos 
+unsigned char bufferAlarmIndex = 0; // mesma explica��o
+
+// para o admin
+unsigned char inputAdminBuffer[3]; // 3 pq *#(L O P E A) locked opened program error alarm
+unsigned char bufferAdminIndex = 0; // mesma explica��o
+
+//unsigned char teste_vetor[] = {'1','2','3','4'};
+
  
 
 /*********************************************************/
@@ -79,18 +93,6 @@ void delay_s(unsigned int s) {
         while(!TF2H);
         TF2H = 0;
     }
-}
-
-
-void square_wave(){
-	while (1){ // mudar para aceitar a HWFLAG
-		//HIGH
-		P1 |= 0x80;
-		delay_250us();
-		//LOW
-		P1 &= ~(0x80);
-		delay_250us();
-	}
 }
 
 // validar a key introduzida pelo utilizador
@@ -162,7 +164,7 @@ void errorhandling(){
 			delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 4 segundos num total de 5 segundos
 			P2 = 0xC6; // C
 			delay_s(4);//wait 4 secs
-			nextstate = S1;
+			nextstate = S4;
 		}
 		if(wrongkeycount == 2){
 			P2 = 0x86; // E
@@ -234,11 +236,7 @@ void set_key(){//									P			0			1			2			3			4			5			6			7			8			9
 		unsigned int index;
 		unsigned int index_new_key;
 		
-		if(!debounce(pb2) && !button2pressed){
-			button2pressed = 1;
-			default_key[index_new_key] = set_key[index];
-			index_new_key++;
-			index = 0;
+		if(!debounce(pb2) && !button2pressed){*
 		}
 		
 		if(index_new_key == 4){
@@ -246,7 +244,7 @@ void set_key(){//									P			0			1			2			3			4			5			6			7			8			9
 			nextstate = S1;
 		}
 		
-		if(debounce(pb2)){
+		if(debounce(pb2)){*
 			button2pressed = 0;
 		}
 		
@@ -268,6 +266,131 @@ void set_key(){//									P			0			1			2			3			4			5			6			7			8			9
 		P2 = set_key[index];
 }
 
+// locked state
+void uartCheckBufferKey(){
+	if (RI0 == 1) {
+      RI0 = 0;
+		
+
+		if (bufferKeyIndex == 3) {
+			// compara o vetor com '8051'
+			if (inputKeyBuffer[0] == '8' && inputKeyBuffer[1] == '0' && inputKeyBuffer[2] == '5' && inputKeyBuffer[3] == '1'){
+				nextstate = S2;
+				bufferKeyIndex = 0;
+				
+			} else {
+				bufferKeyIndex = 0;
+				nextstate = S3;
+			}
+		}
+		if (bufferKeyIndex < 4) {
+			// le o que est� no buffer
+			inputKeyBuffer[bufferKeyIndex] = SBUF0;
+			bufferKeyIndex++;
+		}
+	}
+}
+
+// alarm state
+char uartAlarm() {
+
+    if (RI0 == 1) {
+			RI0 = 0;
+		
+		if (bufferAlarmIndex == 4) {
+			// Compare the inputBuffer with the key "8051"
+			if (inputAlarmBuffer[0] == 'r' && inputAlarmBuffer[1] == 'e' && inputAlarmBuffer[2] == 's' && inputAlarmBuffer[3] == 'e' && inputAlarmBuffer[4] == 't'){
+				nextstate = S1;
+				bufferAlarmIndex = 0;
+				return 0;
+			}
+			else {
+			bufferAlarmIndex = 0;
+			}
+		}
+
+		if (bufferAlarmIndex < 4) {
+				// le o que est� no buffer
+				inputAlarmBuffer[bufferAlarmIndex] = SBUF0;
+				bufferAlarmIndex++;
+			}		
+    }
+	return 1;	
+}
+
+void square_wave(){
+	char loop = 1;
+	while (loop){ // mudar para aceitar a HWFLAG
+		loop = uartAlarm();
+		//HIGH
+		P1 |= 0x80;
+		delay_250us();
+		//LOW
+		P1 &= ~(0x80);
+		delay_250us();
+	}
+}
+
+//admin codes
+void uartAdmin() {
+
+    if (RI0 == 1) {
+        RI0 = 0;
+		if (bufferAdminIndex < 3) {
+			// le o que est� no buffer
+			inputAdminBuffer[bufferAdminIndex] = SBUF0;
+			bufferAdminIndex++;
+		}
+		else {
+			bufferAdminIndex = 0;
+		}
+		
+		if (bufferAdminIndex == 3) {
+			// Compare the inputBuffer with the key "8051"
+			if (inputAdminBuffer[0] == '*' && inputAdminBuffer[1] == '#'){
+				if (inputAdminBuffer[3] == 'L'){
+					nextstate = S1;
+				}
+				if (inputAdminBuffer[3] == 'O'){
+					nextstate = S2;
+				}
+				if (inputAdminBuffer[3] == 'P'){
+					nextstate = S5;
+				}
+				if (inputAdminBuffer[3] == 'E'){
+					nextstate = S3;
+				}
+				if (inputAdminBuffer[3] == 'A'){
+					nextstate = S4;
+				}
+			}
+		}		
+    }	
+}
+
+void sendUart(char vectorToBuffer[]) {
+    unsigned char i = 0;
+
+    // Wait for the previous transmission to complete
+    while (TI0 == 0);
+	
+//		SBUF0 = vectorToBuffer[0];
+//		SBUF0 = vectorToBuffer[1];
+//		SBUF0 = vectorToBuffer[2];
+//		SBUF0 = vectorToBuffer[3];
+
+    // Send each element of the array
+    for (i = 0; i < sizeof(vectorToBuffer); i++) {
+        SBUF0 = vectorToBuffer[i];
+
+        // Wait for the current byte to be transmitted
+        while (TI0 == 0);
+				TI0 = 0;
+    }
+
+    // Clear the transmit interrupt flag
+    
+}
 
 /*********************************************************/	
 //													close/locked  	open		error			alarm		set_key
@@ -275,22 +398,25 @@ void (*state_process [])(void) = {state_1, state_2, state_3, state_4, state_5};
 
 
 void state_1(void){
-		read_key();
-		P1 = 0x10;
+	read_key();
+	P1 = 0x10;
+	//sendUart(teste_vetor);
+	uartCheckBufferKey();
 }
-void state_2(void){
-		open_menu();
-		P1 &= ~(0x10);
+void state_2(void){ // opened
+	open_menu();
+	P1 &= ~(0x10);
 }
-void state_3(void){
-		errorhandling();
+void state_3(void){ //error
+	errorhandling();
 }
-void state_4(void){
-		P2 = 0x88;
-	  square_wave();
+void state_4(void){ // alarm
+	P2 = 0x88;
+	square_wave();
+	
 }
-void state_5(void){
-		set_key();
+void state_5(void){ // program/set_key
+	set_key();
 }
 
 /*********************************************************/
@@ -327,6 +453,7 @@ void main (void){
 	TR2 = 1;
 			
 	while (1) {
+		//uartAdmin();
 		encode_FSM();
 		state = nextstate;
 	}

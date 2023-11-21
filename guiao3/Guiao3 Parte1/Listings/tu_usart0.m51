@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    11/21/2023  15:58:58  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    11/21/2023  21:21:13  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
@@ -59,7 +59,7 @@ SEGMENT
 ?C_C51STARTUP
   +--> ?PR?MAIN?GUIAO3
   +--> ?C_INITSEG
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  11/21/2023  15:58:58  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  11/21/2023  21:21:13  PAGE 2
 
 
 
@@ -119,7 +119,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\tu_usart0 (GUIAO3)
   B:0080H.7       PUBLIC        PB2
   C:01A0H         PUBLIC        debounce
   B:00A8H.5       PUBLIC        ET2
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  11/21/2023  15:58:58  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  11/21/2023  21:21:13  PAGE 3
 
 
   B:0098H.0       PUBLIC        RI0
@@ -179,7 +179,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\tu_usart0 (GUIAO3)
   C:01D1H         LINE#         48
   C:01D5H         LINE#         50
   C:01D8H         LINE#         54
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  11/21/2023  15:58:58  PAGE 4
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  11/21/2023  21:21:13  PAGE 4
 
 
   C:01DBH         LINE#         56
@@ -239,7 +239,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\tu_usart0 (GUIAO3)
   C:00EAH         LINE#         121
   C:00EAH         LINE#         124
   C:00F9H         LINE#         126
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  11/21/2023  15:58:58  PAGE 5
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  11/21/2023  21:21:13  PAGE 5
 
 
   C:0100H         LINE#         127

@@ -4,7 +4,7 @@
             "name": "Target 1",
             "includePath": [
                 "C:\\Keil_v5\\C51\\INC",
-                "c:\\Users\\Guilh\\Documents\\KEIL\\state_machine"
+                "c:\\Users\\Guilh\\Documents\\KEIL\\guiao3\\Guiao3 Parte2"
             ],
             "defines": [
                 "__C51__",

@@ -12,6 +12,7 @@ void Init_Device(void)
 	
 	/* enable cross-bar for I/Os */
 	XBR1      = 0x41;
+	XBR0		 	= 0x01;
 	
 	//P1.4 output LOCKED
 	P1MDOUT |= 0x10;
@@ -22,7 +23,15 @@ void Init_Device(void)
 	//P1.7 input HWFLAG
 	 P1MDIN |= 0x80;
 
+	//uart
 	
+		SCON0 = 0x10;
+    TMOD = 0x20;
+    CKCON = 0x08;
+    TH1 = 0x30;
+    TR1 = 1;
+    TI0 = 1;
+    RI0 = 1;
 	
 
 }
