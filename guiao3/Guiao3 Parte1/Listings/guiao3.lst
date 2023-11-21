@@ -1,0 +1,218 @@
+C51 COMPILER V9.60.7.0   GUIAO3                                                            11/21/2023 15:58:58 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE GUIAO3
+OBJECT MODULE PLACED IN .\Objects\guiao3.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE guiao3.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\gu
+                    -iao3.lst) TABS(2) OBJECT(.\Objects\guiao3.obj)
+
+line level    source
+
+   1          #include <REG51F380.H>
+   2          
+   3          
+   4          sbit PB1 = P0 ^ 6;
+   5          sbit PB2 = P0 ^ 7;
+   6          sbit seg_dp = P2^7;
+   7          
+   8          bit dp_state = 0;
+   9          bit button1pressed; // flags se os botoes sao clicados
+  10          bit button2pressed;
+  11          unsigned char blink = 50;
+  12          unsigned char index;
+  13          unsigned char prev_index = -1;
+  14          
+  15          
+  16          // vetor dos dos numeros 16 eletemnos {0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90, 0x88, 0
+             -x83, 0xC6, 0xA1, 0x86, 0x8E};
+  17          unsigned char vetor[16] =             {0x40, 0x79, 0x24, 0x30, 0x19, 0x12, 0x02, 0x78, 0x00, 0x10, 0x08, 0x03, 0
+             -x27, 0x21, 0x06, 0x0E};
+  18          
+  19          void init_device(void) {
+  20   1          FLSCL = 0x90;
+  21   1          CLKSEL = 0x03;
+  22   1          PCA0MD = 0x00;
+  23   1          XBR1 = 0x40;
+  24   1          XBR0 = 0x01;
+  25   1      }
+  26          
+  27          void uart0_init(void) {
+  28   1          SCON0 = 0x10;
+  29   1          TMOD = 0x20;
+  30   1          CKCON = 0x08;
+  31   1          TH1 = 0x30;
+  32   1          TR1 = 1;
+  33   1          TI0 = 1;
+  34   1          RI0 = 1;
+  35   1      }
+  36          
+  37          // DEBOUNCE
+  38          unsigned int debounce(bit PB) {
+  39   1        char window;
+  40   1        unsigned int j;
+  41   1        for (j = 0; j < 8; j++)
+  42   1        {
+  43   2          window = (window << 1) | PB;
+  44   2        }
+  45   1        return window;
+  46   1      }
+  47          
+  48          void timer2_init_auto(int reload){
+  49   1      
+  50   1        TMR2CN = 0;
+  51   1      
+  52   1        #define B_T2MH 5  
+C51 COMPILER V9.60.7.0   GUIAO3                                                            11/21/2023 15:58:58 PAGE 2   
+
+  53   1      
+  54   1        CKCON &= ~((1 << B_T2MH));
+  55   1        
+  56   1        TMR2H = (reload) >> 8;
+  57   1        TMR2L = (reload);
+  58   1      
+  59   1        TMR2RLH = (reload) >> 8;
+  60   1        TMR2RLL = (reload);
+  61   1        
+  62   1      }
+  63          
+  64          void timer2_isr(void) interrupt 5 using 2 {
+  65   1        
+  66   1        char P2_state;
+  67   1        P2_state = P2;
+  68   1        
+  69   1        // sysclock /12 = 4MHz
+  70   1        // 1s 4,000,000 ticks!
+  71   1        // 10ms => 40000 ticks!
+  72   1        // 50 ciclos = 500ms
+  73   1      
+  74   1        blink--;
+  75   1        if(blink == 0){
+  76   2          //P2 = P2_state ^ (1 << 7);
+  77   2          dp_state = ~dp_state;
+  78   2          blink = 50;
+  79   2        }
+  80   1        
+  81   1        seg_dp = dp_state;  
+  82   1        TF2H = 0; 
+  83   1      }
+  84          
+  85          void sendIndex() {
+  86   1          char charToBuffer;
+  87   1      
+  88   1          if (index != prev_index) {
+  89   2              while (TI0 == 0);
+  90   2              
+  91   2              // Converte o valor hex para caractere ASCII
+  92   2              if (index < 10) {
+  93   3                  charToBuffer = index + '0';
+  94   3              } else {
+  95   3                  charToBuffer = index - 0x0A + 'A';
+  96   3              }
+  97   2      
+  98   2              SBUF0 = charToBuffer;
+  99   2              TI0 = 0;
+ 100   2              prev_index = index;
+ 101   2          }
+ 102   1      
+ 103   1          P2 = vetor[index] | ((char)dp_state << 7);
+ 104   1      }
+ 105          
+ 106          void buttonHandler(){
+ 107   1          // incrementar
+ 108   1          if (debounce(!PB1) && !button1pressed) {
+ 109   2      
+ 110   2            if (index < 15) {
+ 111   3              index++;
+ 112   3            }
+ 113   2            else {
+ 114   3              index = 15;
+C51 COMPILER V9.60.7.0   GUIAO3                                                            11/21/2023 15:58:58 PAGE 3   
+
+ 115   3            }
+ 116   2            sendIndex();
+ 117   2            button1pressed = 1;
+ 118   2          }
+ 119   1          if (!debounce(!PB1)) { // reset a flag se o botao ? clicado
+ 120   2            button1pressed = 0;
+ 121   2          }
+ 122   1      
+ 123   1          // decrementar
+ 124   1          if (debounce(!PB2) && !button2pressed) {
+ 125   2      
+ 126   2            if (index > 0) {
+ 127   3              index--;
+ 128   3            }
+ 129   2            else {
+ 130   3              index = 0;
+ 131   3            }
+ 132   2            
+ 133   2            sendIndex();
+ 134   2            button2pressed = 1;
+ 135   2          }
+ 136   1          
+ 137   1          if (!debounce(!PB2)) {
+ 138   2            button2pressed = 0;
+ 139   2          }   
+ 140   1      }
+ 141          
+ 142          char receiveIndex() {
+ 143   1          if (RI0 == 1) {
+ 144   2              RI0 = 0;
+ 145   2      
+ 146   2              if (SBUF0 == 'i' || SBUF0 == 'I' || SBUF0 == '+') {
+ 147   3                  if (index < 15) {
+ 148   4                      index++;
+ 149   4                  }
+ 150   3              } else {
+ 151   3                  if (SBUF0 == 'd' || SBUF0 == 'D' || SBUF0 == '-') {
+ 152   4                      if (index > 0) {
+ 153   5                          index--;
+ 154   5                      }
+ 155   4                  } else {
+ 156   4                      index = SBUF0;
+ 157   4                  }
+ 158   3              }
+ 159   2      
+ 160   2              return 1;
+ 161   2          }
+ 162   1      
+ 163   1          return 0;
+ 164   1      }
+ 165          
+ 166          
+ 167          void main(void) {
+ 168   1        init_device();
+ 169   1        uart0_init();
+ 170   1        timer2_init_auto(-40000);
+ 171   1        
+ 172   1        
+ 173   1        
+ 174   1        TF2H = 0; 
+ 175   1        ET2 = 1;
+ 176   1        TR2 = 1;
+C51 COMPILER V9.60.7.0   GUIAO3                                                            11/21/2023 15:58:58 PAGE 4   
+
+ 177   1        EA = 1;
+ 178   1      
+ 179   1        
+ 180   1        while (1) {
+ 181   2            buttonHandler();
+ 182   2              if (receiveIndex()) {
+ 183   3                  sendIndex();
+ 184   3              }
+ 185   2        }
+ 186   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    414    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     26    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      4    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

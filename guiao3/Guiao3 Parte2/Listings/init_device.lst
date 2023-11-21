@@ -1,0 +1,54 @@
+C51 COMPILER V9.60.7.0   INIT_DEVICE                                                       11/21/2023 16:10:13 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE INIT_DEVICE
+OBJECT MODULE PLACED IN .\Objects\init_device.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE init_device.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\init_device.lst) TABS(2) OBJECT(.\Objects\init_device.obj)
+
+line level    source
+
+   1          #include <REG51F380.H>
+   2          #include "init_device.h"
+   3          
+   4          
+   5          /*********************************************************/ 
+   6          void Init_Device(void)
+   7          {
+   8   1        PCA0MD    = 0x00;
+   9   1        /* select clock source */
+  10   1        FLSCL     = 0x90;   
+  11   1        CLKSEL    = 0x03;   
+  12   1        
+  13   1        /* enable cross-bar for I/Os */
+  14   1        XBR1      = 0x41;
+  15   1        
+  16   1        //P1.4 output LOCKED
+  17   1        P1MDOUT |= 0x10;
+  18   1        
+  19   1        //P1.6 output ALARM
+  20   1        P1MDOUT |= 0x40;
+  21   1        
+  22   1        //P1.7 input HWFLAG
+  23   1         P1MDIN |= 0x80;
+  24   1      
+  25   1        
+  26   1        
+  27   1      
+  28   1      }
+  29          
+  30          /*********************************************************/ 
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     22    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

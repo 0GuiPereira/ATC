@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>tu_usart0</OutputName>
+          <OutputName>first_project</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -110,7 +110,7 @@
           <SimDllName>S8051.DLL</SimDllName>
           <SimDllArguments></SimDllArguments>
           <SimDlgDll>DCYG.DLL</SimDlgDll>
-          <SimDlgDllArguments>-pCYGF320</SimDlgDllArguments>
+          <SimDlgDllArguments>-pCYGF340</SimDlgDllArguments>
           <TargetDllName>S8051.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
           <TargetDlgDll>TCYG.DLL</TargetDlgDll>
@@ -139,7 +139,7 @@
           <Target>
             <UseTarget>1</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
-            <RunToMain>1</RunToMain>
+            <RunToMain>0</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
             <RestoreWatchpoints>1</RestoreWatchpoints>
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
@@ -331,7 +331,7 @@
             <UseMpl>0</UseMpl>
             <UseStandard>1</UseStandard>
             <UseCase>0</UseCase>
-            <UseMod51>0</UseMod51>
+            <UseMod51>1</UseMod51>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -377,9 +377,9 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>guiao3.c</FileName>
+              <FileName>first_proj.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\guiao3.c</FilePath>
+              <FilePath>.\first_proj.c</FilePath>
             </File>
           </Files>
         </Group>

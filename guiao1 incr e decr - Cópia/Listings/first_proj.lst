@@ -1,0 +1,173 @@
+C51 COMPILER V9.60.7.0   FIRST_PROJ                                                        11/21/2023 15:04:11 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE FIRST_PROJ
+OBJECT MODULE PLACED IN .\Objects\first_proj.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE first_proj.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listing
+                    -s\first_proj.lst) TABS(2) OBJECT(.\Objects\first_proj.obj)
+
+line level    source
+
+   1          #include <REG51F380.h>
+   2          
+   3          sbit pb1 = P0^6;
+   4          sbit pb2 = P0^7;
+   5          sbit seg_dp = P2^7;
+   6          
+   7          code const char seg_data[] = {0x40, 0x79, 0x24, 0x30, 0x19, 0x12, 0x02, 0x78, 0x00, 0x10, 0x08, 0x03, 0x27
+             -, 0x21, 0x06, 0x0E};
+   8          
+   9          char index = 0;
+  10          bit dp_state = 0;  // Estado do ponto decimal (ligado/desligado)
+  11          char prev_index = -1;  // Valor anterior, inicializado para um valor impossível
+  12          
+  13          void delay_ms(unsigned int ms) {
+  14   1          unsigned int i, j;
+  15   1          for (i = 0; i < ms; i++) {
+  16   2              for (j = 0; j < 350; j++) {
+  17   3                  // Delay básico
+  18   3              }
+  19   2          }
+  20   1      }
+  21          
+  22          void init_device(void) {
+  23   1          FLSCL = 0x90;
+  24   1          CLKSEL = 0x03;
+  25   1          PCA0MD = 0x00;
+  26   1          XBR1 = 0x40;
+  27   1          XBR0 = 0x01;
+  28   1      }
+  29          
+  30          void uart0_init(void) {
+  31   1          SCON0 = 0x10;
+  32   1          TMOD = 0x20;
+  33   1          CKCON = 0x08;
+  34   1          TH1 = 0x30;
+  35   1          TR1 = 1;
+  36   1          TI0 = 1;
+  37   1          RI0 = 1;
+  38   1      }
+  39          
+  40          void sendIndex() {
+  41   1          char display_char;
+  42   1      
+  43   1          if (index != prev_index) {
+  44   2              while (TI0 == 0);
+  45   2              
+  46   2              // Converte o valor hex para caractere ASCII
+  47   2              if (index < 0x0A) {
+  48   3                  display_char = index + '0';
+  49   3              } else {
+  50   3                  display_char = index - 0x0A + 'A';
+  51   3              }
+  52   2      
+  53   2              SBUF0 = display_char;
+C51 COMPILER V9.60.7.0   FIRST_PROJ                                                        11/21/2023 15:04:11 PAGE 2   
+
+  54   2              TI0 = 0;
+  55   2              prev_index = index;
+  56   2          }
+  57   1      
+  58   1          P2 = seg_data[index] | ((char)dp_state << 7);
+  59   1      }
+  60          
+  61          void pressButton() {
+  62   1          static bit pb1_prev = 1;
+  63   1          static bit pb2_prev = 1;
+  64   1      
+  65   1          bit pb1_now = pb1;
+  66   1          bit pb2_now = pb2;
+  67   1      
+  68   1          if (pb1_now == 0 && pb1_prev == 1) {
+  69   2              if (index < 0x0F) {
+  70   3                  index++;
+  71   3              }
+  72   2              sendIndex();
+  73   2          }
+  74   1      
+  75   1          if (pb2_now == 0 && pb2_prev == 1) {
+  76   2              if (index > 0x00) {
+  77   3                  index--;
+  78   3              }
+  79   2              sendIndex();
+  80   2          }
+  81   1      
+  82   1          pb1_prev = pb1_now;
+  83   1          pb2_prev = pb2_now;
+  84   1      }
+  85          
+  86          char receiveIndex() {
+  87   1          if (RI0 == 1) {
+  88   2              RI0 = 0;
+  89   2      
+  90   2              if (SBUF0 == 'i' || SBUF0 == 'I' || SBUF0 == '+') {
+  91   3                  if (index < 0x0F) {
+  92   4                      index++;
+  93   4                  }
+  94   3              } else {
+  95   3                  if (SBUF0 == 'd' || SBUF0 == 'D' || SBUF0 == '-') {
+  96   4                      if (index > 0x00) {
+  97   5                          index--;
+  98   5                      }
+  99   4                  } else {
+ 100   4                      index = SBUF0;
+ 101   4                  }
+ 102   3              }
+ 103   2      
+ 104   2              return 1;
+ 105   2          }
+ 106   1      
+ 107   1          return 0;
+ 108   1      }
+ 109          
+ 110          void timer0_ISR(void) interrupt 1 {
+ 111   1          static unsigned int count = 0;
+ 112   1      
+ 113   1          TH0 = 0xFC;  // Recarrega o Timer0 para um atraso de 1 ms
+ 114   1          TL0 = 0x66;
+ 115   1      
+C51 COMPILER V9.60.7.0   FIRST_PROJ                                                        11/21/2023 15:04:11 PAGE 3   
+
+ 116   1          count++;
+ 117   1          if (count == 1000) {  // Aproximadamente 1 segundo
+ 118   2              dp_state = ~dp_state;  // Inverte o estado do ponto decimal
+ 119   2              count = 0;
+ 120   2          }
+ 121   1      
+ 122   1          seg_dp = dp_state;  // Atualiza o LED do ponto decimal
+ 123   1      }
+ 124          
+ 125          void main() {
+ 126   1          init_device();
+ 127   1          uart0_init();
+ 128   1      
+ 129   1          // Configuração do Timer0 para gerar interrupções a cada 1 ms
+ 130   1          TMOD |= 0x01;  // Timer0, modo 1 (16 bits)
+ 131   1          TH0 = 0xFC;    // Valor inicial para um atraso de 1 ms
+ 132   1          TL0 = 0x66;
+ 133   1          ET0 = 1;       // Habilita interrupção do Timer0
+ 134   1          TR0 = 1;       // Inicia o Timer0
+ 135   1      
+ 136   1          EA = 1;  // Habilita todas as interrupções globais
+ 137   1      
+ 138   1          while (1) {
+ 139   2              pressButton();
+ 140   2              if (receiveIndex()) {
+ 141   3                  sendIndex();
+ 142   3              }
+ 143   2          }
+ 144   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    384    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      5    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
