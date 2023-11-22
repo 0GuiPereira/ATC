@@ -4,7 +4,6 @@
 
 /*------------------------------------------------------------------------------
 Notes:
-
 The length of the receive and transmit buffers must be a power of 2.
 
 Each buffer has a WriteIndex and a ReadIndex.

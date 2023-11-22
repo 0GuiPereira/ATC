@@ -73,7 +73,6 @@ void timer2_isr(void) interrupt 5 using 2 {
 
 	blink--;
 	if(blink == 0){
-		//P2 = P2_state ^ (1 << 7);
 		dp_state = ~dp_state;
 		blink = 50;
 	}
@@ -139,7 +138,7 @@ void buttonHandler(){
 		}		
 }
 
-char receiveIndex() {
+char receiveUart() {
     if (RI0 == 1) {
         RI0 = 0;
 
@@ -166,7 +165,7 @@ char receiveIndex() {
 
 void main(void) {
 	init_device();
-  uart0_init();
+  	uart0_init();
 	timer2_init_auto(-40000);
 	
 	
@@ -179,7 +178,7 @@ void main(void) {
 	
 	while (1) {
 			buttonHandler();
-        if (receiveIndex()) {
+        if (receiveUart()) {
             sendIndex();
 				}
 	}

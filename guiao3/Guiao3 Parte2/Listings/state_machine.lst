@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 1   
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 22:44:12 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE STATE_MACHINE
@@ -24,8 +24,8 @@ line level    source
   14           
   15          //                                  L     0     1     2     3     4     5     6     7     8     9
   16          unsigned char digits_array[11] = {0xC7, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
-  17          unsigned char button1pressed; //flags se os botoes sao clicados
-  18          unsigned char button2pressed;
+  17          bit button1pressed; //flags se os botoes sao clicados
+  18          bit button2pressed;
   19          unsigned char wrongkeycount;
   20          
   21          //uart utils
@@ -36,473 +36,474 @@ line level    source
   25          
   26          //para o alarm state:
   27          unsigned char inputAlarmBuffer[5]; // 5 pq reset 5 digitos 
-  28          unsigned char bufferAlarmIndex = 0; // mesma explica��o
+  28          unsigned char bufferAlarmIndex = 0;
   29          
   30          // para o admin
   31          unsigned char inputAdminBuffer[3]; // 3 pq *#(L O P E A) locked opened program error alarm
-  32          unsigned char bufferAdminIndex = 0; // mesma explica��o
+  32          unsigned char bufferAdminIndex = 0;
   33          
-  34          //unsigned char teste_vetor[] = {'1','2','3','4'};
-  35          
-  36           
+  34          
+  35          //unsigned char teste_vetor[4] = {'o','l','a','\0'};
+  36          //unsigned char teste_vetor2[] = "ola";
   37          
-  38          /*********************************************************/
-  39          typedef enum ENUM_STATES {S1 = 0, S2, S3, S4, S5} e_states;
-  40          
-  41          e_states state, nextstate;
+  38          
+  39          
+  40          /*********************************************************/
+  41          typedef enum ENUM_STATES {S1 = 0, S2, S3, S4, S5} e_states;
   42          
-  43          /* function prototypes */
-  44          void state_1(void);
-  45          void state_2(void);
-  46          void state_3(void);
-  47          void state_4(void);
-  48          void state_5(void);
-  49          
-  50          void timer3_init_auto(int reload){
-  51   1      
-  52   1        TMR3CN = 0;
+  43          e_states state, nextstate;
+  44          
+  45          /* function prototypes */
+  46          void state_1(void);
+  47          void state_2(void);
+  48          void state_3(void);
+  49          void state_4(void);
+  50          void state_5(void);
+  51          
+  52          void timer3_init_auto(int reload){
   53   1      
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 2   
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 22:44:12 PAGE 2   
 
-  54   1        #define B_T3MH 7  
+  54   1        TMR3CN = 0;
   55   1      
-  56   1        CKCON &= ~((1 << B_T3MH));
-  57   1        
-  58   1        TMR3H = (reload) >> 8;
-  59   1        TMR3L = (reload);
-  60   1      
-  61   1        TMR3RLH = (reload) >> 8;
-  62   1        TMR3RLL = (reload);
-  63   1        
-  64   1      }
-  65          
-  66          
-  67          void timer2_init_auto(int reload){
-  68   1      
-  69   1        TMR2CN = 0;
+  56   1        #define B_T3MH 7  
+  57   1      
+  58   1        CKCON &= ~((1 << B_T3MH));
+  59   1        
+  60   1        TMR3H = (reload) >> 8;
+  61   1        TMR3L = (reload);
+  62   1      
+  63   1        TMR3RLH = (reload) >> 8;
+  64   1        TMR3RLL = (reload);
+  65   1        
+  66   1      }
+  67          
+  68          
+  69          void timer2_init_auto(int reload){
   70   1      
-  71   1        #define B_T2MH 5  
+  71   1        TMR2CN = 0;
   72   1      
-  73   1        CKCON &= ~((1 << B_T2MH));
-  74   1        
-  75   1        TMR2H = (reload) >> 8;
-  76   1        TMR2L = (reload);
-  77   1      
-  78   1        TMR2RLH = (reload) >> 8;
-  79   1        TMR2RLL = (reload);
-  80   1        
-  81   1      }
-  82          
-  83          void delay_250us(){
-  84   1        while(!(TMR3CN & (1 << B_TF3H)));
-  85   1        TMR3CN &= ~(1 << B_TF3H);  
-  86   1      }
-  87          
-  88          void delay_s(unsigned int s) {
-  89   1          unsigned int i = 0;
-  90   1      
-  91   1          while(i != (s*100)) {
-  92   2              i++;
-  93   2              while(!TF2H);
-  94   2              TF2H = 0;
-  95   2          }
-  96   1      }
-  97          
-  98          // validar a key introduzida pelo utilizador
-  99          bit validate_key(unsigned char v1[4], unsigned char v2[4]){
- 100   1        return memcmp(v1, v2, 4) == 0;
- 101   1      }
- 102          
- 103          //DEBOUNCE
- 104          unsigned int debounce(bit PB){
- 105   1              char window = 0;  
- 106   1              unsigned int j;
- 107   1          for(j = 0; j < 8; j++) {
- 108   2              window = (window << 1) | PB;
- 109   2          }
- 110   1          return window;
- 111   1      }
- 112          
- 113          // ler a key a ser posta pelo utilizador
- 114          void read_key(){
- 115   1          unsigned char button1pressed; //flags se os botoes sao clicados
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 3   
+  73   1        #define B_T2MH 5  
+  74   1      
+  75   1        CKCON &= ~((1 << B_T2MH));
+  76   1        
+  77   1        TMR2H = (reload) >> 8;
+  78   1        TMR2L = (reload);
+  79   1      
+  80   1        TMR2RLH = (reload) >> 8;
+  81   1        TMR2RLL = (reload);
+  82   1        
+  83   1      }
+  84          
+  85          void delay_250us(){
+  86   1        while(!(TMR3CN & (1 << B_TF3H)));
+  87   1        TMR3CN &= ~(1 << B_TF3H);  
+  88   1      }
+  89          
+  90          void delay_s(unsigned char s) {
+  91   1          unsigned char i = 0;
+  92   1      
+  93   1          while(i != (s*100)) {
+  94   2              i++;
+  95   2              while(!TF2H);
+  96   2              TF2H = 0;
+  97   2          }
+  98   1      }
+  99          
+ 100          // validar a key introduzida pelo utilizador
+ 101          bit validate_key(unsigned char v1[4], unsigned char v2[4]){
+ 102   1        return memcmp(v1, v2, 4) == 0;
+ 103   1      }
+ 104          
+ 105          //DEBOUNCE
+ 106          unsigned char debounce(bit PB){
+ 107   1              char window = 0;  
+ 108   1              unsigned char j;
+ 109   1          for(j = 0; j < 8; j++) {
+ 110   2              window = (window << 1) | PB;
+ 111   2          }
+ 112   1          return window;
+ 113   1      }
+ 114          
+ 115          // ler a key a ser posta pelo utilizador
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 22:44:12 PAGE 3   
 
- 116   1          unsigned char button2pressed;
- 117   1          unsigned int digit_index;     //index dos digitos
- 118   1          unsigned int index_input_key; //index da key a ser lida
- 119   1          unsigned char input_key[4];
- 120   1          
- 121   1      
- 122   1        if(!debounce(pb2) && !button2pressed){
- 123   2            button2pressed = 1; 
- 124   2            input_key[index_input_key] = digits_array[digit_index];
- 125   2            index_input_key++;
- 126   2            digit_index = 0;
- 127   2          }
- 128   1          if(index_input_key == 4){
- 129   2            if(validate_key(input_key,default_key)){
- 130   3              index_input_key = 0;
- 131   3              wrongkeycount = 0;
- 132   3              nextstate = S2;
- 133   3            }
- 134   2            else{
- 135   3              index_input_key = 0;
- 136   3              nextstate = S3;
- 137   3            }
- 138   2          }
- 139   1          if(debounce(pb2)){
- 140   2            button2pressed = 0;
+ 116          void read_key(){
+ 117   1        
+ 118   1        unsigned char button1pressed; //flags se os botoes sao clicados
+ 119   1        unsigned char button2pressed;
+ 120   1        unsigned char digit_index;      //index dos digitos
+ 121   1        unsigned char index_input_key;  //index da key a ser lida
+ 122   1        unsigned char input_key[4];
+ 123   1          
+ 124   1      
+ 125   1        if(!debounce(pb2) && !button2pressed){
+ 126   2            button2pressed = 1; 
+ 127   2            input_key[index_input_key] = digits_array[digit_index];
+ 128   2            index_input_key++;
+ 129   2            digit_index = 0;
+ 130   2          }
+ 131   1          if(index_input_key == 4){
+ 132   2            if(validate_key(input_key,default_key)){
+ 133   3              index_input_key = 0;
+ 134   3              wrongkeycount = 0;
+ 135   3              nextstate = S2;
+ 136   3            }
+ 137   2            else{
+ 138   3              index_input_key = 0;
+ 139   3              nextstate = S3;
+ 140   3            }
  141   2          }
- 142   1        
- 143   1          if(!debounce(pb1) && !button1pressed) {
- 144   2            
- 145   2            button1pressed = 1;            
- 146   2            if (digit_index < 11) {
- 147   3              digit_index++;
- 148   3            }
- 149   2            if (digit_index > 10){
- 150   3              digit_index = 0;
+ 142   1          if(debounce(pb2)){
+ 143   2            button2pressed = 0;
+ 144   2          }
+ 145   1        
+ 146   1          if(!debounce(pb1) && !button1pressed) {
+ 147   2            
+ 148   2            button1pressed = 1;            
+ 149   2            if (digit_index < 11) {
+ 150   3              digit_index++;
  151   3            }
- 152   2          }
- 153   1          if(debounce(pb1)){
- 154   2            button1pressed = 0;
+ 152   2            if (digit_index > 10){
+ 153   3              digit_index = 0;
+ 154   3            }
  155   2          }
- 156   1      
- 157   1          P2 = digits_array[digit_index];
- 158   1      }
- 159          
- 160          void errorhandling(){
- 161   1          wrongkeycount++;
- 162   1          if(wrongkeycount == 1){
- 163   2            P2 = 0x86; // E
- 164   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 4
+ 156   1          if(debounce(pb1)){
+ 157   2            button1pressed = 0;
+ 158   2          }
+ 159   1      
+ 160   1          P2 = digits_array[digit_index];
+ 161   1      }
+ 162          
+ 163          void errorhandling(){
+ 164   1          wrongkeycount++;
+ 165   1          if(wrongkeycount == 1){
+ 166   2            P2 = 0x86; // E
+ 167   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 4
              - segundos num total de 5 segundos
- 165   2            P2 = 0xC6; // C
- 166   2            delay_s(4);//wait 4 secs
- 167   2            nextstate = S4;
- 168   2          }
- 169   1          if(wrongkeycount == 2){
- 170   2            P2 = 0x86; // E
- 171   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 9
+ 168   2            P2 = 0xC6; // C
+ 169   2            delay_s(4);//wait 4 secs
+ 170   2            nextstate = S1;
+ 171   2          }
+ 172   1          if(wrongkeycount == 2){
+ 173   2            P2 = 0x86; // E
+ 174   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 9
              - segundos
- 172   2            P2 = 0xC6; // C
- 173   2            delay_s(9);//wait 9 secs
- 174   2            nextstate = S1;
- 175   2          }
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 4   
+ 175   2            P2 = 0xC6; // C
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 22:44:12 PAGE 4   
 
- 176   1          if(wrongkeycount == 3){
- 177   2            P2 = 0x86; // E
- 178   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 1
+ 176   2            delay_s(9);//wait 9 secs
+ 177   2            nextstate = S1;
+ 178   2          }
+ 179   1          if(wrongkeycount == 3){
+ 180   2            P2 = 0x86; // E
+ 181   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 1
              -4 segundos
- 179   2            P2 = 0xC6; // C
- 180   2            delay_s(14);//wait 14 secs
- 181   2            nextstate = S1;
- 182   2          }
- 183   1          if(wrongkeycount == 4){
- 184   2            P2 = 0x86; // E
- 185   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 1
+ 182   2            P2 = 0xC6; // C
+ 183   2            delay_s(14);//wait 14 secs
+ 184   2            nextstate = S1;
+ 185   2          }
+ 186   1          if(wrongkeycount == 4){
+ 187   2            P2 = 0x86; // E
+ 188   2            delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 1
              -9 segundos
- 186   2            P2 = 0xC6; // C
- 187   2            delay_s(19);//wait 19 secs
- 188   2            nextstate = S1;
- 189   2          }
- 190   1          if(wrongkeycount == 5){
- 191   2            nextstate = S4;
+ 189   2            P2 = 0xC6; // C
+ 190   2            delay_s(19);//wait 19 secs
+ 191   2            nextstate = S1;
  192   2          }
- 193   1      }
- 194          
- 195          void open_menu(){//                 O       P     C
- 196   1          unsigned int open_menu[3] = {0xA3 , 0x8C, 0xC6};
- 197   1          unsigned int index;
- 198   1          
- 199   1          if(!debounce(pb2) && !button2pressed){
- 200   2            button2pressed = 1;
- 201   2            if(open_menu[index] == 0x8C){
- 202   3              nextstate = S5;
- 203   3              index = 0;
- 204   3            }
- 205   2            if(open_menu[index] == 0xC6){
- 206   3              nextstate = S1;
- 207   3              index = 0;
- 208   3            }
- 209   2          }
- 210   1          
- 211   1          if(debounce(pb2)){
- 212   2            button2pressed = 0;
- 213   2          }
- 214   1          
- 215   1          if(!debounce(pb1) && !button1pressed){
- 216   2            
- 217   2            
- 218   2            button1pressed = 1;            
- 219   2            if (index < 3){
- 220   3              index++;
- 221   3            }
- 222   2            if (index > 2){
- 223   3              index = 0;
+ 193   1          if(wrongkeycount == 5){
+ 194   2            nextstate = S4;
+ 195   2          }
+ 196   1      }
+ 197          
+ 198          void open_menu(){//                 O       P     C
+ 199   1          unsigned char open_menu[3] = {0xA3 , 0x8C, 0xC6};
+ 200   1          unsigned char index;
+ 201   1          
+ 202   1          if(!debounce(pb2) && !button2pressed){
+ 203   2            button2pressed = 1;
+ 204   2            if(open_menu[index] == 0x8C){
+ 205   3              nextstate = S5;
+ 206   3              index = 0;
+ 207   3            }
+ 208   2            if(open_menu[index] == 0xC6){
+ 209   3              nextstate = S1;
+ 210   3              index = 0;
+ 211   3            }
+ 212   2          }
+ 213   1          
+ 214   1          if(debounce(pb2)){
+ 215   2            button2pressed = 0;
+ 216   2          }
+ 217   1          
+ 218   1          if(!debounce(pb1) && !button1pressed){
+ 219   2            
+ 220   2            
+ 221   2            button1pressed = 1;            
+ 222   2            if (index < 3){
+ 223   3              index++;
  224   3            }
- 225   2          }
- 226   1          
- 227   1          if(debounce(pb1)){
- 228   2            button1pressed = 0;
- 229   2          }
- 230   1      
- 231   1          P2 = open_menu[index];
- 232   1        
- 233   1      }
- 234          void set_key(){//                 P     0     1     2     3     4     5     6     7     8     9
- 235   1          unsigned int set_key[11] = {0x8C, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 5   
+ 225   2            if (index > 2){
+ 226   3              index = 0;
+ 227   3            }
+ 228   2          }
+ 229   1          
+ 230   1          if(debounce(pb1)){
+ 231   2            button1pressed = 0;
+ 232   2          }
+ 233   1      
+ 234   1          P2 = open_menu[index];
+ 235   1        
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 22:44:12 PAGE 5   
 
- 236   1          unsigned int index;
- 237   1          unsigned int index_new_key;
- 238   1          
- 239   1          if(!debounce(pb2) && !button2pressed){
- 240   2          }
+ 236   1      }
+ 237          void set_key(){//                 P     0     1     2     3     4     5     6     7     8     9
+ 238   1          unsigned char set_key[11] = {0x8C, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
+ 239   1          unsigned char index;
+ 240   1          unsigned char index_new_key;
  241   1          
- 242   1          if(index_new_key == 4){
- 243   2            index_new_key = 0;
- 244   2            nextstate = S1;
- 245   2          }
- 246   1          
- 247   1          if(debounce(pb2)){
- 248   2            button2pressed = 0;
- 249   2          }
- 250   1          
- 251   1          if(!debounce(pb1) && !button1pressed){
- 252   2            
- 253   2            button1pressed = 1;            
- 254   2            if (index < 11){
- 255   3              index++;
- 256   3            }
- 257   2            if (index > 10){
- 258   3              index = 0;
+ 242   1          if(!debounce(pb2) && !button2pressed){
+ 243   2          }
+ 244   1          
+ 245   1          if(index_new_key == 4){
+ 246   2            index_new_key = 0;
+ 247   2            nextstate = S1;
+ 248   2          }
+ 249   1          
+ 250   1          if(debounce(pb2)){
+ 251   2            button2pressed = 0;
+ 252   2          }
+ 253   1          
+ 254   1          if(!debounce(pb1) && !button1pressed){
+ 255   2            
+ 256   2            button1pressed = 1;            
+ 257   2            if (index < 11){
+ 258   3              index++;
  259   3            }
- 260   2          }
- 261   1          
- 262   1          if(debounce(pb1)){
- 263   2            button1pressed = 0;
- 264   2          }
- 265   1      
- 266   1          P2 = set_key[index];
- 267   1      }
- 268          
- 269          // locked state
- 270          void uartCheckBufferKey(){
- 271   1        if (RI0 == 1) {
- 272   2            RI0 = 0;
- 273   2          
- 274   2          if (bufferKeyIndex  < 4) {
- 275   3            // le o que est� no buffer
- 276   3            inputKeyBuffer[bufferKeyIndex] = SBUF0;
- 277   3            bufferKeyIndex++;
- 278   3          }
- 279   2          
- 280   2          
- 281   2          if (bufferKeyIndex == 4) {
- 282   3            // compara o vetor com '8051'
- 283   3            if (inputKeyBuffer[0] == '8' && inputKeyBuffer[1] == '0' && inputKeyBuffer[2] == '5' && inputKeyBuffer[
+ 260   2            if (index > 10){
+ 261   3              index = 0;
+ 262   3            }
+ 263   2          }
+ 264   1          
+ 265   1          if(debounce(pb1)){
+ 266   2            button1pressed = 0;
+ 267   2          }
+ 268   1      
+ 269   1          P2 = set_key[index];
+ 270   1      }
+ 271          
+ 272          // locked state
+ 273          void uartCheckBufferKey(){
+ 274   1        if (RI0 == 1) {
+ 275   2            RI0 = 0;
+ 276   2          
+ 277   2          if (bufferKeyIndex  < 4) {
+ 278   3            // le o que está no buffer
+ 279   3            inputKeyBuffer[bufferKeyIndex] = SBUF0;
+ 280   3            bufferKeyIndex++;
+ 281   3          }
+ 282   2          
+ 283   2          
+ 284   2          if (bufferKeyIndex == 4) {
+ 285   3            // compara o vetor com '8051'
+ 286   3            if (inputKeyBuffer[0] == '8' && inputKeyBuffer[1] == '0' && inputKeyBuffer[2] == '5' && inputKeyBuffer[
              -3] == '1'){
- 284   4              nextstate = S2;
- 285   4              bufferKeyIndex = 0;
- 286   4              
- 287   4            } else {
+ 287   4              nextstate = S2;
  288   4              bufferKeyIndex = 0;
- 289   4              nextstate = S3;
- 290   4            }
- 291   3          }
- 292   2          
- 293   2        }
- 294   1      }
- 295          
- 296          // alarm state
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 6   
+ 289   4              
+ 290   4            } else {
+ 291   4              bufferKeyIndex = 0;
+ 292   4              nextstate = S3;
+ 293   4            }
+ 294   3          }
+ 295   2          
+ 296   2        }
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 22:44:12 PAGE 6   
 
- 297          char uartAlarm() {
- 298   1      
- 299   1          if (RI0 == 1) {
- 300   2            RI0 = 0;
- 301   2          
- 302   2            if (bufferAlarmIndex < 5) {
- 303   3              // le o que est� no buffer
- 304   3              inputAlarmBuffer[bufferAlarmIndex] = SBUF0;
- 305   3              bufferAlarmIndex++;
- 306   3            } 
- 307   2            
- 308   2          if (bufferAlarmIndex == 5) {
- 309   3            // Compare the inputBuffer with the key "8051"
- 310   3            if (inputAlarmBuffer[0] == 'r' && inputAlarmBuffer[1] == 'e' && inputAlarmBuffer[2] == 's' && inputAlar
+ 297   1      }
+ 298          
+ 299          // alarm state
+ 300          char uartAlarm() {
+ 301   1      
+ 302   1          if (RI0 == 1) {
+ 303   2            RI0 = 0;
+ 304   2          
+ 305   2            if (bufferAlarmIndex < 5) {
+ 306   3              // le o que está no buffer
+ 307   3              inputAlarmBuffer[bufferAlarmIndex] = SBUF0;
+ 308   3              bufferAlarmIndex++;
+ 309   3            } 
+ 310   2            
+ 311   2          if (bufferAlarmIndex == 5) {
+ 312   3            // Compare the inputBuffer with the key "8051"
+ 313   3            if (inputAlarmBuffer[0] == 'r' && inputAlarmBuffer[1] == 'e' && inputAlarmBuffer[2] == 's' && inputAlar
              -mBuffer[3] == 'e' && inputAlarmBuffer[4] == 't'){
- 311   4              nextstate = S1;
- 312   4              bufferAlarmIndex = 0;
- 313   4              return 0;
- 314   4            }
- 315   3            else {
- 316   4            bufferAlarmIndex = 0;
+ 314   4              nextstate = S1;
+ 315   4              bufferAlarmIndex = 0;
+ 316   4              return 0;
  317   4            }
- 318   3          }
- 319   2      
- 320   2            
- 321   2          }
- 322   1        return 1; 
- 323   1      }
- 324          
- 325          void square_wave(){
- 326   1        char loop = 1;
- 327   1        while (loop){ // mudar para aceitar a HWFLAG
- 328   2          loop = uartAlarm();
- 329   2          //HIGH
- 330   2          P1 |= 0x80;
- 331   2          delay_250us();
- 332   2          //LOW
- 333   2          P1 &= ~(0x80);
+ 318   3            else {
+ 319   4            bufferAlarmIndex = 0;
+ 320   4            }
+ 321   3          }
+ 322   2      
+ 323   2            
+ 324   2          }
+ 325   1        return 1; 
+ 326   1      }
+ 327          
+ 328          void square_wave(){
+ 329   1        char loop = 1;
+ 330   1        while (loop){ // mudar para aceitar a HWFLAG
+ 331   2          loop = uartAlarm();
+ 332   2          //HIGH
+ 333   2          P1 |= 0x80;
  334   2          delay_250us();
- 335   2        }
- 336   1      }
- 337          
- 338          //admin codes
- 339          void uartAdmin() {
- 340   1      
- 341   1          if (RI0 == 1) {
- 342   2              RI0 = 0;
- 343   2          if (bufferAdminIndex < 3) {
- 344   3            // le o que est� no buffer
- 345   3            inputAdminBuffer[bufferAdminIndex] = SBUF0;
- 346   3            bufferAdminIndex++;
- 347   3          }
- 348   2          else {
- 349   3            bufferAdminIndex = 0;
+ 335   2          //LOW
+ 336   2          P1 &= ~(0x80);
+ 337   2          delay_250us();
+ 338   2        }
+ 339   1      }
+ 340          
+ 341          //admin codes
+ 342          void uartAdmin() {
+ 343   1      
+ 344   1          if (RI0 == 1) {
+ 345   2              RI0 = 0;
+ 346   2          if (bufferAdminIndex < 3) {
+ 347   3            // le o que está no buffer
+ 348   3            inputAdminBuffer[bufferAdminIndex] = SBUF0;
+ 349   3            bufferAdminIndex++;
  350   3          }
- 351   2          
- 352   2          if (bufferAdminIndex == 3) {
- 353   3            // Compare the inputBuffer with the key "8051"
- 354   3            if (inputAdminBuffer[0] == '*' && inputAdminBuffer[1] == '#'){
- 355   4              if (inputAdminBuffer[3] == 'L'){
- 356   5                nextstate = S1;
- 357   5              }
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 7   
+ 351   2          else {
+ 352   3            bufferAdminIndex = 0;
+ 353   3          }
+ 354   2          
+ 355   2          if (bufferAdminIndex == 3) {
+ 356   3            if (inputAdminBuffer[0] == '*' && inputAdminBuffer[1] == '#'){
+ 357   4              if (inputAdminBuffer[2] == 'L'){
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 22:44:12 PAGE 7   
 
- 358   4              if (inputAdminBuffer[3] == 'O'){
- 359   5                nextstate = S2;
+ 358   5                nextstate = S1;
+ 359   5                bufferAdminIndex = 0;
  360   5              }
- 361   4              if (inputAdminBuffer[3] == 'P'){
- 362   5                nextstate = S5;
- 363   5              }
- 364   4              if (inputAdminBuffer[3] == 'E'){
- 365   5                nextstate = S3;
- 366   5              }
- 367   4              if (inputAdminBuffer[3] == 'A'){
- 368   5                nextstate = S4;
- 369   5              }
- 370   4            }
- 371   3          }   
- 372   2          } 
- 373   1      }
- 374          
- 375          void sendUart(char vectorToBuffer[]) {
- 376   1          unsigned char i = 0;
- 377   1      
- 378   1          // Wait for the previous transmission to complete
- 379   1          while (TI0 == 0);
- 380   1        
- 381   1      //    SBUF0 = vectorToBuffer[0];
- 382   1      //    SBUF0 = vectorToBuffer[1];
- 383   1      //    SBUF0 = vectorToBuffer[2];
- 384   1      //    SBUF0 = vectorToBuffer[3];
+ 361   4              if (inputAdminBuffer[2] == 'O'){
+ 362   5                nextstate = S2;
+ 363   5                bufferAdminIndex = 0;
+ 364   5              }
+ 365   4              if (inputAdminBuffer[2] == 'P'){
+ 366   5                nextstate = S5;
+ 367   5                bufferAdminIndex = 0;
+ 368   5              }
+ 369   4              if (inputAdminBuffer[2] == 'E'){
+ 370   5                nextstate = S3;
+ 371   5                bufferAdminIndex = 0;
+ 372   5              }
+ 373   4              if (inputAdminBuffer[2] == 'A'){
+ 374   5                nextstate = S4;
+ 375   5                bufferAdminIndex = 0;
+ 376   5              }
+ 377   4            }
+ 378   3          }   
+ 379   2          } 
+ 380   1      }
+ 381          
+ 382          void sendUart(char *vectorToBuffer) {
+ 383   1        unsigned char i;
+ 384   1        i = 0;
  385   1      
- 386   1          // Send each element of the array
- 387   1          for (i = 0; i < sizeof(vectorToBuffer); i++) {
- 388   2              SBUF0 = vectorToBuffer[i];
- 389   2      
- 390   2              // Wait for the current byte to be transmitted
- 391   2              while (TI0 == 0);
- 392   2              TI0 = 0;
- 393   2          }
- 394   1      
- 395   1          // Clear the transmit interrupt flag
- 396   1          
- 397   1      }
- 398          
- 399          /*********************************************************/ 
- 400          //                          close/locked    open    error     alarm   set_key
- 401          void (*state_process [])(void) = {state_1, state_2, state_3, state_4, state_5};
- 402          
- 403          
- 404          void state_1(void){
- 405   1        read_key();
- 406   1        P1 = 0x10;
- 407   1        //sendUart(teste_vetor);
- 408   1        uartCheckBufferKey();
- 409   1      }
- 410          void state_2(void){ // opened
- 411   1        open_menu();
- 412   1        P1 &= ~(0x10);
- 413   1      }
- 414          void state_3(void){ //error
- 415   1        errorhandling();
- 416   1      }
- 417          void state_4(void){ // alarm
- 418   1        P2 = 0x88;
- 419   1        square_wave();
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 8   
+ 386   1        while (vectorToBuffer[i] != '\0') {
+ 387   2          
+ 388   2          SBUF0 = vectorToBuffer[i];
+ 389   2          while (TI0 == 0);
+ 390   2          TI0 = 0;
+ 391   2          
+ 392   2          i = (i + 1) % 16;
+ 393   2        }
+ 394   1            
+ 395   1      }
+ 396          
+ 397          /*********************************************************/ 
+ 398          //                          close/locked    open    error     alarm   set_key
+ 399          void (*state_process [])(void) = {state_1, state_2, state_3, state_4, state_5};
+ 400          
+ 401          
+ 402          void state_1(void){
+ 403   1        read_key();
+ 404   1        P1 = 0x10;
+ 405   1        //sendUart(teste_vetor);
+ 406   1        uartCheckBufferKey();
+ 407   1      }
+ 408          void state_2(void){ // opened
+ 409   1        open_menu();
+ 410   1        P1 &= ~(0x10);
+ 411   1        uartAdmin();
+ 412   1      }
+ 413          void state_3(void){ //error
+ 414   1        errorhandling();
+ 415   1      }
+ 416          void state_4(void){ // alarm
+ 417   1        P2 = 0x88;
+ 418   1        square_wave();
+ 419   1        
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 22:44:12 PAGE 8   
 
- 420   1        
- 421   1      }
- 422          void state_5(void){ // program/set_key
- 423   1        set_key();
- 424   1      }
- 425          
- 426          /*********************************************************/
- 427          void encode_FSM(){
- 428   1          state_process[state] ();
- 429   1      }
- 430          
- 431          /*********************************************************/
+ 420   1      }
+ 421          void state_5(void){ // program/set_key
+ 422   1        set_key();
+ 423   1      }
+ 424          
+ 425          /*********************************************************/
+ 426          void encode_FSM(){
+ 427   1          state_process[state] ();
+ 428   1      }
+ 429          
+ 430          /*********************************************************/
+ 431          
  432          
- 433          
- 434          /*********************************************************
- 435           *    main function                                      *
- 436           *********************************************************/
- 437          void main (void){
- 438   1        
- 439   1        Init_Device(); 
- 440   1        
- 441   1        timer2_init_auto(-40000);
- 442   1        timer3_init_auto(-1000);
- 443   1        
- 444   1        state = nextstate = S1;
- 445   1        
- 446   1        //Set by hardware when the Timer 2/3 high byte overflows from 0xFF to 0x00. In 16 bit 
- 447   1        //mode, this will occur when Timer 2/3 overflows from 0xFFFF to 0x0000.   
- 448   1        TF2H = 0; 
- 449   1        TMR3CN &= ~(1 << B_TF3H);
- 450   1        
- 451   1        // Enable Flag Timer 2/3 Overflow
- 452   1        ET2 = 1;
- 453   1        EIE1 |= (1 << B_ET3);
- 454   1        
- 455   1        // Timer 2/3 Run Control. Timer 2/3 is enabled by setting this bit to 1. 
- 456   1        TMR3CN |= (1 << B_TR3);
- 457   1        TR2 = 1;
- 458   1            
- 459   1        while (1) {
- 460   2          //uartAdmin();
- 461   2          encode_FSM();
- 462   2          state = nextstate;
- 463   2        }
- 464   1      }
+ 433          /*********************************************************
+ 434           *    main function                                      *
+ 435           *********************************************************/
+ 436          void main (void){
+ 437   1        
+ 438   1        Init_Device(); 
+ 439   1        
+ 440   1        timer2_init_auto(-40000);
+ 441   1        timer3_init_auto(-1000);
+ 442   1        
+ 443   1        state = nextstate = S1;
+ 444   1        
+ 445   1        //Set by hardware when the Timer 2/3 high byte overflows from 0xFF to 0x00. In 16 bit 
+ 446   1        //mode, this will occur when Timer 2/3 overflows from 0xFFFF to 0x0000.   
+ 447   1        TF2H = 0; 
+ 448   1        TMR3CN &= ~(1 << B_TF3H);
+ 449   1        
+ 450   1        // Enable Flag Timer 2/3 Overflow
+ 451   1        ET2 = 1;
+ 452   1        EIE1 |= (1 << B_ET3);
+ 453   1        
+ 454   1        // Timer 2/3 Run Control. Timer 2/3 is enabled by setting this bit to 1. 
+ 455   1        TMR3CN |= (1 << B_TR3);
+ 456   1        TR2 = 1;
+ 457   1            
+ 458   1        //sendUart(teste_vetor);
+ 459   1        //sendUart(teste_vetor2); 
+ 460   1        while (1) {
+ 461   2          
+ 462   2          encode_FSM();
+ 463   2          state = nextstate;
+ 464   2        }
+ 465   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1310    ----
-   CONSTANT SIZE    =     28    ----
+   CODE SIZE        =   1173    ----
+   CONSTANT SIZE    =     14    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =    116    ----
+   DATA SIZE        =     92    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =      1    ----
+   BIT SIZE         =      3    ----
 END OF MODULE INFORMATION.
 
 

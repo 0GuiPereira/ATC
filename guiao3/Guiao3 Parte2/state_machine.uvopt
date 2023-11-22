@@ -155,17 +155,22 @@
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>bufferKeyIndex</ItemText>
+          <ItemText>vectorToBuffer</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>inputKeyBuffer[0]</ItemText>
+          <ItemText>teste_vetor</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>inputKeyBuffer</ItemText>
+          <ItemText>i</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>teste_vetor2</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

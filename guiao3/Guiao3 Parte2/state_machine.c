@@ -14,8 +14,8 @@ unsigned char default_key[4] = {0x80, 0xC0, 0x92, 0xF9};
  
 //																	L			0			1			2			3			4			5			6			7			8			9
 unsigned char digits_array[11] = {0xC7, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
-unsigned char button1pressed; //flags se os botoes sao clicados
-unsigned char button2pressed;
+bit button1pressed; //flags se os botoes sao clicados
+bit button2pressed;
 unsigned char wrongkeycount;
 
 //uart utils
@@ -25,15 +25,17 @@ char bufferKeyIndex = -1; // come�a a -1 pq dando debug vi que na primeira pas
 
 //para o alarm state:
 unsigned char inputAlarmBuffer[5]; // 5 pq reset 5 digitos 
-unsigned char bufferAlarmIndex = 0; // mesma explica��o
+unsigned char bufferAlarmIndex = 0;
 
 // para o admin
 unsigned char inputAdminBuffer[3]; // 3 pq *#(L O P E A) locked opened program error alarm
-unsigned char bufferAdminIndex = 0; // mesma explica��o
+unsigned char bufferAdminIndex = 0;
 
-//unsigned char teste_vetor[] = {'1','2','3','4'};
 
- 
+//unsigned char teste_vetor[4] = {'o','l','a','\0'};
+//unsigned char teste_vetor2[] = "ola";
+
+
 
 /*********************************************************/
 typedef enum ENUM_STATES {S1 = 0, S2, S3, S4, S5} e_states;
@@ -85,8 +87,8 @@ void delay_250us(){
 	TMR3CN &= ~(1 << B_TF3H);  
 }
 
-void delay_s(unsigned int s) {
-    unsigned int i = 0;
+void delay_s(unsigned char s) {
+    unsigned char i = 0;
 
     while(i != (s*100)) {
         i++;
@@ -101,9 +103,9 @@ bit validate_key(unsigned char v1[4], unsigned char v2[4]){
 }
 
 //DEBOUNCE
-unsigned int debounce(bit PB){
+unsigned char debounce(bit PB){
         char window = 0;  
-        unsigned int j;
+        unsigned char j;
     for(j = 0; j < 8; j++) {
         window = (window << 1) | PB;
     }
@@ -112,11 +114,12 @@ unsigned int debounce(bit PB){
 
 // ler a key a ser posta pelo utilizador
 void read_key(){
-		unsigned char button1pressed; //flags se os botoes sao clicados
-		unsigned char button2pressed;
-		unsigned int digit_index;			//index dos digitos
-		unsigned int index_input_key;	//index da key a ser lida
-		unsigned char input_key[4];
+	
+	unsigned char button1pressed; //flags se os botoes sao clicados
+	unsigned char button2pressed;
+	unsigned char digit_index;			//index dos digitos
+	unsigned char index_input_key;	//index da key a ser lida
+	unsigned char input_key[4];
 		
 
 	if(!debounce(pb2) && !button2pressed){
@@ -164,7 +167,7 @@ void errorhandling(){
 			delay_s(1); //diz que foi erro pelo E no display passado 1 segundo muda para C de close e espera mais 4 segundos num total de 5 segundos
 			P2 = 0xC6; // C
 			delay_s(4);//wait 4 secs
-			nextstate = S4;
+			nextstate = S1;
 		}
 		if(wrongkeycount == 2){
 			P2 = 0x86; // E
@@ -193,8 +196,8 @@ void errorhandling(){
 }
 
 void open_menu(){//							  	O		  	P		  C
-		unsigned int open_menu[3] = {0xA3 , 0x8C, 0xC6};
-		unsigned int index;
+		unsigned char open_menu[3] = {0xA3 , 0x8C, 0xC6};
+		unsigned char index;
 		
 		if(!debounce(pb2) && !button2pressed){
 			button2pressed = 1;
@@ -232,9 +235,9 @@ void open_menu(){//							  	O		  	P		  C
 	
 }
 void set_key(){//									P			0			1			2			3			4			5			6			7			8			9
-		unsigned int set_key[11] = {0x8C, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
-		unsigned int index;
-		unsigned int index_new_key;
+		unsigned char set_key[11] = {0x8C, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
+		unsigned char index;
+		unsigned char index_new_key;
 		
 		if(!debounce(pb2) && !button2pressed){
 		}
@@ -272,7 +275,7 @@ void uartCheckBufferKey(){
       RI0 = 0;
 		
 		if (bufferKeyIndex  < 4) {
-			// le o que est� no buffer
+			// le o que está no buffer
 			inputKeyBuffer[bufferKeyIndex] = SBUF0;
 			bufferKeyIndex++;
 		}
@@ -300,13 +303,12 @@ char uartAlarm() {
 			RI0 = 0;
 		
 			if (bufferAlarmIndex < 5) {
-				// le o que est� no buffer
+				// le o que está no buffer
 				inputAlarmBuffer[bufferAlarmIndex] = SBUF0;
 				bufferAlarmIndex++;
 			}	
 			
 		if (bufferAlarmIndex == 5) {
-			// Compare the inputBuffer with the key "8051"
 			if (inputAlarmBuffer[0] == 'r' && inputAlarmBuffer[1] == 'e' && inputAlarmBuffer[2] == 's' && inputAlarmBuffer[3] == 'e' && inputAlarmBuffer[4] == 't'){
 				nextstate = S1;
 				bufferAlarmIndex = 0;
@@ -341,7 +343,7 @@ void uartAdmin() {
     if (RI0 == 1) {
         RI0 = 0;
 		if (bufferAdminIndex < 3) {
-			// le o que est� no buffer
+			// le o que está no buffer
 			inputAdminBuffer[bufferAdminIndex] = SBUF0;
 			bufferAdminIndex++;
 		}
@@ -350,50 +352,45 @@ void uartAdmin() {
 		}
 		
 		if (bufferAdminIndex == 3) {
-			// Compare the inputBuffer with the key "8051"
 			if (inputAdminBuffer[0] == '*' && inputAdminBuffer[1] == '#'){
-				if (inputAdminBuffer[3] == 'L'){
+				if (inputAdminBuffer[2] == 'L'){
 					nextstate = S1;
+					bufferAdminIndex = 0;
 				}
-				if (inputAdminBuffer[3] == 'O'){
+				if (inputAdminBuffer[2] == 'O'){
 					nextstate = S2;
+					bufferAdminIndex = 0;
 				}
-				if (inputAdminBuffer[3] == 'P'){
+				if (inputAdminBuffer[2] == 'P'){
 					nextstate = S5;
+					bufferAdminIndex = 0;
 				}
-				if (inputAdminBuffer[3] == 'E'){
+				if (inputAdminBuffer[2] == 'E'){
 					nextstate = S3;
+					bufferAdminIndex = 0;
 				}
-				if (inputAdminBuffer[3] == 'A'){
+				if (inputAdminBuffer[2] == 'A'){
 					nextstate = S4;
+					bufferAdminIndex = 0;
 				}
 			}
 		}		
     }	
 }
 
-void sendUart(char vectorToBuffer[]) {
-    unsigned char i = 0;
+void sendUart(char *vectorToBuffer) {
+	unsigned char i;
+	i = 0;
 
-    // Wait for the previous transmission to complete
-    while (TI0 == 0);
-	
-//		SBUF0 = vectorToBuffer[0];
-//		SBUF0 = vectorToBuffer[1];
-//		SBUF0 = vectorToBuffer[2];
-//		SBUF0 = vectorToBuffer[3];
-
-    // Send each element of the array
-    for (i = 0; i < sizeof(vectorToBuffer); i++) {
-        SBUF0 = vectorToBuffer[i];
-
-        // Wait for the current byte to be transmitted
-        while (TI0 == 0);
-				TI0 = 0;
-    }
-
-    // Clear the transmit interrupt flag
-    
+	while (vectorToBuffer[i] != '\0') {
+		
+		SBUF0 = vectorToBuffer[i];
+		while (TI0 == 0);
+		TI0 = 0;
+		
+		i = (i + 1) % 16;
+	}
+	    
 }
 
 /*********************************************************/	
@@ -410,6 +407,7 @@ void state_1(void){
 void state_2(void){ // opened
 	open_menu();
 	P1 &= ~(0x10);
+	uartAdmin();
 }
 void state_3(void){ //error
 	errorhandling();
@@ -456,8 +454,10 @@ void main (void){
 	TMR3CN |= (1 << B_TR3);
 	TR2 = 1;
 			
+	//sendUart(teste_vetor);
+	//sendUart(teste_vetor2);	
 	while (1) {
-		//uartAdmin();
+		
 		encode_FSM();
 		state = nextstate;
 	}
