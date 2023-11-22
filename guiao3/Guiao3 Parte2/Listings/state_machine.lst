@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 15:07:11 PAGE 1   
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE STATE_MACHINE
@@ -62,7 +62,7 @@ line level    source
   51   1      
   52   1        TMR3CN = 0;
   53   1      
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 15:07:11 PAGE 2   
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 2   
 
   54   1        #define B_T3MH 7  
   55   1      
@@ -126,7 +126,7 @@ line level    source
  113          // ler a key a ser posta pelo utilizador
  114          void read_key(){
  115   1          unsigned char button1pressed; //flags se os botoes sao clicados
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 15:07:11 PAGE 3   
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 3   
 
  116   1          unsigned char button2pressed;
  117   1          unsigned int digit_index;     //index dos digitos
@@ -190,7 +190,7 @@ line level    source
  173   2            delay_s(9);//wait 9 secs
  174   2            nextstate = S1;
  175   2          }
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 15:07:11 PAGE 4   
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 4   
 
  176   1          if(wrongkeycount == 3){
  177   2            P2 = 0x86; // E
@@ -254,7 +254,7 @@ line level    source
  233   1      }
  234          void set_key(){//                 P     0     1     2     3     4     5     6     7     8     9
  235   1          unsigned int set_key[11] = {0x8C, 0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 15:07:11 PAGE 5   
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 5   
 
  236   1          unsigned int index;
  237   1          unsigned int index_new_key;
@@ -301,7 +301,7 @@ line level    source
  278   3          }
  279   2          
  280   2          
- 281   2          if (bufferKeyIndex == 3) {
+ 281   2          if (bufferKeyIndex == 4) {
  282   3            // compara o vetor com '8051'
  283   3            if (inputKeyBuffer[0] == '8' && inputKeyBuffer[1] == '0' && inputKeyBuffer[2] == '5' && inputKeyBuffer[
              -3] == '1'){
@@ -318,179 +318,181 @@ line level    source
  294   1      }
  295          
  296          // alarm state
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 15:07:11 PAGE 6   
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 6   
 
  297          char uartAlarm() {
  298   1      
  299   1          if (RI0 == 1) {
  300   2            RI0 = 0;
  301   2          
- 302   2          if (bufferAlarmIndex == 4) {
- 303   3            // Compare the inputBuffer with the key "8051"
- 304   3            if (inputAlarmBuffer[0] == 'r' && inputAlarmBuffer[1] == 'e' && inputAlarmBuffer[2] == 's' && inputAlar
+ 302   2            if (bufferAlarmIndex < 5) {
+ 303   3              // le o que est� no buffer
+ 304   3              inputAlarmBuffer[bufferAlarmIndex] = SBUF0;
+ 305   3              bufferAlarmIndex++;
+ 306   3            } 
+ 307   2            
+ 308   2          if (bufferAlarmIndex == 5) {
+ 309   3            // Compare the inputBuffer with the key "8051"
+ 310   3            if (inputAlarmBuffer[0] == 'r' && inputAlarmBuffer[1] == 'e' && inputAlarmBuffer[2] == 's' && inputAlar
              -mBuffer[3] == 'e' && inputAlarmBuffer[4] == 't'){
- 305   4              nextstate = S1;
- 306   4              bufferAlarmIndex = 0;
- 307   4              return 0;
- 308   4            }
- 309   3            else {
- 310   4            bufferAlarmIndex = 0;
- 311   4            }
- 312   3          }
- 313   2      
- 314   2          if (bufferAlarmIndex < 4) {
- 315   3              // le o que est� no buffer
- 316   3              inputAlarmBuffer[bufferAlarmIndex] = SBUF0;
- 317   3              bufferAlarmIndex++;
- 318   3            }   
- 319   2          }
- 320   1        return 1; 
- 321   1      }
- 322          
- 323          void square_wave(){
- 324   1        char loop = 1;
- 325   1        while (loop){ // mudar para aceitar a HWFLAG
- 326   2          loop = uartAlarm();
- 327   2          //HIGH
- 328   2          P1 |= 0x80;
- 329   2          delay_250us();
- 330   2          //LOW
- 331   2          P1 &= ~(0x80);
- 332   2          delay_250us();
- 333   2        }
- 334   1      }
- 335          
- 336          //admin codes
- 337          void uartAdmin() {
- 338   1      
- 339   1          if (RI0 == 1) {
- 340   2              RI0 = 0;
- 341   2          if (bufferAdminIndex < 3) {
- 342   3            // le o que est� no buffer
- 343   3            inputAdminBuffer[bufferAdminIndex] = SBUF0;
- 344   3            bufferAdminIndex++;
- 345   3          }
- 346   2          else {
- 347   3            bufferAdminIndex = 0;
- 348   3          }
- 349   2          
- 350   2          if (bufferAdminIndex == 3) {
- 351   3            // Compare the inputBuffer with the key "8051"
- 352   3            if (inputAdminBuffer[0] == '*' && inputAdminBuffer[1] == '#'){
- 353   4              if (inputAdminBuffer[3] == 'L'){
- 354   5                nextstate = S1;
- 355   5              }
- 356   4              if (inputAdminBuffer[3] == 'O'){
- 357   5                nextstate = S2;
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 15:07:11 PAGE 7   
+ 311   4              nextstate = S1;
+ 312   4              bufferAlarmIndex = 0;
+ 313   4              return 0;
+ 314   4            }
+ 315   3            else {
+ 316   4            bufferAlarmIndex = 0;
+ 317   4            }
+ 318   3          }
+ 319   2      
+ 320   2            
+ 321   2          }
+ 322   1        return 1; 
+ 323   1      }
+ 324          
+ 325          void square_wave(){
+ 326   1        char loop = 1;
+ 327   1        while (loop){ // mudar para aceitar a HWFLAG
+ 328   2          loop = uartAlarm();
+ 329   2          //HIGH
+ 330   2          P1 |= 0x80;
+ 331   2          delay_250us();
+ 332   2          //LOW
+ 333   2          P1 &= ~(0x80);
+ 334   2          delay_250us();
+ 335   2        }
+ 336   1      }
+ 337          
+ 338          //admin codes
+ 339          void uartAdmin() {
+ 340   1      
+ 341   1          if (RI0 == 1) {
+ 342   2              RI0 = 0;
+ 343   2          if (bufferAdminIndex < 3) {
+ 344   3            // le o que est� no buffer
+ 345   3            inputAdminBuffer[bufferAdminIndex] = SBUF0;
+ 346   3            bufferAdminIndex++;
+ 347   3          }
+ 348   2          else {
+ 349   3            bufferAdminIndex = 0;
+ 350   3          }
+ 351   2          
+ 352   2          if (bufferAdminIndex == 3) {
+ 353   3            // Compare the inputBuffer with the key "8051"
+ 354   3            if (inputAdminBuffer[0] == '*' && inputAdminBuffer[1] == '#'){
+ 355   4              if (inputAdminBuffer[3] == 'L'){
+ 356   5                nextstate = S1;
+ 357   5              }
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 7   
 
- 358   5              }
- 359   4              if (inputAdminBuffer[3] == 'P'){
- 360   5                nextstate = S5;
- 361   5              }
- 362   4              if (inputAdminBuffer[3] == 'E'){
- 363   5                nextstate = S3;
- 364   5              }
- 365   4              if (inputAdminBuffer[3] == 'A'){
- 366   5                nextstate = S4;
- 367   5              }
- 368   4            }
- 369   3          }   
- 370   2          } 
- 371   1      }
- 372          
- 373          void sendUart(char vectorToBuffer[]) {
- 374   1          unsigned char i = 0;
- 375   1      
- 376   1          // Wait for the previous transmission to complete
- 377   1          while (TI0 == 0);
- 378   1        
- 379   1      //    SBUF0 = vectorToBuffer[0];
- 380   1      //    SBUF0 = vectorToBuffer[1];
- 381   1      //    SBUF0 = vectorToBuffer[2];
- 382   1      //    SBUF0 = vectorToBuffer[3];
- 383   1      
- 384   1          // Send each element of the array
- 385   1          for (i = 0; i < sizeof(vectorToBuffer); i++) {
- 386   2              SBUF0 = vectorToBuffer[i];
- 387   2      
- 388   2              // Wait for the current byte to be transmitted
- 389   2              while (TI0 == 0);
- 390   2              TI0 = 0;
- 391   2          }
- 392   1      
- 393   1          // Clear the transmit interrupt flag
- 394   1          
- 395   1      }
- 396          
- 397          /*********************************************************/ 
- 398          //                          close/locked    open    error     alarm   set_key
- 399          void (*state_process [])(void) = {state_1, state_2, state_3, state_4, state_5};
- 400          
- 401          
- 402          void state_1(void){
- 403   1        read_key();
- 404   1        P1 = 0x10;
- 405   1        //sendUart(teste_vetor);
- 406   1        uartCheckBufferKey();
- 407   1      }
- 408          void state_2(void){ // opened
- 409   1        open_menu();
- 410   1        P1 &= ~(0x10);
- 411   1      }
- 412          void state_3(void){ //error
- 413   1        errorhandling();
- 414   1      }
- 415          void state_4(void){ // alarm
- 416   1        P2 = 0x88;
- 417   1        square_wave();
- 418   1        
- 419   1      }
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 15:07:11 PAGE 8   
+ 358   4              if (inputAdminBuffer[3] == 'O'){
+ 359   5                nextstate = S2;
+ 360   5              }
+ 361   4              if (inputAdminBuffer[3] == 'P'){
+ 362   5                nextstate = S5;
+ 363   5              }
+ 364   4              if (inputAdminBuffer[3] == 'E'){
+ 365   5                nextstate = S3;
+ 366   5              }
+ 367   4              if (inputAdminBuffer[3] == 'A'){
+ 368   5                nextstate = S4;
+ 369   5              }
+ 370   4            }
+ 371   3          }   
+ 372   2          } 
+ 373   1      }
+ 374          
+ 375          void sendUart(char vectorToBuffer[]) {
+ 376   1          unsigned char i = 0;
+ 377   1      
+ 378   1          // Wait for the previous transmission to complete
+ 379   1          while (TI0 == 0);
+ 380   1        
+ 381   1      //    SBUF0 = vectorToBuffer[0];
+ 382   1      //    SBUF0 = vectorToBuffer[1];
+ 383   1      //    SBUF0 = vectorToBuffer[2];
+ 384   1      //    SBUF0 = vectorToBuffer[3];
+ 385   1      
+ 386   1          // Send each element of the array
+ 387   1          for (i = 0; i < sizeof(vectorToBuffer); i++) {
+ 388   2              SBUF0 = vectorToBuffer[i];
+ 389   2      
+ 390   2              // Wait for the current byte to be transmitted
+ 391   2              while (TI0 == 0);
+ 392   2              TI0 = 0;
+ 393   2          }
+ 394   1      
+ 395   1          // Clear the transmit interrupt flag
+ 396   1          
+ 397   1      }
+ 398          
+ 399          /*********************************************************/ 
+ 400          //                          close/locked    open    error     alarm   set_key
+ 401          void (*state_process [])(void) = {state_1, state_2, state_3, state_4, state_5};
+ 402          
+ 403          
+ 404          void state_1(void){
+ 405   1        read_key();
+ 406   1        P1 = 0x10;
+ 407   1        //sendUart(teste_vetor);
+ 408   1        uartCheckBufferKey();
+ 409   1      }
+ 410          void state_2(void){ // opened
+ 411   1        open_menu();
+ 412   1        P1 &= ~(0x10);
+ 413   1      }
+ 414          void state_3(void){ //error
+ 415   1        errorhandling();
+ 416   1      }
+ 417          void state_4(void){ // alarm
+ 418   1        P2 = 0x88;
+ 419   1        square_wave();
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     11/22/2023 17:32:47 PAGE 8   
 
- 420          void state_5(void){ // program/set_key
- 421   1        set_key();
- 422   1      }
- 423          
- 424          /*********************************************************/
- 425          void encode_FSM(){
- 426   1          state_process[state] ();
- 427   1      }
- 428          
- 429          /*********************************************************/
+ 420   1        
+ 421   1      }
+ 422          void state_5(void){ // program/set_key
+ 423   1        set_key();
+ 424   1      }
+ 425          
+ 426          /*********************************************************/
+ 427          void encode_FSM(){
+ 428   1          state_process[state] ();
+ 429   1      }
  430          
- 431          
- 432          /*********************************************************
- 433           *    main function                                      *
- 434           *********************************************************/
- 435          void main (void){
- 436   1        
- 437   1        Init_Device(); 
+ 431          /*********************************************************/
+ 432          
+ 433          
+ 434          /*********************************************************
+ 435           *    main function                                      *
+ 436           *********************************************************/
+ 437          void main (void){
  438   1        
- 439   1        timer2_init_auto(-40000);
- 440   1        timer3_init_auto(-1000);
- 441   1        
- 442   1        state = nextstate = S1;
+ 439   1        Init_Device(); 
+ 440   1        
+ 441   1        timer2_init_auto(-40000);
+ 442   1        timer3_init_auto(-1000);
  443   1        
- 444   1        //Set by hardware when the Timer 2/3 high byte overflows from 0xFF to 0x00. In 16 bit 
- 445   1        //mode, this will occur when Timer 2/3 overflows from 0xFFFF to 0x0000.   
- 446   1        TF2H = 0; 
- 447   1        TMR3CN &= ~(1 << B_TF3H);
- 448   1        
- 449   1        // Enable Flag Timer 2/3 Overflow
- 450   1        ET2 = 1;
- 451   1        EIE1 |= (1 << B_ET3);
- 452   1        
- 453   1        // Timer 2/3 Run Control. Timer 2/3 is enabled by setting this bit to 1. 
- 454   1        TMR3CN |= (1 << B_TR3);
- 455   1        TR2 = 1;
- 456   1            
- 457   1        while (1) {
- 458   2          //uartAdmin();
- 459   2          encode_FSM();
- 460   2          state = nextstate;
- 461   2        }
- 462   1      }
+ 444   1        state = nextstate = S1;
+ 445   1        
+ 446   1        //Set by hardware when the Timer 2/3 high byte overflows from 0xFF to 0x00. In 16 bit 
+ 447   1        //mode, this will occur when Timer 2/3 overflows from 0xFFFF to 0x0000.   
+ 448   1        TF2H = 0; 
+ 449   1        TMR3CN &= ~(1 << B_TF3H);
+ 450   1        
+ 451   1        // Enable Flag Timer 2/3 Overflow
+ 452   1        ET2 = 1;
+ 453   1        EIE1 |= (1 << B_ET3);
+ 454   1        
+ 455   1        // Timer 2/3 Run Control. Timer 2/3 is enabled by setting this bit to 1. 
+ 456   1        TMR3CN |= (1 << B_TR3);
+ 457   1        TR2 = 1;
+ 458   1            
+ 459   1        while (1) {
+ 460   2          //uartAdmin();
+ 461   2          encode_FSM();
+ 462   2          state = nextstate;
+ 463   2        }
+ 464   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE

@@ -278,7 +278,7 @@ void uartCheckBufferKey(){
 		}
 		
 		
-		if (bufferKeyIndex == 3) {
+		if (bufferKeyIndex == 4) {
 			// compara o vetor com '8051'
 			if (inputKeyBuffer[0] == '8' && inputKeyBuffer[1] == '0' && inputKeyBuffer[2] == '5' && inputKeyBuffer[3] == '1'){
 				nextstate = S2;
@@ -299,7 +299,13 @@ char uartAlarm() {
     if (RI0 == 1) {
 			RI0 = 0;
 		
-		if (bufferAlarmIndex == 4) {
+			if (bufferAlarmIndex < 5) {
+				// le o que est� no buffer
+				inputAlarmBuffer[bufferAlarmIndex] = SBUF0;
+				bufferAlarmIndex++;
+			}	
+			
+		if (bufferAlarmIndex == 5) {
 			// Compare the inputBuffer with the key "8051"
 			if (inputAlarmBuffer[0] == 'r' && inputAlarmBuffer[1] == 'e' && inputAlarmBuffer[2] == 's' && inputAlarmBuffer[3] == 'e' && inputAlarmBuffer[4] == 't'){
 				nextstate = S1;
@@ -311,11 +317,7 @@ char uartAlarm() {
 			}
 		}
 
-		if (bufferAlarmIndex < 4) {
-				// le o que est� no buffer
-				inputAlarmBuffer[bufferAlarmIndex] = SBUF0;
-				bufferAlarmIndex++;
-			}		
+			
     }
 	return 1;	
 }
