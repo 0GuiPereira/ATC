@@ -21,7 +21,7 @@ unsigned char wrongkeycount;
 //uart utils
 //para o locked state:
 unsigned char inputKeyBuffer[4]; // 4 pq 8051 4 digitos
-unsigned char bufferKeyIndex = -1; // come�a a -1 pq dando debug vi que na primeira passagem o codigo da flag ao RI0
+char bufferKeyIndex = -1; // come�a a -1 pq dando debug vi que na primeira passagem o codigo da flag ao RI0
 
 //para o alarm state:
 unsigned char inputAlarmBuffer[5]; // 5 pq reset 5 digitos 
@@ -236,7 +236,7 @@ void set_key(){//									P			0			1			2			3			4			5			6			7			8			9
 		unsigned int index;
 		unsigned int index_new_key;
 		
-		if(!debounce(pb2) && !button2pressed){*
+		if(!debounce(pb2) && !button2pressed){
 		}
 		
 		if(index_new_key == 4){
@@ -244,7 +244,7 @@ void set_key(){//									P			0			1			2			3			4			5			6			7			8			9
 			nextstate = S1;
 		}
 		
-		if(debounce(pb2)){*
+		if(debounce(pb2)){
 			button2pressed = 0;
 		}
 		
@@ -271,7 +271,13 @@ void uartCheckBufferKey(){
 	if (RI0 == 1) {
       RI0 = 0;
 		
-
+		if (bufferKeyIndex  < 4) {
+			// le o que est� no buffer
+			inputKeyBuffer[bufferKeyIndex] = SBUF0;
+			bufferKeyIndex++;
+		}
+		
+		
 		if (bufferKeyIndex == 3) {
 			// compara o vetor com '8051'
 			if (inputKeyBuffer[0] == '8' && inputKeyBuffer[1] == '0' && inputKeyBuffer[2] == '5' && inputKeyBuffer[3] == '1'){
@@ -283,11 +289,7 @@ void uartCheckBufferKey(){
 				nextstate = S3;
 			}
 		}
-		if (bufferKeyIndex < 4) {
-			// le o que est� no buffer
-			inputKeyBuffer[bufferKeyIndex] = SBUF0;
-			bufferKeyIndex++;
-		}
+		
 	}
 }
 
