@@ -1,0 +1,130 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              12/06/2023 17:11:16 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REG51F380.H>
+   2          #include <stdio.h>
+   3          #include "types.h"
+   4          #include "lcd1602.h"
+   5          
+   6          sbit PB1 = P0^6;
+   7          
+   8          // LCD ADDRESS 0x27
+   9          #define LCD_ADDR_W 0x4E
+  10          #define LCD_ADDR_R 0x4F
+  11          
+  12          /*********************************************************
+  13           * function prototypes                                   *
+  14           *********************************************************/
+  15          void init_device(void);
+  16           
+  17          /*********************************************************/ 
+  18          void init_device(void){
+  19   1        
+  20   1        /* Disable WDT */
+  21   1        PCA0MD    = 0x00;
+  22   1        /* select clock source */
+  23   1        FLSCL     = 0x90;
+  24   1        CLKSEL    = 0x03;
+  25   1        /* enable cross-bar for I/Os 
+  26   1         * PB1 = 0.6; PB2 = 0.7;
+  27   1         * 7seg display = P2;
+  28   1         * uart0 tx = 0.4; uart rx = 0.5 
+  29   1         * i2c SDA = 0.2; i2c SCK = 0.3;
+  30   1        */
+  31   1      
+  32   1        // To Work with the i2c/LCD
+  33   1        P0MDOUT   = 0x04;
+  34   1        
+  35   1        XBR1      = 0x40;
+  36   1        /* enable uart0 with TX pin on P0.4 and RX pin on P0.5 */
+  37   1        XBR0      = 0x01;
+  38   1      
+  39   1      }
+  40          
+  41          /*********************************************************
+  42           * main loop                                             *
+  43           *********************************************************/
+  44          void main(void){
+  45   1        
+  46   1        int rc;
+  47   1        
+  48   1        init_device();
+  49   1        
+  50   1        while(PB1);
+  51   1        while(!PB1);
+  52   1        
+  53   1        rc = lcd1602Init(LCD_ADDR_W);
+  54   1        if (rc)
+C51 COMPILER V9.60.7.0   MAIN                                                              12/06/2023 17:11:16 PAGE 2   
+
+  55   1        {
+  56   2          while(1);
+  57   2        }
+  58   1        
+  59   1          while(1){
+  60   2          lcd1602Clear(LCD_ADDR_W);     // clear the memory
+  61   2      
+  62   2          lcd1602Control(LCD_ADDR_W, 1,0,1); // backlight on, underline on, blink block on 
+  63   2          
+  64   2          lcd1602SetCursor(LCD_ADDR_W, 0, 0);
+  65   2          
+  66   2          while(PB1);
+  67   2          while(!PB1);
+  68   2          
+  69   2          lcd1602WriteString(LCD_ADDR_W, "HELLO LETI!!");
+  70   2            
+  71   2          lcd1602Control(LCD_ADDR_W, 1,0,1); // backlight on, underline off, blink block on 
+  72   2          
+  73   2          lcd1602SetCursor(LCD_ADDR_W, 0, 0);
+  74   2          
+  75   2          while(PB1);
+  76   2          while(!PB1);
+  77   2          
+  78   2          lcd1602WriteString(LCD_ADDR_W, "STAY COOL!!!");
+  79   2          
+  80   2          while(PB1);
+  81   2          while(!PB1);
+  82   2          
+  83   2          lcd1602Shutdown(LCD_ADDR_W);
+  84   2          
+  85   2          lcd1602Init(LCD_ADDR_W);
+  86   2      
+  87   2          lcd1602Control(LCD_ADDR_W, 1,0,1); // backlight on, underline on, blink block on 
+  88   2          
+  89   2          lcd1602SetCursor(LCD_ADDR_W, 0, 0);
+  90   2          
+  91   2          while(PB1);
+  92   2          while(!PB1);
+  93   2          
+  94   2          lcd1602WriteString(LCD_ADDR_W, "HELLO AGAIN!!");
+  95   2          
+  96   2          lcd1602Control(LCD_ADDR_W, 1,1,1); // backlight on, underline on, blink block on 
+  97   2          
+  98   2          lcd1602SetCursor(LCD_ADDR_W, 0, 1);
+  99   2      
+ 100   2          while(PB1);
+ 101   2          while(!PB1);
+ 102   2          
+ 103   2        }
+ 104   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    216    ----
+   CONSTANT SIZE    =     40    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
