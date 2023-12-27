@@ -3,6 +3,8 @@
 #include "config_platform.h"
 #include "serialIO.h"
 
+char code message0[] = "Hello uart0 m0\r\n";
+char code message1[] = "Hello uart0 m1\r\n";
 
 void main(void){
 	char c = 0;
@@ -10,22 +12,19 @@ void main(void){
 	Init_Device();
 	uart0_initialize();
 	EA=1;
-//		
-//	for(ptr = (char code*)message0; *ptr!= '\0'; ptr++){
-//		while(uart0_putchar(*ptr)== -ENOBUFS);
-//	}
-//	
-//	//printf(message1);
-//	
+		
+	for(ptr = (char code*)message0; *ptr!= '\0'; ptr++){
+		while(uart0_putchar(*ptr)== -ENOBUFS);
+	}
+	
+	printf(message1);
+	
 	
 	while(1) {
-		c = 'O';
-		while(_getkey2() == -1){
-			putchar(c);
-		}
-		
-		//putchar(c);
-		//putchar('\n');
+		//scanf("%c",&c);
+		c = _getkey();
+		putchar(c);
+		putchar('\n');
 	}
 	
 }

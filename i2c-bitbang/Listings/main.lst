@@ -1,0 +1,98 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              12/27/2023 14:45:21 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REG51F380.H>
+   2          #include "types.h"
+   3          #include "i2c-bitbang.h"
+   4          
+   5          /*********************************************************
+   6           * function prototypes                                   *
+   7           *********************************************************/
+   8           void init_device(void);
+   9           
+  10          /*********************************************************/ 
+  11          void init_device(void){
+  12   1        
+  13   1        /* Disable WDT */
+  14   1        PCA0MD    = 0x00;
+  15   1        /* select clock source */
+  16   1        FLSCL     = 0x90;
+  17   1        CLKSEL    = 0x03;
+  18   1        /* enable cross-bar for I/Os 
+  19   1         * PB1 = 0.6; PB2 = 0.7;
+  20   1         * 7seg display = P2;
+  21   1         * uart0 tx = 0.4; uart rx = 0.5 
+  22   1         * i2c SDA = 0.2; i2c SCK = 0.3;
+  23   1        */
+  24   1        XBR1      = 0x40;
+  25   1        /* enable uart0 with TX pin on P0.4 and RX pin on P0.5 */
+  26   1        XBR0      = 0x01;
+  27   1      }
+  28          
+  29          /*********************************************************
+  30           * main loop                                             *
+  31           *********************************************************/
+  32          void main(void){
+  33   1      
+  34   1        unsigned char ack = 1;
+  35   1        unsigned char rdata = 0;
+  36   1        
+  37   1        init_device();
+  38   1      
+  39   1        /* sequence to test i2c bitbanging functions */
+  40   1        
+  41   1        // start condition
+  42   1        i2c_start();
+  43   1        // write byte
+  44   1        i2c_write(0xA0);    
+  45   1        // read ack
+  46   1        if(read_ack() == NACK){
+  47   2          while(1);
+  48   2        };
+  49   1        // write byte
+  50   1        i2c_write(0xAC); 
+  51   1        // read ack
+  52   1        if(read_ack() == NACK){
+  53   2          while(1);
+  54   2        };
+C51 COMPILER V9.60.7.0   MAIN                                                              12/27/2023 14:45:21 PAGE 2   
+
+  55   1        // write byte
+  56   1        i2c_write(0x10);  
+  57   1        // read ack
+  58   1        if(read_ack() == NACK){
+  59   2          while(1);
+  60   2        };
+  61   1        // read some data from i2c bus
+  62   1        rdata = i2c_read();
+  63   1        
+  64   1        // write an ack/nack signal
+  65   1        write_ack(ACK);                   // output ACK/NAK bit
+  66   1        
+  67   1        // stop condition
+  68   1        i2c_stop(); 
+  69   1      
+  70   1        while(1);
+  71   1        
+  72   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     86    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

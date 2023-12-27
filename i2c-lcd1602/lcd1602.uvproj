@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>tu_usart0</OutputName>
+          <OutputName>lcd1602</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -114,7 +114,7 @@
           <TargetDllName>S8051.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
           <TargetDlgDll>TCYG.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-pCYGF320</TargetDlgDllArguments>
+          <TargetDlgDllArguments>-pCYGF340</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -331,7 +331,7 @@
             <UseMpl>0</UseMpl>
             <UseStandard>1</UseStandard>
             <UseCase>0</UseCase>
-            <UseMod51>0</UseMod51>
+            <UseMod51>1</UseMod51>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -377,19 +377,34 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>tu_usart0.c</FileName>
+              <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\tu_usart0.c</FilePath>
+              <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>config_platform.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\config_platform.c</FilePath>
+              <FileName>types.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\types.h</FilePath>
             </File>
             <File>
-              <FileName>serialIO.c</FileName>
+              <FileName>i2c-bitbang.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\serialIO.c</FilePath>
+              <FilePath>.\i2c-bitbang.c</FilePath>
+            </File>
+            <File>
+              <FileName>i2c-bitbang.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\i2c-bitbang.h</FilePath>
+            </File>
+            <File>
+              <FileName>lcd1602.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lcd1602.c</FilePath>
+            </File>
+            <File>
+              <FileName>lcd1602.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\lcd1602.h</FilePath>
             </File>
           </Files>
         </Group>

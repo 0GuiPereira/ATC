@@ -1,0 +1,1 @@
+char getRandomValue(char min, char max);

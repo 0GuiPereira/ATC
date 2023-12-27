@@ -1,0 +1,54 @@
+C51 COMPILER V9.60.7.0   DELAY                                                             12/27/2023 17:10:25 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE DELAY
+OBJECT MODULE PLACED IN .\Objects\delay.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE delay.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\del
+                    -ay.lst) TABS(2) OBJECT(.\Objects\delay.obj)
+
+line level    source
+
+   1          #include <REG51F380.H>
+   2          #include "delay.h"
+   3          
+   4          
+   5          void timer2_init_auto(int reload){
+*** WARNING C235 IN LINE 5 OF delay.c: parameter 1: different types
+   6   1      
+   7   1        TMR2CN = 0;
+   8   1      
+   9   1        #define B_T2MH 5  
+  10   1      
+  11   1        CKCON &= ~((1 << B_T2MH));
+  12   1        
+  13   1        TMR2H = (reload) >> 8;
+  14   1        TMR2L = (reload);
+  15   1      
+  16   1        TMR2RLH = (reload) >> 8;
+  17   1        TMR2RLL = (reload);
+  18   1        
+  19   1      }
+  20          
+  21          void delay_s(unsigned char s) {
+  22   1          unsigned char i = 0;
+  23   1      
+  24   1          while(i != (s*100)) {
+  25   2              i++;
+  26   2              while(!TF2H);
+  27   2              TF2H = 0;
+  28   2          }
+  29   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     72    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

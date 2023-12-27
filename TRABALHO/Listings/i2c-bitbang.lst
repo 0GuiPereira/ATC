@@ -1,0 +1,179 @@
+C51 COMPILER V9.60.7.0   I2C_BITBANG                                                       12/27/2023 17:10:24 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE I2C_BITBANG
+OBJECT MODULE PLACED IN .\Objects\i2c-bitbang.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE i2c-bitbang.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\i2c-bitbang.lst) TABS(2) OBJECT(.\Objects\i2c-bitbang.obj)
+
+line level    source
+
+   1          #include "i2c-bitbang.h"
+   2          
+   3          /*....................................................................
+   4           * This function generates a small wait cycle
+   5           *....................................................................*/
+   6          void i2c_wait(void){
+   7   1        
+   8   1        unsigned int i; 
+   9   1        
+  10   1        for(i = 0; i < I2CWAIT; ){
+  11   2          i++;
+  12   2        }
+  13   1      }
+  14          
+  15          //....................................................................
+  16          // This function generates an I2C Start Condition
+  17          //....................................................................
+  18          void i2c_start(void){ 
+  19   1        SDA = 1;            // ensure SDA & SCL are high
+  20   1        SCLK = 1;
+  21   1        
+  22   1        i2c_wait();         // wait some cycles
+  23   1        i2c_wait();         // wait some cycles
+  24   1        
+  25   1        SDA = 0;            // pull SDA low
+  26   1        i2c_wait();
+  27   1        i2c_wait();
+  28   1        SCLK = 0;           // pull SCL low
+  29   1        i2c_wait();
+  30   1        i2c_wait();
+  31   1      }
+  32          
+  33          //....................................................................
+  34          // This function generates an I2C Stop Condition
+  35          //....................................................................
+  36          void i2c_stop(void){
+  37   1        SCLK = 0;           // ensure SCL is low
+  38   1        SDA = 0;            // SDA low
+  39   1        
+  40   1        i2c_wait();         // wait some cycles
+  41   1      
+  42   1        SCLK = 1;           // pull SCL high
+  43   1        
+  44   1        i2c_wait();         // wait some cycles
+  45   1      
+  46   1        SDA = 1;            // allow SDA to be pulled high
+  47   1        
+  48   1        i2c_wait();         // wait some cycles
+  49   1      }
+  50          
+  51          //....................................................................
+  52          // Writes a byte to the I2C bus
+  53          //....................................................................
+  54          unsigned char i2c_write(unsigned char wdata){
+C51 COMPILER V9.60.7.0   I2C_BITBANG                                                       12/27/2023 17:10:24 PAGE 2   
+
+  55   1        unsigned char i;            // loop counter
+  56   1      
+  57   1        SCLK = 0;                   // ensure SCL is low
+  58   1        
+  59   1        for (i = 0; i < 8; i++)     // loop through each bit
+  60   1        {
+  61   2          SDA = (wdata >> 7);       // output the MSB
+  62   2      
+  63   2          i2c_wait();               // wait some cycles
+  64   2          i2c_wait();
+  65   2          
+  66   2          SCLK = 1;                 // pull SCL high to clock bit
+  67   2          i2c_wait();               // wait some cycles
+  68   2          i2c_wait();
+  69   2          SCLK = 0;             // wait some cycles
+  70   2          
+  71   2          wdata = wdata << 1;       // shift left for next bit
+  72   2        }
+  73   1        
+  74   1      #ifdef I2C_DEBUG
+                // for debug purposes, SDA goes low for the ACK receive
+                //SDA = 0;
+              #endif
+  78   1        
+  79   1        return 0;
+  80   1      }
+  81          
+  82          //....................................................................
+  83          // Reads a byte from the I2C bus
+  84          //....................................................................
+  85          unsigned char i2c_read(void)
+  86          {
+  87   1        unsigned char i;                // loop counter
+  88   1        unsigned char rdata = 0;        // input value
+  89   1        
+  90   1        for (i = 0; i < 8; i++)         // loop through each bit
+  91   1        {
+  92   2          rdata = rdata << 1;             // shift left for next bit
+  93   2      
+  94   2          SCLK = 0;                        // ensure SCL is low
+  95   2          SCLK = 1;                        // bring SCL high to begin transfer
+  96   2          
+  97   2          i2c_wait();
+  98   2      
+  99   2          rdata |= SDA;                   // input the received bit
+ 100   2            
+ 101   2          SCLK = 0;                        // bring SCL low again.
+ 102   2          
+ 103   2          i2c_wait();
+ 104   2            
+ 105   2        }
+ 106   1              
+ 107   1        return rdata;
+ 108   1      }
+ 109          
+ 110          //....................................................................
+ 111          // Read ack bit from the I2C bus
+ 112          //....................................................................
+ 113          unsigned char read_ack(void){
+ 114   1        
+ 115   1        unsigned char ack;
+ 116   1          
+C51 COMPILER V9.60.7.0   I2C_BITBANG                                                       12/27/2023 17:10:24 PAGE 3   
+
+ 117   1        SCLK = 0;                       // ensure SCL is low
+ 118   1      
+ 119   1        SCLK = 1;                       // bring SCL high to begin transfer
+ 120   1        
+ 121   1        i2c_wait();                     // wait some cycles
+ 122   1        i2c_wait();                     // wait some cycles
+ 123   1        i2c_wait();                     // wait some cycles
+ 124   1        
+ 125   1        ack = SDA;                    // input the received bit.
+ 126   1        
+ 127   1        SCLK = 0;                       // bring SCL low again.
+ 128   1        
+ 129   1        i2c_wait();                     // wait some cycles
+ 130   1        
+ 131   1        return ack;
+ 132   1      }
+ 133          
+ 134          //....................................................................
+ 135          // Write ack bit to the I2C bus
+ 136          //....................................................................
+ 137          void write_ack(unsigned char ack)
+ 138          {
+ 139   1        SCLK = 0;                        // ensure SCL is low
+ 140   1      
+ 141   1        SCLK = 1;                        // bring SCL high to begin transfer
+ 142   1        i2c_wait();
+ 143   1        i2c_wait();
+ 144   1        
+ 145   1        SDA = (ack >> 7);                 // output the MSB
+ 146   1        SCLK = 1;                        // pull SCL high to clock bit  
+ 147   1        i2c_wait();
+ 148   1        
+ 149   1        SCLK = 0;                        // bring SCL low again.
+ 150   1        
+ 151   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    235    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      8    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

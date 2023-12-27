@@ -8,11 +8,11 @@
   <Extensions>
     <cExt>*.c</cExt>
     <aExt>*.s*; *.src; *.a*</aExt>
-    <oExt>*.obj</oExt>
+    <oExt>*.obj; *.o</oExt>
     <lExt>*.lib</lExt>
     <tExt>*.txt; *.h; *.inc; *.md</tExt>
     <pExt>*.plm</pExt>
-    <CppX>*.cpp</CppX>
+    <CppX>*.cpp; *.cc; *.cxx</CppX>
     <nMigrate>0</nMigrate>
   </Extensions>
 
@@ -22,7 +22,7 @@
   </DaveTm>
 
   <Target>
-    <TargetName>Target 1</TargetName>
+    <TargetName>8051F388</TargetName>
     <ToolsetNumber>0x0</ToolsetNumber>
     <ToolsetName>MCS-51</ToolsetName>
     <TargetOption>
@@ -136,13 +136,8 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
-          <Key>PWSTATINFO</Key>
-          <Name>200,50,700</Name>
-        </SetRegEntry>
-        <SetRegEntry>
-          <Number>0</Number>
           <Key>DLGTCYG</Key>
-          <Name>(98=-1,-1,-1,-1,0)(5097=-1,-1,-1,-1,0)(5098=-1,-1,-1,-1,0)(5099=-1,-1,-1,-1,0)(5100=-1,-1,-1,-1,0)(5101=-1,-1,-1,-1,0)(99=-1,-1,-1,-1,0)(91=-1,-1,-1,-1,0)(92=-1,-1,-1,-1,0)(5104=-1,-1,-1,-1,0)(5103=-1,-1,-1,-1,0)(95=-1,-1,-1,-1,0)(100=-1,-1,-1,-1,0)(5108=-1,-1,-1,-1,0)(5111=-1,-1,-1,-1,0)(5105=-1,-1,-1,-1,0)(5106=-1,-1,-1,-1,0)(5061=-1,-1,-1,-1,0)(5102=-1,-1,-1,-1,0)(5095=-1,-1,-1,-1,0)</Name>
+          <Name></Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -151,13 +146,8 @@
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
-          <Key>MON51</Key>
-          <Name>-S1 -B9600 -O15</Name>
-        </SetRegEntry>
-        <SetRegEntry>
-          <Number>0</Number>
           <Key>DLGDCYG</Key>
-          <Name>(98=998,297,1366,584,0)(5097=1022,187,1366,561,0)(5098=-1,-1,-1,-1,0)(5099=-1,-1,-1,-1,0)(5100=-1,-1,-1,-1,0)(5101=-1,-1,-1,-1,0)(99=723,276,936,575,1)(91=-1,-1,-1,-1,0)(92=965,58,1175,362,0)(5104=-1,-1,-1,-1,0)(5103=-1,-1,-1,-1,0)(95=-1,-1,-1,-1,0)(100=-1,-1,-1,-1,0)(5108=-1,-1,-1,-1,0)(5105=-1,-1,-1,-1,0)(5106=-1,-1,-1,-1,0)(5061=-1,-1,-1,-1,0)(5102=-1,-1,-1,-1,0)(5095=-1,-1,-1,-1,0)</Name>
+          <Name>(98=-1,-1,-1,-1,0)(5097=-1,-1,-1,-1,0)(5098=-1,-1,-1,-1,0)(5099=-1,-1,-1,-1,0)(5100=-1,-1,-1,-1,0)(5101=-1,-1,-1,-1,0)(99=-1,-1,-1,-1,0)(91=-1,-1,-1,-1,0)(92=-1,-1,-1,-1,0)(5104=-1,-1,-1,-1,0)(5103=-1,-1,-1,-1,0)(95=-1,-1,-1,-1,0)(100=-1,-1,-1,-1,0)(5108=-1,-1,-1,-1,0)(5105=-1,-1,-1,-1,0)(5106=-1,-1,-1,-1,0)(5061=-1,-1,-1,-1,0)(5102=-1,-1,-1,-1,0)(5095=-1,-1,-1,-1,0)</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
       <Breakpoint/>
@@ -165,54 +155,19 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>TxBuff</ItemText>
+          <ItemText>SDA</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>TxWriteIndex&amp;0x0f,0x0A</ItemText>
+          <ItemText>SCLK</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>TxReadIndex&amp;0x0f,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>TxWriteIndex - TxReadIndex,0x0A</ItemText>
+          <ItemText>rdata</ItemText>
         </Ww>
       </WatchWindow1>
-      <WatchWindow2>
-        <Ww>
-          <count>0</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>RxBuff</ItemText>
-        </Ww>
-        <Ww>
-          <count>1</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>RxWriteIndex&amp;0x0f,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>2</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>RxReadIndex&amp;0x0f,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>RxWriteIndex - RxReadIndex,0x0A</ItemText>
-        </Ww>
-      </WatchWindow2>
-      <MemoryWindow1>
-        <Mm>
-          <WinNumber>1</WinNumber>
-          <SubType>0</SubType>
-          <ItemText>c:0a07h</ItemText>
-          <AccSizeX>0</AccSizeX>
-        </Mm>
-      </MemoryWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>
       </Tracepoint>
@@ -268,23 +223,23 @@
       <GroupNumber>1</GroupNumber>
       <FileNumber>1</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\tu_usart0.c</PathWithFileName>
-      <FilenameWithoutPath>tu_usart0.c</FilenameWithoutPath>
+      <PathWithFileName>.\main.c</PathWithFileName>
+      <FilenameWithoutPath>main.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
       <FileNumber>2</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\config_platform.c</PathWithFileName>
-      <FilenameWithoutPath>config_platform.c</FilenameWithoutPath>
+      <PathWithFileName>.\types.h</PathWithFileName>
+      <FilenameWithoutPath>types.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -292,11 +247,23 @@
       <GroupNumber>1</GroupNumber>
       <FileNumber>3</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\serialIO.c</PathWithFileName>
-      <FilenameWithoutPath>serialIO.c</FilenameWithoutPath>
+      <PathWithFileName>.\i2c-bitbang.c</PathWithFileName>
+      <FilenameWithoutPath>i2c-bitbang.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>4</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\i2c-bitbang.h</PathWithFileName>
+      <FilenameWithoutPath>i2c-bitbang.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
