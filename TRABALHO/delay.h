@@ -3,5 +3,6 @@
 #define B_ET3 7
 
 
-void timer2_init_auto(char i);
+void timer2_init_auto(int i);
+void timer3_init_auto(int i);
 void delay_s(unsigned char s);

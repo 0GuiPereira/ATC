@@ -7,9 +7,11 @@
 #include "serialIO.h"
 #include "delay.h"
 
+#include <stdlib.h>
 
-
-
+unsigned char temp[25] = 	{22, 21, 25, 22, 25, 23, 28, 20, 25, 27, 22, 22, 28, 22, 29, 28, 27, 27, 26, 23, 28, 22, 21, 27, 29};
+unsigned char hum[25] = 	{63, 70, 60, 60, 69, 69, 69, 60, 67, 60, 63, 66, 67, 62, 69, 66, 64, 63, 70, 60, 69, 65, 67, 62, 70};
+	
 sbit PB1 = P0^6;
 
 // LCD ADDRESS 0x27
@@ -22,18 +24,28 @@ sbit PB1 = P0^6;
  *********************************************************/
 void main(void){
 	
-	int rc;
+	char rc;
 	char c = 0;
-
 	
+
 	init_device();
 	timer2_init_auto(-40000);
 	uart0_initialize();
 	
 	
-	TF2H = 0;
+	//Set by hardware when the Timer 2/3 high byte overflows from 0xFF to 0x00. In 16 bit 
+	//mode, this will occur when Timer 2/3 overflows from 0xFFFF to 0x0000. 	
+	TF2H = 0;	
+	TMR3CN &= ~(1 << B_TF3H);
+	
+	// Enable Flag Timer 2/3 Overflow
 	ET2 = 1;
+	EIE1 |= (1 << B_ET3);
+	
+	// Timer 2/3 Run Control. Timer 2/3 is enabled by setting this bit to 1. 
+	TMR3CN |= (1 << B_TR3);
 	TR2 = 1;
+	
 	EA=1; //enable interrupts
 	
 

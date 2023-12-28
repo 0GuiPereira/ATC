@@ -1,6 +1,21 @@
 #include <REG51F380.H>
 #include "delay.h"
 
+void timer3_init_auto(int reload){
+
+	TMR3CN = 0;
+
+	#define B_T3MH 7	
+
+	CKCON &= ~((1 << B_T3MH));
+	
+	TMR3H = (reload) >> 8;
+	TMR3L = (reload);
+
+	TMR3RLH = (reload) >> 8;
+	TMR3RLL = (reload);
+	
+}
 
 void timer2_init_auto(int reload){
 
