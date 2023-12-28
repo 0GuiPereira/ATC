@@ -6,25 +6,16 @@
 
 void main(void){
 	char c = 0;
-	char code *ptr;
+
 	Init_Device();
 	uart0_initialize();
 	EA=1;
-//		
-//	for(ptr = (char code*)message0; *ptr!= '\0'; ptr++){
-//		while(uart0_putchar(*ptr)== -ENOBUFS);
-//	}
-//	
-//	//printf(message1);
-//	
-	
-	while(1) {
-		c = 'O';
-		while(_getkey2() == -1){
-			putchar(c);
-		}
 		
-		//putchar(c);
+
+	while(1) {
+		//scanf("%c",&c);
+		c = _getkey();
+		putchar(c);
 		//putchar('\n');
 	}
 	

@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   CONFIG_PLATFORM                                                   11/15/2023 19:26:09 PAGE 1   
+C51 COMPILER V9.60.7.0   CONFIG_PLATFORM                                                   12/28/2023 16:26:10 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE CONFIG_PLATFORM
@@ -31,21 +31,22 @@ line level    source
   21          {
   22   1          FLSCL     = 0x90;
   23   1          CLKSEL    = 0x03;
-  24   1      }
-  25          
-  26          // Initialization function for device,
-  27          // Call Init_Device() from your main program
-  28          void Init_Device(void)
-  29          {
-  30   1          PCA_Init();
-  31   1          Oscillator_Init();
-  32   1          Port_IO_Init();
-  33   1          
-  34   1      }
+  24   1          P0MDOUT   = 0x04;
+  25   1      }
+  26          
+  27          // Initialization function for device,
+  28          // Call Init_Device() from your main program
+  29          void Init_Device(void)
+  30          {
+  31   1          PCA_Init();
+  32   1          Oscillator_Init();
+  33   1          Port_IO_Init();
+  34   1          
+  35   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     28    ----
+   CODE SIZE        =     31    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

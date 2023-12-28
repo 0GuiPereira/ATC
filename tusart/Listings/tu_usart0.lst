@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   TU_USART0                                                         11/15/2023 19:26:09 PAGE 1   
+C51 COMPILER V9.60.7.0   TU_USART0                                                         12/28/2023 16:26:10 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE TU_USART0
@@ -16,41 +16,31 @@ line level    source
    6          
    7          void main(void){
    8   1        char c = 0;
-   9   1        char code *ptr;
+   9   1      
   10   1        Init_Device();
   11   1        uart0_initialize();
   12   1        EA=1;
-  13   1      //    
-  14   1      //  for(ptr = (char code*)message0; *ptr!= '\0'; ptr++){
-  15   1      //    while(uart0_putchar(*ptr)== -ENOBUFS);
-  16   1      //  }
-  17   1      //  
-  18   1      //  //printf(message1);
-  19   1      //  
-  20   1        
-  21   1        while(1) {
-  22   2          c = 'O';
-  23   2          while(_getkey2() == -1){
-  24   3            putchar(c);
-  25   3          }
-  26   2          
-  27   2          //putchar(c);
-  28   2          //putchar('\n');
-  29   2        }
-  30   1        
-  31   1      }
-*** WARNING C280 IN LINE 9 OF tu_usart0.c: 'ptr': unreferenced local variable
+  13   1          
+  14   1      
+  15   1        while(1) {
+  16   2          //scanf("%c",&c);
+  17   2          c = _getkey();
+  18   2          putchar(c);
+  19   2          //putchar('\n');
+  20   2        }
+  21   1        
+  22   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     31    ----
+   CODE SIZE        =     22    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      3    ----
+   DATA SIZE        =      1    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

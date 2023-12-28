@@ -1,1 +1,2 @@
-char getRandomValue(char min, char max);
+char randTemp(void);
+char randHum(void);

@@ -21,6 +21,7 @@ void Oscillator_Init()
 {
     FLSCL     = 0x90;
     CLKSEL    = 0x03;
+		P0MDOUT   = 0x04;
 }
 
 // Initialization function for device,
