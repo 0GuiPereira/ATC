@@ -4,7 +4,7 @@
 #include "config_platform.h"
 #include "serialIO.h"
 #include "delay.h"
-#include "randTH.h"
+
 
 
 sbit PB1 = P0^6;

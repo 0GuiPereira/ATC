@@ -422,16 +422,6 @@
               <FilePath>.\delay.h</FilePath>
             </File>
             <File>
-              <FileName>randTH.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\randTH.c</FilePath>
-            </File>
-            <File>
-              <FileName>randTH.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\randTH.h</FilePath>
-            </File>
-            <File>
               <FileName>config_platform.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\config_platform.c</FilePath>
