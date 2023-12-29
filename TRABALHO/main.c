@@ -6,6 +6,8 @@
 #include "delay.h"
 
 
+unsigned char buffTemp[9];
+unsigned char buffHum[7];
 
 sbit PB1 = P0^6;
 
@@ -22,10 +24,13 @@ void main(void){
 	char rc;
 	char c = 0;
 	
+	char i;
+	char j;
+	
 
 	Init_Device();
 	uart0_initialize();
-	//timer2_init_auto(-40000);
+	timer2_init_auto(-40000);
 	
 	
 	
@@ -48,44 +53,58 @@ void main(void){
 	
 		while(1){
 			
-		c = _getkey();
-		putchar(c);
+		//c = _getkey();
+		//putchar(c);
 			
-//		lcd1602Clear(LCD_ADDR_W);	    // clear the memory
+		/*	
+		for (i = 0; i < 16; i++){
+			buff[i] = uart0_getchar();
+		}
+			*/
+		
+		for (i = 0; i < 16; i++){
+			if(i < 9){
+				buffTemp[i] = uart0_getchar();
+			}
+			else{
+				buffHum[i-9] = uart0_getchar();
+			}
+		}
+		
+		
+			
+		lcd1602Clear(LCD_ADDR_W);	    // clear the memory
+
+		lcd1602Control(LCD_ADDR_W, 1,1,1); // backlight on, underline on, blink block on 
+		
+		lcd1602SetCursor(LCD_ADDR_W, 0, 0);
+				
+		delay_s(1);
+			
+
+		lcd1602WriteString(LCD_ADDR_W, &buffTemp);
+
+		
+			
+//		lcd1602Control(LCD_ADDR_W, 1,1,1); // backlight on, underline off, blink block on 
+//		
+		lcd1602SetCursor(LCD_ADDR_W, 0, 1);
+//		
+		
+//		
+		lcd1602WriteString(LCD_ADDR_W, &buffHum);
+//		
+		delay_s(1);
+//		
+		lcd1602Shutdown(LCD_ADDR_W);
+//		
+		lcd1602Init(LCD_ADDR_W);
 
 //		lcd1602Control(LCD_ADDR_W, 1,0,1); // backlight on, underline on, blink block on 
 //		
 //		lcd1602SetCursor(LCD_ADDR_W, 0, 0);
-//				
-//		P2 = 0x86;
-//		randTemp();
-//		randTemp();
-//		delay_s(1);
-//		P2 = 0xC6;
-//			
 //		
-//		
-//		lcd1602WriteString(LCD_ADDR_W, "OLAAA");
-//			
-//		lcd1602Control(LCD_ADDR_W, 1,0,1); // backlight on, underline off, blink block on 
-//		
-//		lcd1602SetCursor(LCD_ADDR_W, 5, 1);
-//		
-//		delay_s(1);
-//		
-//		lcd1602WriteString(LCD_ADDR_W, "STAY COOL!!!");
-//		
-//		delay_s(1);
-//		
-//		lcd1602Shutdown(LCD_ADDR_W);
-//		
-//		lcd1602Init(LCD_ADDR_W);
-
-//		lcd1602Control(LCD_ADDR_W, 1,0,1); // backlight on, underline on, blink block on 
-//		
-//		lcd1602SetCursor(LCD_ADDR_W, 0, 0);
-//		
-//		delay_s(1);
+		delay_s(1);
 //		
 //		lcd1602WriteString(LCD_ADDR_W, "HELLO AGAIN!!");
 //		

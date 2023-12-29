@@ -11,6 +11,16 @@
 static int iBackLight = BACKLIGHT;
 
 
+
+/*
+SDA - P0.2
+SCLK - P0.3
+GND - GND
+VCC - 5V
+*/
+
+
+
 void wait(unsigned int pulses){
 	int i;
 	
