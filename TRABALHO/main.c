@@ -6,8 +6,8 @@
 #include "delay.h"
 
 
-unsigned char buffTemp[9];
-unsigned char buffHum[7];
+unsigned char buffTemp[10];
+unsigned char buffHum[8];
 
 sbit PB1 = P0^6;
 
@@ -21,11 +21,11 @@ sbit PB1 = P0^6;
  *********************************************************/
 void main(void){
 	
-	char rc;
-	char c = 0;
+	//char rc;
+	//char c = 0;
 	
 	char i;
-	char j;
+	//char j;
 	
 
 	Init_Device();
@@ -62,16 +62,20 @@ void main(void){
 		}
 			*/
 		
-		for (i = 0; i < 16; i++){
-			if(i < 9){
-				buffTemp[i] = uart0_getchar();
-			}
-			else{
-				buffHum[i-9] = uart0_getchar();
-			}
-		}
+		 for (i = 0; i < 16; i++) {
+        char c = uart0_getchar();
+
+        if (i < 9) {
+            buffTemp[i] = c;
+        }
+
+        if (i >= 9 && i < 16) {
+            buffHum[i - 9] = c;
+        }
+    }
 		
-		
+		buffTemp[9] = '\0';
+    buffHum[6] = '\0';
 			
 		lcd1602Clear(LCD_ADDR_W);	    // clear the memory
 
@@ -79,21 +83,25 @@ void main(void){
 		
 		lcd1602SetCursor(LCD_ADDR_W, 0, 0);
 				
-		delay_s(1);
+		//delay_s(1);
 			
 
-		lcd1602WriteString(LCD_ADDR_W, &buffTemp);
+		lcd1602WriteString(LCD_ADDR_W, buffTemp);
 
 		
 			
-//		lcd1602Control(LCD_ADDR_W, 1,1,1); // backlight on, underline off, blink block on 
+		lcd1602Control(LCD_ADDR_W, 1,1,1); // backlight on, underline off, blink block on 
 //		
 		lcd1602SetCursor(LCD_ADDR_W, 0, 1);
 //		
 		
 //		
-		lcd1602WriteString(LCD_ADDR_W, &buffHum);
+		lcd1602WriteString(LCD_ADDR_W, buffHum);
 //		
+		delay_s(1);
+		delay_s(1);
+		delay_s(1);
+		delay_s(1);
 		delay_s(1);
 //		
 		lcd1602Shutdown(LCD_ADDR_W);
@@ -104,7 +112,8 @@ void main(void){
 //		
 //		lcd1602SetCursor(LCD_ADDR_W, 0, 0);
 //		
-		delay_s(1);
+//		delay_s(0.5);
+
 //		
 //		lcd1602WriteString(LCD_ADDR_W, "HELLO AGAIN!!");
 //		

@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   MAIN                                                              12/29/2023 23:10:55 PAGE 1   
+C51 COMPILER V9.60.7.0   MAIN                                                              12/30/2023 02:46:14 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
@@ -16,8 +16,8 @@ line level    source
    6          #include "delay.h"
    7          
    8          
-   9          unsigned char buffTemp[9];
-  10          unsigned char buffHum[7];
+   9          unsigned char buffTemp[10];
+  10          unsigned char buffHum[8];
   11          
   12          sbit PB1 = P0^6;
   13          
@@ -31,11 +31,11 @@ line level    source
   21           *********************************************************/
   22          void main(void){
   23   1        
-  24   1        char rc;
-  25   1        char c = 0;
+  24   1        //char rc;
+  25   1        //char c = 0;
   26   1        
   27   1        char i;
-  28   1        char j;
+  28   1        //char j;
   29   1        
   30   1      
   31   1        Init_Device();
@@ -62,7 +62,7 @@ line level    source
   52   1        
   53   1        
   54   1          while(1){
-C51 COMPILER V9.60.7.0   MAIN                                                              12/29/2023 23:10:55 PAGE 2   
+C51 COMPILER V9.60.7.0   MAIN                                                              12/30/2023 02:46:14 PAGE 2   
 
   55   2            
   56   2          //c = _getkey();
@@ -74,70 +74,77 @@ line level    source
   62   2          }
   63   2            */
   64   2          
-  65   2          for (i = 0; i < 16; i++){
-  66   3            if(i < 9){
-  67   4              buffTemp[i] = uart0_getchar();
-  68   4            }
-  69   3            else{
-  70   4              buffHum[i-9] = uart0_getchar();
-  71   4            }
-  72   3          }
-  73   2          
-  74   2          
-  75   2            
-  76   2          lcd1602Clear(LCD_ADDR_W);     // clear the memory
-  77   2      
-  78   2          lcd1602Control(LCD_ADDR_W, 1,1,1); // backlight on, underline on, blink block on 
-  79   2          
-  80   2          lcd1602SetCursor(LCD_ADDR_W, 0, 0);
-  81   2              
-  82   2          delay_s(1);
-  83   2            
-  84   2      
-  85   2          lcd1602WriteString(LCD_ADDR_W, &buffTemp);
-  86   2      
-  87   2          
-  88   2            
-  89   2      //    lcd1602Control(LCD_ADDR_W, 1,1,1); // backlight on, underline off, blink block on 
-  90   2      //    
-  91   2          lcd1602SetCursor(LCD_ADDR_W, 0, 1);
-  92   2      //    
-  93   2          
+  65   2           for (i = 0; i < 16; i++) {
+  66   3              char c = uart0_getchar();
+  67   3      
+  68   3              if (i < 9) {
+  69   4                  buffTemp[i] = c;
+  70   4              }
+  71   3      
+  72   3              if (i >= 9 && i < 16) {
+  73   4                  buffHum[i - 9] = c;
+  74   4              }
+  75   3          }
+  76   2          
+  77   2          buffTemp[9] = '\0';
+  78   2          buffHum[6] = '\0';
+  79   2            
+  80   2          lcd1602Clear(LCD_ADDR_W);     // clear the memory
+  81   2      
+  82   2          lcd1602Control(LCD_ADDR_W, 1,1,1); // backlight on, underline on, blink block on 
+  83   2          
+  84   2          lcd1602SetCursor(LCD_ADDR_W, 0, 0);
+  85   2              
+  86   2          //delay_s(1);
+  87   2            
+  88   2      
+  89   2          lcd1602WriteString(LCD_ADDR_W, buffTemp);
+  90   2      
+  91   2          
+  92   2            
+  93   2          lcd1602Control(LCD_ADDR_W, 1,1,1); // backlight on, underline off, blink block on 
   94   2      //    
-  95   2          lcd1602WriteString(LCD_ADDR_W, &buffHum);
+  95   2          lcd1602SetCursor(LCD_ADDR_W, 0, 1);
   96   2      //    
-  97   2          delay_s(1);
+  97   2          
   98   2      //    
-  99   2          lcd1602Shutdown(LCD_ADDR_W);
+  99   2          lcd1602WriteString(LCD_ADDR_W, buffHum);
  100   2      //    
- 101   2          lcd1602Init(LCD_ADDR_W);
- 102   2      
- 103   2      //    lcd1602Control(LCD_ADDR_W, 1,0,1); // backlight on, underline on, blink block on 
- 104   2      //    
- 105   2      //    lcd1602SetCursor(LCD_ADDR_W, 0, 0);
+ 101   2          delay_s(1);
+ 102   2          delay_s(1);
+ 103   2          delay_s(1);
+ 104   2          delay_s(1);
+ 105   2          delay_s(1);
  106   2      //    
- 107   2          delay_s(1);
+ 107   2          lcd1602Shutdown(LCD_ADDR_W);
  108   2      //    
- 109   2      //    lcd1602WriteString(LCD_ADDR_W, "HELLO AGAIN!!");
- 110   2      //    
- 111   2      //    lcd1602Control(LCD_ADDR_W, 1,1,1); // backlight on, underline on, blink block on 
+ 109   2          lcd1602Init(LCD_ADDR_W);
+ 110   2      
+ 111   2      //    lcd1602Control(LCD_ADDR_W, 1,0,1); // backlight on, underline on, blink block on 
  112   2      //    
- 113   2      //    lcd1602SetCursor(LCD_ADDR_W, 0, 1);
- 114   2      
- 115   2      //    delay_s(1);
+ 113   2      //    lcd1602SetCursor(LCD_ADDR_W, 0, 0);
+ 114   2      //    
+ 115   2      //    delay_s(0.5);
  116   2      
-C51 COMPILER V9.60.7.0   MAIN                                                              12/29/2023 23:10:55 PAGE 3   
+C51 COMPILER V9.60.7.0   MAIN                                                              12/30/2023 02:46:14 PAGE 3   
 
- 117   2            
- 118   2          
- 119   2        }
- 120   1      }
-*** WARNING C280 IN LINE 24 OF main.c: 'rc': unreferenced local variable
-*** WARNING C280 IN LINE 28 OF main.c: 'j': unreferenced local variable
+ 117   2      //    
+ 118   2      //    lcd1602WriteString(LCD_ADDR_W, "HELLO AGAIN!!");
+ 119   2      //    
+ 120   2      //    lcd1602Control(LCD_ADDR_W, 1,1,1); // backlight on, underline on, blink block on 
+ 121   2      //    
+ 122   2      //    lcd1602SetCursor(LCD_ADDR_W, 0, 1);
+ 123   2      
+ 124   2      //    delay_s(1);
+ 125   2      
+ 126   2            
+ 127   2          
+ 128   2        }
+ 129   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    163    ----
+   CODE SIZE        =    202    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
@@ -147,4 +154,4 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
