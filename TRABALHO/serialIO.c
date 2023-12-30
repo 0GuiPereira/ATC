@@ -15,7 +15,7 @@ If WriteIndex = ReadIndex, the buffer is empty.
 ------------------------------------------------------------------------------*/
 
 #define TBUF_SIZE   16           // Must be a power of 2 AND 2 <= SIZE <= 128
-#define RBUF_SIZE   16           // Must be a power of 2 AND 2 <= SIZE <= 128
+#define RBUF_SIZE   32           // Must be a power of 2 AND 2 <= SIZE <= 128
 
 
 static unsigned char pdata TxBuff [TBUF_SIZE];

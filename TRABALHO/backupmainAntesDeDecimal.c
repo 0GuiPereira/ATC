@@ -5,10 +5,12 @@
 #include "serialIO.h"
 #include "delay.h"
 
+//T = 25.C H = 65%
 
-unsigned char buffTemp[16];
-unsigned char buffHum[16];
+unsigned char buffTemp[10];
+unsigned char buffHum[8];
 
+sbit PB1 = P0^6;
 
 // LCD ADDRESS 0x27
 #define LCD_ADDR_W 0x4E
@@ -61,24 +63,24 @@ void main(void){
 		}
 			*/
 		
-		 for (i = 0; i < 32; i++) {
+		 for (i = 0; i < 16; i++) {
         char c = uart0_getchar();
 
-        if (i < 16) {
+        if (i < 9) {
             buffTemp[i] = c;
         }
 
-        if (i >= 16 && i < 32) {
-            buffHum[i - 16] = c;
+        if (i >= 9 && i < 16) {
+            buffHum[i - 9] = c;
         }
     }
 		
-		//buffTemp[15] = '\0';
-		//buffHum[15] = '\0';
+		buffTemp[9] = '\0';
+    buffHum[7] = '\0';
 			
 		lcd1602Clear(LCD_ADDR_W);	    // clear the memory
 
-		lcd1602Control(LCD_ADDR_W, 1,0,0); // backlight on, underline on, blink block on 
+		lcd1602Control(LCD_ADDR_W, 1,1,1); // backlight on, underline on, blink block on 
 		
 		lcd1602SetCursor(LCD_ADDR_W, 0, 0);
 				
@@ -89,7 +91,7 @@ void main(void){
 
 		
 			
-		lcd1602Control(LCD_ADDR_W, 1,0,0); // backlight on, underline off, blink block on 
+		lcd1602Control(LCD_ADDR_W, 1,1,1); // backlight on, underline off, blink block on 
 //		
 		lcd1602SetCursor(LCD_ADDR_W, 0, 1);
 //		
