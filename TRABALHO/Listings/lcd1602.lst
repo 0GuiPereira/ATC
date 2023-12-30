@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   LCD1602                                                           12/30/2023 02:46:14 PAGE 1   
+C51 COMPILER V9.60.7.0   LCD1602                                                           12/30/2023 02:52:59 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE LCD1602
@@ -62,7 +62,7 @@ line level    source
   52   1        uc &= ~4; // toggle pulse
   53   1        i2c_write(uc);
   54   1        rc = read_ack();
-C51 COMPILER V9.60.7.0   LCD1602                                                           12/30/2023 02:46:14 PAGE 2   
+C51 COMPILER V9.60.7.0   LCD1602                                                           12/30/2023 02:52:59 PAGE 2   
 
   55   1        
   56   1        wait(CMD_PERIOD);
@@ -126,7 +126,7 @@ line level    source
  114   2          ucTemp |= 4; // pulse E
  115   2          i2c_write(ucTemp);
  116   2          rc = read_ack();
-C51 COMPILER V9.60.7.0   LCD1602                                                           12/30/2023 02:46:14 PAGE 3   
+C51 COMPILER V9.60.7.0   LCD1602                                                           12/30/2023 02:52:59 PAGE 3   
 
  117   2          
  118   2          wait(PULSE_PERIOD);
@@ -190,7 +190,7 @@ line level    source
  176   1      
  177   1        cCmd = (y==0) ? 0x80 : 0xc0;
  178   1        cCmd |= x;
-C51 COMPILER V9.60.7.0   LCD1602                                                           12/30/2023 02:46:14 PAGE 4   
+C51 COMPILER V9.60.7.0   LCD1602                                                           12/30/2023 02:52:59 PAGE 4   
 
  179   1        WriteCommand(iAddr, cCmd);
  180   1        return 0;

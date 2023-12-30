@@ -75,7 +75,7 @@ void main(void){
     }
 		
 		buffTemp[9] = '\0';
-    buffHum[6] = '\0';
+    buffHum[7] = '\0';
 			
 		lcd1602Clear(LCD_ADDR_W);	    // clear the memory
 
@@ -99,10 +99,10 @@ void main(void){
 		lcd1602WriteString(LCD_ADDR_W, buffHum);
 //		
 		delay_s(1);
-		delay_s(1);
-		delay_s(1);
-		delay_s(1);
-		delay_s(1);
+//		delay_s(1);
+//		delay_s(1);
+//		delay_s(1);
+//		delay_s(1);
 //		
 		lcd1602Shutdown(LCD_ADDR_W);
 //		
