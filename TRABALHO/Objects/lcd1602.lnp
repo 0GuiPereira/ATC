@@ -1,8 +1,0 @@
-".\Objects\main.obj",
-".\Objects\i2c-bitbang.obj",
-".\Objects\lcd1602.obj",
-".\Objects\serialIO.obj",
-".\Objects\delay.obj",
-".\Objects\config_platform.obj" 
-TO ".\Objects\lcd1602" 
-PRINT(".\Listings\lcd1602.m51") RAMSIZE(256) 

@@ -8,6 +8,14 @@
 	 * i2c SDA = 0.2; i2c SCK = 0.3;
 	*/
 
+/*
+SDA - P0.2
+SCLK - P0.3
+GND - GND
+VCC - 5V
+*/
+
+
 
 // Peripheral specific initialization functions,
 // Called from the Init_Device() function
@@ -39,5 +47,19 @@ void Init_Device(void)
     PCA_Init();
 		Oscillator_Init();
 		Port_IO_Init();
-    
+	
+}
+
+void timerAndInterrups(){
+	//Set by hardware when the Timer 2/3 high byte overflows from 0xFF to 0x00. In 16 bit 
+	//mode, this will occur when Timer 2/3 overflows from 0xFFFF to 0x0000. 	
+	TF2H = 0;	
+	//TMR3CN &= ~(1 << B_TF3H);
+	
+	
+	// Timer 2/3 Run Control. Timer 2/3 is enabled by setting this bit to 1. 
+	//TMR3CN |= (1 << B_TR3);
+	TR2 = 1;
+	
+	EA=1; //enable interrupts
 }

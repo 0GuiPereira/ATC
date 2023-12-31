@@ -33,12 +33,23 @@ void timer2_init_auto(int reload){
 	
 }
 
-void delay_s(unsigned char s) {
-    unsigned char i = 0;
+//void delay_s(unsigned char s) {
+//    unsigned char i = 0;
 
-    while(i != (s*100)) {
-        i++;
-        while(!TF2H);
-        TF2H = 0;
-    }
+//    while(i != (s*100)) {
+//        i++;
+//        while(!TF2H);
+//        TF2H = 0;
+//    }
+//}
+
+
+void delay_ms(unsigned int ms){
+	char i = 0;
+	while(i != (ms/10)){
+		while(!TF2H);
+		TF2H = 0;
+		i++;
+	}
 }
+

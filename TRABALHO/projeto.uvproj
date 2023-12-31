@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>lcd1602</OutputName>
+          <OutputName>projeto</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -430,6 +430,16 @@
               <FileName>config_platform.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\config_platform.h</FilePath>
+            </File>
+            <File>
+              <FileName>display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\display.c</FilePath>
+            </File>
+            <File>
+              <FileName>display.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\display.h</FilePath>
             </File>
           </Files>
         </Group>

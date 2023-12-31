@@ -5,4 +5,5 @@
 
 void timer2_init_auto(int i);
 void timer3_init_auto(int i);
-void delay_s(unsigned char s);
+//void delay_s(unsigned char s);
+void delay_ms(unsigned int ms);
