@@ -50,3 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+*.Guilh
+*.lst
+*.lst
+*.m51

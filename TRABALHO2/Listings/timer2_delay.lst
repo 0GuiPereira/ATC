@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 C51 COMPILER V9.60.7.0   TIMER2_DELAY                                                      01/07/2024 21:18:11 PAGE 1   
+=======
+C51 COMPILER V9.60.7.0   TIMER2_DELAY                                                      01/07/2024 17:39:18 PAGE 1   
+>>>>>>> parent of a1d659e (falta fazer, tudo a funcionar)
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE TIMER2_DELAY
@@ -62,7 +66,11 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    PDATA SIZE       =   ----    ----
    DATA SIZE        =      4    ----
    IDATA SIZE       =   ----    ----
+<<<<<<< HEAD
 C51 COMPILER V9.60.7.0   TIMER2_DELAY                                                      01/07/2024 21:18:11 PAGE 2   
+=======
+C51 COMPILER V9.60.7.0   TIMER2_DELAY                                                      01/07/2024 17:39:18 PAGE 2   
+>>>>>>> parent of a1d659e (falta fazer, tudo a funcionar)
 
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
