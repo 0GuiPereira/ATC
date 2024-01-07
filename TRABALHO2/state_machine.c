@@ -15,21 +15,20 @@ char code *ptr;
 
 char code estradaVerde[] = "Semaforo Estrada Verde\r\n";
 char code estradaAmarelo[] = "Semaforo Estrada Amarelo\r\n";
-char code estradaVermelha[] = "Semaforo Estrada Vermelho\r\n";
+char code estradaVermelho[] = "Semaforo Estrada Vermelho\r\n";
 
 char code passadeiraVerde[] = "Semaforo Passadeira Verde\r\n";
-char code passadeiraAmarela[] = "Semaforo Passadeira Amarelo\r\n";
+char code passadeiraAmarelo[] = "Semaforo Passadeira Amarelo\r\n";
 char code passadeiraVermelho[] = "Semaforo Passadeira Vermelho\r\n";
-char code mensagemPassadeira[] = "Passadeira ficará verde em 10 segundos\r\n";
+
 
 char code intermitente[] = "Semaforo Estrada Intermitente\r\n";
+char code inicio[] = "Semaforo estrada sempre verde, passdeira só fica verde quando o PB1 é pressionado\r\n";
 
-char code inicio[] = "Semaforo estrada sempre verde, passdeira só fica verda quando o PB1 é pressionado\r\n";
-
-char numeros[][3] = {"0","1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+char numeros[][3] = {"0","1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
 
-unsigned char digits_array[12] = {0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90, 0xC6, 0xC6};
+unsigned char digits_array[10] = {0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
 
 
 /*********************************************************/
@@ -61,41 +60,54 @@ void transmitString(const char *str) {
 }
 void esperarPassadeira(){
 	char i;
-	for (i = 11; i >= 0; --i) {
+	for (i = 10; i >= 0; --i) {
 			transmitString(numeros[i]);
-			if (i < 11) {
+			if (i < 10) {
 					transmitString("...\n");
-				if ( i = 5){
+				if (i == 5){
 					transmitString(estradaAmarelo);
 				}
 			}
-			transmitString(estradaVermelha);
+			transmitString(estradaVermelho);
 			transmitString(passadeiraVerde);
 	}
 }
 void temporizador(){
 	
 	char i;
-	for (i = 11; i >= 0; --i) {
+	for (i = 10; i >= 0; --i) {
 			P2 = digits_array[i];
 			transmitString(numeros[i]);
-			if (i < 11) {
+			if (i < 10) {
 					transmitString("...\n");
 			}
+	}
+}
+
+void temporizadorPassadeira(){
+	char i;
+	for (i = 10; i >= 0; --i) {
+			P2 = digits_array[i];
+			transmitString(numeros[i]);
+			if (i < 10) {
+					transmitString("...\n");
+			if (i == 5){
+				transmitString(passadeiraAmarelo);
+			}
+			}
 			delay_s(1);
+			transmitString(passadeiraVermelho);
 	}
 }
 
 void butaopassadeira(){
 	if(debounce(!PB1) && !button1pressed) {
 		
-		transmitString(mensagemPassadeira);
+		transmitString("Passadeira ficará verde em 10 segundos\r\n");
 		temporizador();
 		transmitString(passadeiraVerde);
-		temporizador();
-		transmitString(passadeiraAmarela);
-		delay_s(1);
-		transmitString(passadeiraVermelho);
+		transmitString("Tens 10 segundos para passar...\r\n");
+		temporizadorPassadeira();
 		delay_s(1);
 		transmitString(estradaVerde);
 		
