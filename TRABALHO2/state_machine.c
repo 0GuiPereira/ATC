@@ -5,32 +5,31 @@
 #include "serialIO.h"
 #include "timer2_delay.h"
 
-sbit pb1 = P0^6;
-sbit pb2 = P0^7;
+sbit PB1 = P0^6;
+sbit PB2 = P0^7;
+
+char button1pressed = 0;
+char button2pressed = 0;
 
 char code *ptr;
 
-<<<<<<< HEAD
 char code estradaVerde[] = "Semaforo Estrada Verde\r\n";
 char code estradaAmarelo[] = "Semaforo Estrada Amarelo\r\n";
-char code estradaVermelho[] = "Semaforo Estrada Vermelho\r\n";
+char code estradaVermelha[] = "Semaforo Estrada Vermelho\r\n";
 
 char code passadeiraVerde[] = "Semaforo Passadeira Verde\r\n";
-char code passadeiraAmarelo[] = "Semaforo Passadeira Amarelo\r\n";
+char code passadeiraAmarela[] = "Semaforo Passadeira Amarelo\r\n";
 char code passadeiraVermelho[] = "Semaforo Passadeira Vermelho\r\n";
-
+char code mensagemPassadeira[] = "Passadeira ficará verde em 10 segundos\r\n";
 
 char code intermitente[] = "Semaforo Estrada Intermitente\r\n";
-char code inicio[] = "Semaforo estrada sempre verde, passdeira só fica verde quando o PB1 é pressionado\r\n";
 
-char numeros[][3] = {"0","1", "2", "3", "4", "5", "6", "7", "8", "9"};
-=======
-char code sentidoNorteSul[] = "Hello uart0 m0\r\n";
-char code sentidoEsteOeste[] = "testeEO\r\n";
->>>>>>> parent of a1d659e (falta fazer, tudo a funcionar)
+char code inicio[] = "Semaforo estrada sempre verde, passdeira só fica verda quando o PB1 é pressionado\r\n";
+
+char numeros[][3] = {"0","1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
 
-unsigned char digits_array[10] = {0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
+unsigned char digits_array[12] = {0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90, 0xC6, 0xC6};
 
 
 /*********************************************************/
@@ -42,7 +41,6 @@ e_states state, nextstate;
 void state_1 (void);
 void state_2 (void);
 
-<<<<<<< HEAD
 //DEBOUNCE
 unsigned int debounce(bit PB){
 				char window;  
@@ -63,56 +61,41 @@ void transmitString(const char *str) {
 }
 void esperarPassadeira(){
 	char i;
-	for (i = 10; i >= 0; --i) {
+	for (i = 11; i >= 0; --i) {
 			transmitString(numeros[i]);
-			if (i < 10) {
+			if (i < 11) {
 					transmitString("...\n");
-				if (i == 5){
+				if ( i = 5){
 					transmitString(estradaAmarelo);
 				}
 			}
-			transmitString(estradaVermelho);
+			transmitString(estradaVermelha);
 			transmitString(passadeiraVerde);
 	}
 }
-=======
->>>>>>> parent of a1d659e (falta fazer, tudo a funcionar)
 void temporizador(){
+	
 	char i;
-<<<<<<< HEAD
-	for (i = 10; i >= 0; --i) {
+	for (i = 11; i >= 0; --i) {
 			P2 = digits_array[i];
 			transmitString(numeros[i]);
-			if (i < 10) {
+			if (i < 11) {
 					transmitString("...\n");
-			}
-	}
-}
-
-void temporizadorPassadeira(){
-	char i;
-	for (i = 10; i >= 0; --i) {
-			P2 = digits_array[i];
-			transmitString(numeros[i]);
-			if (i < 10) {
-					transmitString("...\n");
-			if (i == 5){
-				transmitString(passadeiraAmarelo);
-			}
 			}
 			delay_s(1);
-			transmitString(passadeiraVermelho);
 	}
 }
 
 void butaopassadeira(){
 	if(debounce(!PB1) && !button1pressed) {
 		
-		transmitString("Passadeira ficará verde em 10 segundos\r\n");
+		transmitString(mensagemPassadeira);
 		temporizador();
 		transmitString(passadeiraVerde);
-		transmitString("Tens 10 segundos para passar...\r\n");
-		temporizadorPassadeira();
+		esperarPassadeira();
+		//transmitString(passadeiraAmarela);
+		delay_s(1);
+		transmitString(passadeiraVermelho);
 		delay_s(1);
 		transmitString(estradaVerde);
 		
@@ -121,24 +104,7 @@ void butaopassadeira(){
 			if(!debounce(!PB1)){ // reset a flag se o botao ? clicado
 				button1pressed = 0;
 			}
-=======
-	for (i = 9; i >= 0; --i) {
-			P2 = digits_array[i];
-			delay_s(1);
-			nextstate = S2;
-	}
-	for(ptr = (char code*)sentidoNorteSul; *ptr!= '\0'; ptr++){
-		while(uart0_putchar(*ptr)== -ENOBUFS);
-	}
-}
-
-void NorteSul(){
-
->>>>>>> parent of a1d659e (falta fazer, tudo a funcionar)
 	
-//print_u0(sentidoNorteSul);
-	
-	temporizador();
 }
 
 void EsteOeste(){
@@ -146,12 +112,11 @@ void EsteOeste(){
 	nextstate = S1;
 }
 /*********************************************************/	
-
 void (*state_process [])(void) = {state_1, state_2};
 
 
 void state_1(void){
-	NorteSul();
+	butaopassadeira();
 }
 void state_2(void){
 	
@@ -179,9 +144,12 @@ void main (void){
 	// Timer 2 Run Control. Timer 2 is enabled by setting this bit to 1. 
 	TR2 = 1;
 	
+	
 	EA=1;
 	
 	state = nextstate = S1;
+	delay_s(1);
+	transmitString(inicio);
 	
 	while (1) {
 		
