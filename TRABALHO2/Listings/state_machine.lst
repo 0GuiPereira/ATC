@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     01/07/2024 17:39:18 PAGE 1   
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     01/07/2024 18:21:49 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE STATE_MACHINE
@@ -15,109 +15,176 @@ line level    source
    5          #include "serialIO.h"
    6          #include "timer2_delay.h"
    7          
-   8          sbit pb1 = P0^6;
-   9          sbit pb2 = P0^7;
+   8          sbit PB1 = P0^6;
+   9          sbit PB2 = P0^7;
   10          
-  11          char code *ptr;
-  12          
-  13          char code sentidoNorteSul[] = "Hello uart0 m0\r\n";
-  14          char code sentidoEsteOeste[] = "testeEO\r\n";
+  11          char button1pressed = 0;
+  12          char button2pressed = 0;
+  13          
+  14          char code *ptr;
   15          
-  16          
-  17          unsigned char digits_array[10] = {0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
-  18          
+  16          char code estradaVerde[] = "Semaforo Estrada Verde\r\n";
+  17          char code estradaAmarelo[] = "Semaforo Estrada Amarelo\r\n";
+  18          char code estradaVermelha[] = "Semaforo Estrada Vermelho\r\n";
   19          
-  20          /*********************************************************/
-  21          typedef enum ENUM_STATES {S1 = 0, S2} e_states;
-  22          
-  23          e_states state, nextstate;
+  20          char code passadeiraVerde[] = "Semaforo Passadeira Verde\r\n";
+  21          char code passadeiraAmarela[] = "Semaforo Passadeira Amarelo\r\n";
+  22          char code passadeiraVermelho[] = "Semaforo Passadeira Vermelho\r\n";
+  23          char code mensagemPassadeira[] = "Passadeira ficará verde em 10 segundos\r\n";
   24          
-  25          /* function prototypes */
-  26          void state_1 (void);
-  27          void state_2 (void);
+  25          char code intermitente[] = "Semaforo Estrada Intermitente\r\n";
+  26          
+  27          char code inicio[] = "Semaforo estrada sempre verde, passdeira só fica verda quando o PB1 é pressionado\r\
+             -n";
   28          
-  29          void temporizador(){
-  30   1        char i;
-  31   1        for (i = 9; i >= 0; --i) {
-  32   2            P2 = digits_array[i];
-  33   2            delay_s(1);
-  34   2            nextstate = S2;
-  35   2        }
-  36   1        for(ptr = (char code*)sentidoNorteSul; *ptr!= '\0'; ptr++){
-  37   2          while(uart0_putchar(*ptr)== -ENOBUFS);
-  38   2        }
-  39   1      }
-  40          
-  41          void NorteSul(){
-  42   1      
-  43   1        
-  44   1      //print_u0(sentidoNorteSul);
-  45   1        
-  46   1        temporizador();
-  47   1      }
-  48          
-  49          void EsteOeste(){
-  50   1        temporizador();
-  51   1        nextstate = S1;
+  29          char numeros[][3] = {"0","1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+  30          
+  31          
+  32          unsigned char digits_array[12] = {0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90, 0xC6, 0xC6};
+  33          
+  34          
+  35          /*********************************************************/
+  36          typedef enum ENUM_STATES {S1 = 0, S2} e_states;
+  37          
+  38          e_states state, nextstate;
+  39          
+  40          /* function prototypes */
+  41          void state_1 (void);
+  42          void state_2 (void);
+  43          
+  44          //DEBOUNCE
+  45          unsigned int debounce(bit PB){
+  46   1              char window;  
+  47   1              unsigned int j;
+  48   1          for(j = 0; j < 8; j++) {
+  49   2              window = (window << 1) | PB;
+  50   2          }
+  51   1          return window;
   52   1      }
-  53          /*********************************************************/ 
-  54          
-C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     01/07/2024 17:39:18 PAGE 2   
+  53          
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     01/07/2024 18:21:49 PAGE 2   
 
-  55          void (*state_process [])(void) = {state_1, state_2};
-  56          
-  57          
-  58          void state_1(void){
-  59   1        NorteSul();
-  60   1      }
-  61          void state_2(void){
-  62   1        
-  63   1      }
-  64          
-  65          /*********************************************************/
-  66          void encode_FSM(){
-  67   1          state_process[state] ();
-  68   1      }
-  69          
-  70          /*********************************************************
-  71           *    main function                                      *
-  72           *********************************************************/
-  73          void main (void){
-  74   1        
-  75   1        
-  76   1        Init_Device();
-  77   1        uart0_initialize();
-  78   1        timer2_init_auto(-40000);
-  79   1      
-  80   1        //Set by hardware when the Timer 2 high byte overflows from 0xFF to 0x00. In 16 bit 
-  81   1        //mode, this will occur when Timer 2 overflows from 0xFFFF to 0x0000.   
-  82   1        TF2H = 0; 
-  83   1        // Enable Flag Timer 2 Overflow
-  84   1        // Timer 2 Run Control. Timer 2 is enabled by setting this bit to 1. 
-  85   1        TR2 = 1;
-  86   1        
-  87   1        EA=1;
-  88   1        
-  89   1        state = nextstate = S1;
-  90   1        
-  91   1        while (1) {
-  92   2          
-  93   2          encode_FSM();
-  94   2          state = nextstate;
-  95   2          
-  96   2        }
-  97   1      }
+  54          void transmitString(const char *str) {
+  55   1          const char *ptr = str;
+  56   1          
+  57   1          while (*ptr != '\0') {
+  58   2              while (uart0_putchar(*ptr) == -ENOBUFS);
+  59   2              ++ptr;
+  60   2          }
+  61   1      }
+  62          void esperarPassadeira(){
+  63   1        char i;
+  64   1        for (i = 11; i >= 0; --i) {
+  65   2            transmitString(numeros[i]);
+  66   2            if (i < 11) {
+  67   3                transmitString("...\n");
+  68   3              if ( i = 5){
+*** WARNING C276 IN LINE 68 OF state_machine.c: constant in condition expression
+  69   4                transmitString(estradaAmarelo);
+  70   4              }
+  71   3            }
+  72   2            transmitString(estradaVermelha);
+  73   2            transmitString(passadeiraVerde);
+  74   2        }
+  75   1      }
+  76          void temporizador(){
+  77   1        
+  78   1        char i;
+  79   1        for (i = 11; i >= 0; --i) {
+  80   2            P2 = digits_array[i];
+  81   2            transmitString(numeros[i]);
+  82   2            if (i < 11) {
+  83   3                transmitString("...\n");
+  84   3            }
+  85   2            delay_s(1);
+  86   2        }
+  87   1      }
+  88          
+  89          void butaopassadeira(){
+  90   1        if(debounce(!PB1) && !button1pressed) {
+  91   2          
+  92   2          transmitString(mensagemPassadeira);
+  93   2          temporizador();
+  94   2          transmitString(passadeiraVerde);
+  95   2          temporizador();
+  96   2          transmitString(passadeiraAmarela);
+  97   2          delay_s(1);
+  98   2          transmitString(passadeiraVermelho);
+  99   2          delay_s(1);
+ 100   2          transmitString(estradaVerde);
+ 101   2          
+ 102   2          button1pressed = 1;               
+ 103   2          } 
+ 104   1            if(!debounce(!PB1)){ // reset a flag se o botao ? clicado
+ 105   2              button1pressed = 0;
+ 106   2            }
+ 107   1        
+ 108   1      }
+ 109          
+ 110          void EsteOeste(){
+ 111   1        temporizador();
+ 112   1        nextstate = S1;
+ 113   1      }
+ 114          /*********************************************************/ 
+C51 COMPILER V9.60.7.0   STATE_MACHINE                                                     01/07/2024 18:21:49 PAGE 3   
+
+ 115          void (*state_process [])(void) = {state_1, state_2};
+ 116          
+ 117          
+ 118          void state_1(void){
+ 119   1        butaopassadeira();
+ 120   1      }
+ 121          void state_2(void){
+ 122   1        
+ 123   1      }
+ 124          
+ 125          /*********************************************************/
+ 126          void encode_FSM(){
+ 127   1          state_process[state] ();
+ 128   1      }
+ 129          
+ 130          /*********************************************************
+ 131           *    main function                                      *
+ 132           *********************************************************/
+ 133          void main (void){
+ 134   1        
+ 135   1        
+ 136   1        Init_Device();
+ 137   1        uart0_initialize();
+ 138   1        timer2_init_auto(-40000);
+ 139   1      
+ 140   1        //Set by hardware when the Timer 2 high byte overflows from 0xFF to 0x00. In 16 bit 
+ 141   1        //mode, this will occur when Timer 2 overflows from 0xFFFF to 0x0000.   
+ 142   1        TF2H = 0; 
+ 143   1        // Enable Flag Timer 2 Overflow
+ 144   1        // Timer 2 Run Control. Timer 2 is enabled by setting this bit to 1. 
+ 145   1        TR2 = 1;
+ 146   1        
+ 147   1        
+ 148   1        EA=1;
+ 149   1        
+ 150   1        state = nextstate = S1;
+ 151   1        delay_s(1);
+ 152   1        transmitString(inicio);
+ 153   1        
+ 154   1        while (1) {
+ 155   2          
+ 156   2          encode_FSM();
+ 157   2          state = nextstate;
+ 158   2          
+ 159   2        }
+ 160   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    157    ----
-   CONSTANT SIZE    =     27    ----
+   CODE SIZE        =    440    ----
+   CONSTANT SIZE    =    331    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     21    ----
+   DATA SIZE        =     68    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =   ----    ----
+   BIT SIZE         =      1    ----
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
