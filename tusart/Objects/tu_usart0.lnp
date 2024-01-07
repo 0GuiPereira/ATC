@@ -1,5 +1,6 @@
 ".\Objects\tu_usart0.obj",
 ".\Objects\config_platform.obj",
-".\Objects\serialIO.obj" 
+".\Objects\serialIO.obj",
+".\Objects\timer2_delay.obj" 
 TO ".\Objects\tu_usart0" 
 PRINT(".\Listings\tu_usart0.m51") RAMSIZE(256) 

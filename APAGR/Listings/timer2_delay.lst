@@ -1,0 +1,71 @@
+C51 COMPILER V9.60.7.0   TIMER2_DELAY                                                      01/07/2024 17:36:53 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE TIMER2_DELAY
+OBJECT MODULE PLACED IN .\Objects\timer2_delay.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE timer2_delay.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listi
+                    -ngs\timer2_delay.lst) TABS(2) OBJECT(.\Objects\timer2_delay.obj)
+
+line level    source
+
+   1          #include <REG51F380.H>
+   2          
+   3          
+   4          /*********************************************************/
+   5          /* timer2 init code here */
+   6          
+   7          void timer2_init_auto(int reload){
+   8   1      
+   9   1      //SFR Definition 25.9. TMR2CN: Timer 2 Control
+  10   1      //---------------------------------------------------------------
+  11   1      //Bit |  7   |   6  |   5    |  4    |  3     | 2   |   1  |  0
+  12   1      //---------------------------------------------------------------
+  13   1      //Name| TF2H | TF2L | TF2LEN |TF2CEN |T2SPLIT | TR2 |T2CSS |T2XCLK
+  14   1      //---------------------------------------------------------------
+  15   1        // sysclock /12
+  16   1        TMR2CN = 0;
+  17   1      
+  18   1      #define B_T2MH 5  
+  19   1      //SFR Definition 25.1. CKCON: Clock Control
+  20   1      //-------------------------------------------------------------
+  21   1      //Bit |  7   |   6  |   5  |  4  |  3 | 2   |   1  |  0
+  22   1      //-------------------------------------------------------------
+  23   1      //Name| T3MH | T3ML | T2MH |T2ML |T1M | T0M |   SCA[1:0]
+  24   1      //------------------------------------------------------------- 
+  25   1        
+  26   1        //Timer 2 high byte T2MH and low byte T2ML use the system clock
+  27   1        CKCON &= ~((1 << B_T2MH));
+  28   1        
+  29   1        TMR2H = (reload) >> 8;
+  30   1        TMR2L = (reload);
+  31   1      
+  32   1        TMR2RLH = (reload) >> 8;
+  33   1        TMR2RLL = (reload);
+  34   1      }
+  35          
+  36          void delay_s(unsigned char s) {
+  37   1          unsigned char i = 0;
+  38   1      
+  39   1          while(i != (s*100)) {
+  40   2              i++;
+  41   2              while(!TF2H);
+  42   2              TF2H = 0;
+  43   2          }
+  44   1      }
+  45          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     72    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4    ----
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V9.60.7.0   TIMER2_DELAY                                                      01/07/2024 17:36:53 PAGE 2   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

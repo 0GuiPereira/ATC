@@ -1,17 +1,7 @@
 #include <REG51F380.H>
 #include "types.h"
 
-/*********************************************************/
-sbit seg_dp = P2^7;
 
-static int blink = 100;
-/*********************************************************/	
-void System_Init(void){
-   PCA0MD    = 0x00;
-   FLSCL     = 0x90;
-   CLKSEL    = 0x03;
-	 XBR1      = 0x40;
-}
 /*********************************************************/
 /* timer2 init code here */
 
@@ -50,17 +40,8 @@ void timer2_init_auto(int reload){
 void main (void){
 	
 	
-	System_Init(); 
 	
-	timer2_init_auto(-40000);
-
-	//Set by hardware when the Timer 2 high byte overflows from 0xFF to 0x00. In 16 bit 
-	//mode, this will occur when Timer 2 overflows from 0xFFFF to 0x0000. 	
-	TF2H = 0;	
-	// Enable Flag Timer 2 Overflow
-	ET2 = 1;
-	// Timer 2 Run Control. Timer 2 is enabled by setting this bit to 1. 
-	TR2 = 1;
+	
 	
 	while(1){
 		

@@ -391,6 +391,11 @@
               <FileType>1</FileType>
               <FilePath>.\serialIO.c</FilePath>
             </File>
+            <File>
+              <FileName>timer2_delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\TRABALHO2\timer2_delay.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

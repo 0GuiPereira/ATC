@@ -1,0 +1,3 @@
+".\Objects\timer2_interrupt.obj" 
+TO ".\Objects\guia_1" 
+PRINT(".\Listings\guia_1.m51") RAMSIZE(256) 

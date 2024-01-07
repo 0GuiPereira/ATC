@@ -1,0 +1,73 @@
+C51 COMPILER V9.60.7.0   TU_USART0                                                         01/07/2024 17:36:53 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE TU_USART0
+OBJECT MODULE PLACED IN .\Objects\tu_usart0.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE tu_usart0.c OPTIMIZE(0,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings
+                    -\tu_usart0.lst) TABS(2) OBJECT(.\Objects\tu_usart0.obj)
+
+line level    source
+
+   1          #include <REG51F380.H>
+   2          #include <stdio.h>
+   3          #include "config_platform.h"
+   4          #include "serialIO.h"
+   5          #include "timer2_delay.h"
+   6          
+   7          char code message0[] = "Hello uart0 m0\r\n";
+   8          char code message1[] = "Hello uart0 m1\r\n";
+   9          
+  10          void main(void){
+  11   1        char c = 0;
+  12   1        char code *ptr;
+  13   1        Init_Device();
+  14   1        uart0_initialize();
+  15   1        EA=1;
+  16   1        
+  17   1        timer2_init_auto(-40000);
+  18   1        
+  19   1        //Set by hardware when the Timer 2 high byte overflows from 0xFF to 0x00. In 16 bit 
+  20   1        //mode, this will occur when Timer 2 overflows from 0xFFFF to 0x0000.   
+  21   1        TF2H = 0; 
+  22   1        // Enable Flag Timer 2 Overflow
+  23   1        // Timer 2 Run Control. Timer 2 is enabled by setting this bit to 1. 
+  24   1        TR2 = 1;
+  25   1          
+  26   1        
+  27   1        
+  28   1        printf(message1);
+  29   1        
+  30   1        
+  31   1        while(1) {
+  32   2          //scanf("%c",&c);
+  33   2          //c = _getkey();
+  34   2          //putchar(c);
+  35   2          //putchar('\n');
+  36   2          
+  37   2          
+  38   2          for(ptr = (char code*)message0; *ptr!= '\0'; ptr++){
+  39   3            while(uart0_putchar(*ptr)== -ENOBUFS);
+  40   3          }
+  41   2          delay_s(1);
+  42   2          
+  43   2          
+  44   2          
+  45   2        }
+  46   1        
+  47   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     89    ----
+   CONSTANT SIZE    =     34    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+C51 COMPILER V9.60.7.0   TU_USART0                                                         01/07/2024 17:36:53 PAGE 2   
+
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

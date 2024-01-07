@@ -1,0 +1,6 @@
+".\Objects\config_platform.obj",
+".\Objects\serialIO.obj",
+".\Objects\state_machine.obj",
+".\Objects\timer2_delay.obj" 
+TO ".\Objects\tu_usart0" 
+PRINT(".\Listings\tu_usart0.m51") RAMSIZE(256) 
