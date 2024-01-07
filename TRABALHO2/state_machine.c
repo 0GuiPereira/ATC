@@ -93,6 +93,7 @@ void butaopassadeira(){
 		temporizador();
 		transmitString(passadeiraVerde);
 		esperarPassadeira();
+		
 		//transmitString(passadeiraAmarela);
 		delay_s(1);
 		transmitString(passadeiraVermelho);
