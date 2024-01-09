@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    01/09/2024  16:41:08  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    01/09/2024  18:31:50  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
@@ -59,7 +59,7 @@ LINK MAP OF MODULE:  .\Objects\projeto (MAIN)
             DATA    0061H     0001H     UNIT         ?DT?_UART0_PUTCHAR?SERIALIO
             IDATA   0062H     0001H     UNIT         ?STACK
 
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 2
 
 
             * * * * * * *  X D A T A   M E M O R Y  * * * * * * *
@@ -119,7 +119,7 @@ SEGMENT
   +--> ?C_INITSEG
 
 ?PR?MAIN?MAIN
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 3
 
 
   +--> ?PR?INIT_DEVICE?CONFIG_PLATFORM
@@ -179,7 +179,7 @@ SEGMENT
   +--> ?PR?_I2C_WRITE?I2C_BITBANG
   +--> ?PR?READ_ACK?I2C_BITBANG
   +--> ?PR?_WAIT?LCD1602
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 4
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 4
 
 
   +--> ?PR?I2C_STOP?I2C_BITBANG
@@ -239,7 +239,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\projeto (MAIN)
   C:066DH         PUBLIC        i2c_start
   C:0635H         PUBLIC        i2c_wait
   D:00D8H         PUBLIC        PCA0CN
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 5
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 5
 
 
   D:00B8H         PUBLIC        IP
@@ -299,7 +299,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\projeto (MAIN)
   -------         ENDDO         
   C:048BH         LINE#         54
   C:048DH         LINE#         57
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 6
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 6
 
 
   C:048FH         LINE#         59
@@ -359,7 +359,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\projeto (MAIN)
   C:0616H         LINE#         138
   C:0616H         LINE#         139
   C:0618H         LINE#         141
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 7
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 7
 
 
   C:061AH         LINE#         142
@@ -419,7 +419,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\projeto (MAIN)
   C:0125H         LINE#         40
   C:012AH         LINE#         42
   C:0134H         LINE#         43
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 8
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 8
 
 
   C:0138H         LINE#         44
@@ -479,7 +479,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\projeto (MAIN)
   C:00ADH         LINE#         109
   C:00B4H         LINE#         110
   C:00CBH         LINE#         111
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 9
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 9
 
 
   C:00CFH         LINE#         112
@@ -539,7 +539,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\projeto (MAIN)
   C:047CH         LINE#         178
   C:0480H         LINE#         179
   C:0487H         LINE#         180
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 10
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 10
 
 
   C:048AH         LINE#         182
@@ -599,7 +599,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\projeto (MAIN)
   B:0098H.0       PUBLIC        RI0
   B:0098H.1       PUBLIC        TI0
   D:008DH         PUBLIC        TH1
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 11
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 11
 
 
   X:0000H         SYMBOL        RxBuff
@@ -659,7 +659,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\projeto (MAIN)
   C:04F7H         LINE#         147
   C:0500H         LINE#         148
   C:0500H         LINE#         152
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 12
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 12
 
 
   C:0509H         LINE#         153
@@ -719,7 +719,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\projeto (MAIN)
   -------         ENDDO         
   C:03ACH         LINE#         226
   C:03AEH         LINE#         227
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 13
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 13
 
 
   C:03AEH         LINE#         230
@@ -779,7 +779,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\projeto (MAIN)
   C:05F5H         LINE#         22
   C:05F8H         LINE#         26
   C:05FBH         LINE#         28
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 14
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 14
 
 
   C:0604H         LINE#         29
@@ -839,7 +839,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\projeto (MAIN)
   -------         ENDPROC       PCA_INIT
   -------         PROC          PORT_IO_INIT
   C:0740H         LINE#         30
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 15
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 15
 
 
   C:0740H         LINE#         31
@@ -899,7 +899,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\projeto (MAIN)
   C:01B3H         LINE#         17
   C:01BFH         LINE#         18
   C:01C4H         LINE#         20
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  16:41:08  PAGE 16
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  01/09/2024  18:31:50  PAGE 16
 
 
   C:01CDH         LINE#         21

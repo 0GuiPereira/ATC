@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   CONFIG_PLATFORM                                                   01/09/2024 16:41:08 PAGE 1   
+C51 COMPILER V9.60.7.0   CONFIG_PLATFORM                                                   01/09/2024 18:31:50 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE CONFIG_PLATFORM
@@ -62,7 +62,7 @@ line level    source
   52          
   53          void timerAndInterrups(){
   54   1        //Set by hardware when the Timer 2/3 high byte overflows from 0xFF to 0x00. In 16 bit 
-C51 COMPILER V9.60.7.0   CONFIG_PLATFORM                                                   01/09/2024 16:41:08 PAGE 2   
+C51 COMPILER V9.60.7.0   CONFIG_PLATFORM                                                   01/09/2024 18:31:50 PAGE 2   
 
   55   1        //mode, this will occur when Timer 2/3 overflows from 0xFFFF to 0x0000.   
   56   1        TF2H = 0; 
